@@ -24,6 +24,7 @@ export default function TimerClock() {
     setMSecond(0)
   }
 
+<<<<<<< HEAD
   useEffect(() => {
        var interval=null
        if(!stop){
@@ -51,6 +52,9 @@ export default function TimerClock() {
        }
   })
   
+=======
+
+>>>>>>> da072f3e9ebfe0dd69cf5a94e02e49f09e415ff2
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
