@@ -6,17 +6,20 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
-
+// import { Provider } from 'react-redux';
+// import store from './Redux/store,';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
+  // <Prodvider store={store}>
   <HelmetProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </HelmetProvider>
+  // </Prodvider>
 );
 
 // If you want to enable client cache, register instead.
