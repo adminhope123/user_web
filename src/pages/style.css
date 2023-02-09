@@ -4,9 +4,6 @@
     align-items: center;
 
 }
-.employee-new-user form  div{
-    margin-bottom: 5px
-}
 .employee-new-user form  input{
     padding: 13px;
     width: 218px;
@@ -15,15 +12,35 @@
     width: 252px !important;
     background-color: #162b4c;
 }
-.employee-error-text{
-    margin: 0px;
-    font-size: 11px;
+.login-error-text{
+    margin: 0px !important;
+    font-size: 13px;
     color: red  ;
-    margin-top: -8px;
+    margin-top:0 !important;
 }
 .employee-table .MuiTableCell-root div{
   justify-content: center;
 }
 .MuiTableHead-root th{
     text-align: center;
+}
+.timer-clock{
+
+}
+.timer-clock h6{
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+
+}
+.timer-clock form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.timer-clock form .MuiInputBase-root {
+    margin-bottom: 10px
+}
+.timer-clock .time-out:hover{
+  background-color: #cd4545 ;
 }

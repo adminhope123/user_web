@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import { UserData } from '../../../App';
 
 // ----------------------------------------------------------------------
 
@@ -33,17 +34,28 @@ Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
 };
-
 export default function Nav({ openNav, onCloseNav }) {
+  const {userGetData}=useContext(UserData)
   const { pathname } = useLocation();
+  const timeLive=new Date().toLocaleTimeString()
+  const [liveTime,setLiveTime]=useState(timeLive)
 
+  const UpdateTime=()=>{
+    const  time =new Date().toLocaleTimeString();
+       setLiveTime(time)
+    }
+    
+    useEffect(() => {
+      UpdateTime()
+      setInterval(UpdateTime,1000)
+    }, [])
+    
   const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -53,8 +65,12 @@ export default function Nav({ openNav, onCloseNav }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+      <Box sx={{ px: 2.5, py: 3, display: 'flex',justifyContent:"space-between",alignItems:"center" }}>
         <Logo />
+        <Typography variant="subtitle2" sx={{ color: 'text.primary',fontSize:"18px  " }}>
+                {timeLive}
+              </Typography>
+
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -64,11 +80,11 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {userGetData?.userName}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {userGetData?.role}
               </Typography>
             </Box>
           </StyledAccount>

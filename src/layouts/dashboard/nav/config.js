@@ -12,8 +12,8 @@ const navConfig = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'user',
-    path: '/dashboard/user',
+    title: 'Timer Clock',
+    path: '/dashboard/timerClock',
     icon: icon('ic_user'),
   },
   {
