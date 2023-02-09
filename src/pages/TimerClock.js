@@ -41,6 +41,7 @@ export default function TimerClock() {
     console.log("liveTime",liveTime)
   }
 
+
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
@@ -86,7 +87,10 @@ export default function TimerClock() {
                   </Button>
                   </Box>
                 </form>
-                <CountownClock/>
+                <h1>{hour}:{min}:{second}</h1>
+        <button onClick={startTime}>Start</button>
+        <button onClick={stopTime}>Stop</button>
+        <button onClick={resetTime}>Reset</button>
                 {/* <BorderLinearProgress variant="determinate" value={50} /> */}
     </div>
   )
