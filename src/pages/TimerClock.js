@@ -54,28 +54,7 @@ export default function TimerClock() {
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
-       <form onSubmit={hadnleTimeClockSubmit}>
-                  <FormControl>
-                    <TextField
-                      label="Date"
-                      name="date"
-                      type="text"
-                      disabled
-                      value={getDateData}
-                      onChange={hadnleTimeClockOnChange}
-                    />
-                  <FormControl>
-                    <TextField
-                      label="Time"
-                      type="text"
-                      name="time"
-                      disabled
-                      value={liveTime}
-                      onChange={hadnleTimeClockOnChange}
-                    />
-                  </FormControl>
-                  </FormControl>
-                  <Box sx={{marginTop:"10px"}}>
+      
                   <Button
                     variant="contained"
                     type="submit"
@@ -94,8 +73,6 @@ export default function TimerClock() {
                     <i className="fa-solid fa-hourglass-end" style={{marginRight:"5px"}}/>
                     Time Out
                   </Button>
-                  </Box>
-                </form>
                 <h1>{hour}:{min}:{second}</h1>
         <button onClick={startTime}>Start</button>
         <button onClick={stopTime}>Stop</button>
