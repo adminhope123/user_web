@@ -1,1 +1,6 @@
-// export const GET_USERS="GET_USERS";
+export const TIME_IN_API_ADD="TIME_IN_API";
+export const TIME_IN_API_GET_DATA="TIME_IN_API_GET_DATA";
+export const TIME_OUT_API_PUT="TIME_OUT_API_PUT";
+export const TIME_ADD_API="TIME_ADD_API";
+export const TIME_START_POST="TIME_START_POST";
+export const TIME_STOP_PUT="TIME_STOP_PUT";

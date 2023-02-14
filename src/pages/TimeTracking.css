@@ -1,0 +1,171 @@
+.agent-cmp .content{
+    background-color: #f4f3ff;
+    background-color: #fff;
+    overflow-y: hidden
+}
+.agent-cmp .tasks-container{
+        height: 100%;
+}
+.new-task-area .content{
+ background-color: #f4f3ff;
+}
+.stop-watch .timer-secs-span{
+    font-size: 1.6vw;
+    color: #AAA;
+}
+.timer-clock .MuiGrid-root {
+    justify-content: flex-end;
+}
+.stop-watch .timer-secs{
+    color: #76768a;
+    font-size: 44px;
+    margin-bottom: 14px;
+}
+.stop-watch .timer-time{
+    font-size: 44px;
+    margin-top: 27%;
+    font-weight: bold;
+    border-bottom: 0.5px solid #dad7d7;
+
+}
+.stop-watch .timer{
+    color: #494463;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    font-size: 3vw;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding-right: 16px;
+    padding-left: 16px;
+}
+.stop-watch .timer-circle{
+    margin: 23;
+    border: 2.5px solid #494463;
+    display: flex;
+    align-items: center;
+    border-radius: 12%;
+    width: 163px;
+    height: 187px;
+}
+.stop-watch button{
+    margin-top: 10px;
+}
+.stop-watch .timer-container{
+    display: flex;
+    justify-content:  center;
+}
+.task-item-component {
+    display: flex;
+    background-color: #FFF;
+    margin: 7;
+    padding:7;
+    border-radius: 10px !important;
+}
+.task-item-component::before{
+    content: unset !important
+}
+  div.online-indicator {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    
+    background-color: #0fcc45;
+    border-radius: 50%;
+    
+    position: relative;
+  }
+  span.blink {
+    display: block;
+    width: 15px;
+    height: 15px;
+    
+    background-color: #0fcc45;
+    opacity: 0.7;
+    border-radius: 50%;
+    
+    animation: blink 1s linear infinite;
+  }
+  div.online-indicator-stopped {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    
+    background-color: #f02f0d;
+    border-radius: 50%;
+    
+    position: relative;
+  }
+  span.blink-stopped {
+    display: block;
+    width: 15px;
+    height: 15px;
+    
+    background-color: #f02f0d;
+    opacity: 0.7;
+    border-radius: 50%;
+    
+    animation: blink 1s linear infinite;
+  }
+  
+  
+ @keyframes blink {
+    100% { transform: scale(2, 2); 
+            opacity: 0;
+          }
+  }
+.task-item-component .input-description{
+    color: #59527d;
+    font-size: 15;
+}
+.task-item-component .description{
+
+}
+.task-item-component .category{
+    color: #aba2a2;
+    font-size: 14;
+}
+.task-item-component .info{
+    width: 100%;
+    margin-left: 40;
+}
+.task-item-component .divider{
+    margin-left: 10;
+    border-radius: 50;
+    background-color: green;
+    width:7 ;
+}
+.task-item-component .stop-time{
+    color: #aba2a2;
+    font-size: 13;
+}
+.task-item-component .start-stime{
+    color: #321db1;
+    font-size: 18;
+    font-weight: bold;
+}
+.task-item-component .task-item{
+    width: 110;
+    margin-left: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.controls{
+    color: #b9b8b8;
+    display: flex;
+    align-items: center;
+    justify-items: space-between;
+    width: 200;
+}
+.duration{
+    color: #6571a0;
+    display: flex;
+    align-items: center;
+    font-size: 16;
+}
