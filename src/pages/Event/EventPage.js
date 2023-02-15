@@ -2,8 +2,10 @@ import FullCalendar, { formatDate } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import './EventPage.css'
 import React, { useState } from 'react'
 import { INITIAL_EVENTS, createEventId } from './EventList'
+import { Container } from '@mui/system'
 
 export default function EventPage() {
   const [weekendsVisible,setWeekendsVisible]=useState()
@@ -50,24 +52,6 @@ const handleWeekendsToggle = () => {
     return (
       <div className='demo-app-sidebar'>
         <div className='demo-app-sidebar-section'>
-          <h2>Instructions</h2>
-          <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
-          </ul>
-        </div>
-        <div className='demo-app-sidebar-section'>
-          <label>
-            <input
-              type='checkbox'
-              checked={weekendsVisible}
-              onChange={handleWeekendsToggle}
-            ></input>
-            toggle weekends
-          </label>
-        </div>
-        <div className='demo-app-sidebar-section'>
           <h2>All Events ({currentEvents.length})</h2>
           <ul>
             {currentEvents.map(renderSidebarEvent)}
@@ -79,16 +63,17 @@ const handleWeekendsToggle = () => {
   function renderSidebarEvent(event) {
     return (
       <li key={event.id}>
-        <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
-        <i>{event.title}</i>
+        <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})} :</b>
+        <h6>{event.title}</h6>
       </li>
     )
   }
   
   return (
-    <div>
+    <div className='event-page'>
+        <Container>
       {renderSidebar()}
-       <FullCalendar
+        <FullCalendar
             plugins={[dayGridPlugin,timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: 'prev,next today',
@@ -112,6 +97,7 @@ const handleWeekendsToggle = () => {
             eventRemove={function(){}}
             */
           />
+        </Container>
     </div>
   )
 }
