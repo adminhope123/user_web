@@ -27,27 +27,30 @@ export const UserDataProvider = (props) => {
     const liveDate = new Date().toLocaleDateString("es-DO");
     const totaHours = users?.filter((item) => liveDate === item.date);
     const timeFilter = filterData?.filter((item) => liveDate === item.date);
-    const totalWork = { totalWork: totalWorkTime };
+    const totalWork = { "totalWork": totalWorkTime };
     console.log("totalWork", totalWork);
-    const addObjectTime = timeFilter?.map((item) => {
-      return { ...item, ...totalWork };
-    });
-    setAttendanceData(addObjectTime);
-    console.log("addObjectTime", addObjectTime);
-    const attendanceObject = Object.assign({}, ...addObjectTime);
-    console.log(attendanceObject, "aaa");
-
     const totalSecondsData = totaHours?.reduce(
       (acc, cur) => acc + cur.totalSeconds,
       0
     );
     getPaddedTime(totalSecondsData);
-    if (attendanceObject === null && attendanceObject === undefined) {
-      console.log("lodaing data");
-    } else {
-      attendanceObject?.date === liveDate
-        ? dispatch(attendancePostApi(attendanceObject))
-        : "";
+    if(totalWork){
+      const addObjectTime = timeFilter?.map((item) => {
+        return { ...item, ...totalWork };
+      });
+      setAttendanceData(addObjectTime);
+      console.log("addObjectTime", addObjectTime);
+      const attendanceObject = Object.assign({}, ...addObjectTime);
+      console.log(attendanceObject, "aaa");
+  
+      if (attendanceObject === null && attendanceObject === undefined) {
+        console.log("lodaing data");
+      } else {
+        attendanceObject?.date === liveDate
+          ? dispatch(attendancePostApi(attendanceObject))
+          : "";
+      }
+
     }
   };
 

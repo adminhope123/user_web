@@ -37,10 +37,11 @@ export default function LoginForm() {
       const checkData=employeeGetData?.filter((item)=>item.email===loginDataForm.email&&item.password===loginDataForm.password)
       console.log("checkData",checkData)
       if(checkData.length){
-        navigate('/dashboard', { replace: true })
-        const allFruits = Object.assign({}, ...checkData);
-        console.log("allFruits",allFruits)
-        sessionStorage.setItem("userData",JSON.stringify(allFruits))
+        navigate('/dashboard/app', { replace: true })
+        location.reload();
+        const loginData = Math.random() * 1000000;
+        console.log("loginData",loginData)
+        sessionStorage.setItem("login",JSON.stringify(loginData))
       }
   }
 

@@ -22,12 +22,13 @@ export default function AttendanceTable() {
     useEffect(() => {
        dispatch(attendanceGetApi())
        findDateFunction()
+       console.log("attendance",attendance)
     }, [])
     
   return (
     <div>
         <div className="employee-table">
-            {/* <button onClick={()=>findDateFunction()}>Click</button> */}
+            <button onClick={()=>findDateFunction()}>Click</button>
                   <Table>
                   <UserListHead
                      headLabel={TABLE_HEAD}
@@ -46,7 +47,7 @@ export default function AttendanceTable() {
                        }
                      
                  
-                       <TableCell align="center">{user.totalWork}</TableCell>
+                       <TableCell align="center">{user?.totalWork}</TableCell>
                     </TableRow>
                      )
                     })

@@ -4,6 +4,7 @@ const  initialState={
     users:[],
     user:{},
     attendance:[],
+    attendances:{},
     loading:true
 }
 
@@ -24,7 +25,7 @@ const usersReducers=(state=initialState,action)=>{
                 case type.ATTENDANCE_GET_API  :
                     return{
                         ...state,
-                        attendance:action.payload,
+                        users:action.payload,
                         loading:false
                     };
                 case type.ATTENDANCE_POST_API:
