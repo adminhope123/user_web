@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { TableBody,Table,TableRow, TableCell } from '@mui/material';
 import { UserListHead } from 'src/sections/@dashboard/user';
 import { attendanceGetApi} from 'src/Redux/actions';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import { UserDataContext } from 'src/UserDataContext';
 
 
 const TABLE_HEAD = [
@@ -15,15 +16,18 @@ const TABLE_HEAD = [
   ];
 export default function AttendanceTable() {
     const dispatch=useDispatch()
+    const {findDateFunction}=useContext(UserDataContext)
     const{attendance}=useSelector(res=>res.data)
 
     useEffect(() => {
        dispatch(attendanceGetApi())
+       findDateFunction()
     }, [])
     
   return (
     <div>
         <div className="employee-table">
+            {/* <button onClick={()=>findDateFunction()}>Click</button> */}
                   <Table>
                   <UserListHead
                      headLabel={TABLE_HEAD}
