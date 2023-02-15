@@ -10,6 +10,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AttendanceList from './pages/AttendanceList/AttendanceList';
+import EventPage from './pages/Event/EventPage';
 
 // ----------------------------------------------------------------------
 
@@ -23,6 +24,7 @@ export default function RouterComponent() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'timerClock', element: <TimerClock /> },
         { path: 'attendance-list', element: <AttendanceList /> },
+        { path: 'event', element: <EventPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
