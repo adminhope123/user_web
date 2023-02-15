@@ -25,7 +25,6 @@ export default function AttendanceList() {
 
   return (
     <div className='attendance-list'>
-      <button onClick={()=>findDateFunction()}>a</button>
         <AttendanceTable/>
     </div>
   )
