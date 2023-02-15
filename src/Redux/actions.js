@@ -6,14 +6,26 @@ const getTimeData=(users)=>({
     payload:users
 })
 
+
 const timeStartPost=(users)=>({
     type:type.TIME_START_POST,
     payload:users
 })
+
+
 const timeStopPost=(users)=>({
     type:type.TIME_STOP_PUT,
 })
 
+const attendancePost=(users)=>({
+    type:type.ATTENDANCE_POST_API,
+    payload:users
+})
+
+const attendanceGet=(users)=>({
+    type:type.ATTENDANCE_GET_API,
+    payload:users
+})
 
 export const timeStartApi=(user)=>{
     const url="http://localhost:3004/timeAdd";
@@ -47,6 +59,29 @@ export const getTimeDataApi=()=>{
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(getTimeData(resp.data))
+        })
+        .catch((error)=>console.log("error",error));
+    };
+}
+
+export const attendancePostApi=(user)=>{
+    const url="http://localhost:3004/attendance";
+    return function (dispatch){
+            axios.post(url,user)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(attendancePost(resp.data))
+        })
+        .catch((error)=>console.log("error",error))
+    }
+}
+export const attendanceGetApi=()=>{
+    const url="http://localhost:3004/attendance";
+    return function (dispatch){
+            axios.get(url)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(attendanceGet(resp.data))
         })
         .catch((error)=>console.log("error",error));
     };

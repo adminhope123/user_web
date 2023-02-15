@@ -13,10 +13,11 @@ import Dashboard from './TimeComponent/Dashboard';
 
 const TABLE_HEAD = [
   { id: 'date', label: 'Date', alignRight: false },
+  { id: 'day', label: 'Day', alignRight: false },
   { id: 'timeIn', label: 'Time In', alignRight: false },
   { id: 'timeOut', label: 'Time Out', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: 'totalTime', label: 'Total Time', alignRight: false },
+  { id: 'totalWorked', label: 'Total Worked', alignRight: false },
 ];
 
 export default function TimerClock(props) {
@@ -76,7 +77,8 @@ export default function TimerClock(props) {
                     users&&users?.map((user)=>{
                      return(
                     <TableRow  key={user?.id}>
-                       <TableCell align="center">{user.start?.slice(0,10)}</TableCell>
+                       <TableCell align="center">{user?.date}</TableCell>
+                          <TableCell align="center">{user?.day}</TableCell>
                        <TableCell align="center">{user.start?.slice(12, 19)}</TableCell>
                        {
                          user.stop?

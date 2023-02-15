@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 // routes
 import { Route,Router, Routes} from 'react-router-dom';
 import RouterComponent from './routes';
@@ -8,24 +8,18 @@ import ThemeProvider from './theme';
 import ScrollToTop from './components/scroll-to-top';
 import { StyledChart } from './components/chart';
 import LoginPage from './pages/LoginPage';
+import { UserDataProvider } from './UserDataContext';
 
 // ----------------------------------------------------------------------
 
-export const UserData =createContext();
+
 export default function App() {
-  const [userGetData,setUserGetData]=useState()
 
   useEffect(() => {
-    userGetDataFunction()
   }, [])
-  
-  const userGetDataFunction=()=>{
-    const getData=JSON.parse(sessionStorage.getItem("userData"))
-   setUserGetData(getData)
-    console.log("getData",getData)
-  }
+
   return (
-    <UserData.Provider value={{userGetData}}>
+    <UserDataProvider>
     <ThemeProvider>
       <ScrollToTop />
       <StyledChart />
@@ -34,6 +28,6 @@ export default function App() {
           <Route  path="/login" element={<LoginPage/>}/>
       </Routes>
     </ThemeProvider>
-    </UserData.Provider>
+    </UserDataProvider>
   );
 }

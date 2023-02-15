@@ -12,28 +12,34 @@ let interval;
 
 
 export const TaskContext = createContext();
+
 export const TaskProvider = props => {
     const intervalRef = useRef();
     const [ tasks, setTasks ] = useState(storedTasks);
-    const [timeStart,setTimeStart]=useState()
-    const [timeStop,setTimeStop]=useState()
 
     const getColor = () => {
         const random = Math.ceil(Math.random() * 7);
         return COLORS[random];
     }
+    const liveDate=new Date().toLocaleDateString("es-DO")
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+     const dayData=days[new Date().getDay()]
     const getModelTask = () => ({
         id: v4(),
         state: 'non-started',
         parent: false,
+        date:liveDate,
         start: false,
         stop: false,
         color: getColor(),
         hours: '00',
+        day:dayData,
         mins: '00',
         secs: '00',
         description: '',
         category: '',
+        present:true,
+        absent:false,
         totalSeconds: 0
     })
     const dispatch=useDispatch();

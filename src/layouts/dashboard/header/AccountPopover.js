@@ -3,8 +3,8 @@ import { useContext, useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
-import { UserData } from '../../../App';
 import account from '../../../_mock/account';
+import { UserDataContext } from 'src/UserDataContext';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const {userGetData}=useContext(UserData)
+  const {userGetData}=useContext(UserDataContext)
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);

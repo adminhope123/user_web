@@ -1,0 +1,30 @@
+.attendance-list h1 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+}
+.attendance-list .MuiCalendarOrClockPicker-root {
+    background-color: #f9fafb !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.attendance-list .MuiCalendarOrClockPicker-root div{
+    margin-left: 0px !important;
+}
+.attendance-list .MuiPickersToolbar-root  .MuiButtonBase-root {
+    display: none;
+}
+.attendance-list .check-icon .MuiSvgIcon-root {
+    background-color: #4cb050;
+    color: white;
+    font-size: 25px;
+    border-radius: 5px;
+}
+.attendance-list .close-icon .MuiSvgIcon-root{
+    background-color: #f44236;
+    color: white;
+    font-size: 25px;
+    padding: 2px;
+    border-radius: 5px;
+}

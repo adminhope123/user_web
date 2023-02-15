@@ -14,7 +14,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
-import { UserData } from '../../../App';
+import { UserDataContext } from 'src/UserDataContext';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 export default function Nav({ openNav, onCloseNav }) {
-  const {userGetData}=useContext(UserData)
+  const {userGetData}=useContext(UserDataContext)
   const { pathname } = useLocation();
   const timeLive=new Date().toLocaleTimeString()
   const [liveTime,setLiveTime]=useState(timeLive)
