@@ -33,17 +33,9 @@ export default function TimerClock(props) {
   const [dayToday,setDayToday]=useState(liveDate)
   const [getdataaa,setGetdataaa]=useState()
   const dispatch=useDispatch()
-  const [dateData,setDateData]=useState()
+  const [dateData,setDateData]=useState([])
   const {users}=useSelector(state=>state?.data)
 
-  //   setStop(false)
-  // }
- const dateFormate=()=>{
-   
-  }
-  useEffect(() => {
-  }, [])
-  
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
     setLiveTime(time)
@@ -51,18 +43,30 @@ export default function TimerClock(props) {
     const  date =new Date().toLocaleDateString("es-DO");
     setDayToday(date)
   }
+  useEffect(()=>{
+
+    const  date =new Date().toLocaleDateString("es-DO");
+    const userFilter=users.filter((item)=>item.date===date)
+    setDateData(userFilter)
     
+    console.log("userFilter",userFilter)
+  },[users])
+ 
+  
   useEffect(() => {
+
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
     }, [])
+    
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
                {/* <h6>{dayToday}</h6> */}
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
+                  {/* <button onClick={()=>data()}>click</button> */}
                   <Dashboard/>
                 <div className="employee-table">
                   <Table>
@@ -73,8 +77,8 @@ export default function TimerClock(props) {
                    />
                    <TableBody >
                  {
-                    users&&users === undefined?"":
-                    users&&users?.map((user)=>{
+                    dateData&&dateData === undefined?"":
+                    dateData&&dateData?.map((user)=>{
                      return(
                     <TableRow  key={user?.id}>
                        <TableCell align="center">{user?.date}</TableCell>
