@@ -40,7 +40,7 @@ export const TaskProvider = props => {
         category: '',
         present:true,
         absent:false,
-        totalSeconds: 0
+        totalSeconds: 0,
     })
     const dispatch=useDispatch();
     const getRunningTask = () => tasks.find(t => t.state === 'running');

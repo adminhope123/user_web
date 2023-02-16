@@ -10,7 +10,11 @@ const  initialState={
 
 const usersReducers=(state=initialState,action)=>{
     switch(action.type){
-
+        case type.LOGIN_USER:
+            return{
+                ...state,
+                loading:false
+            };
         case type.TIME_IN_API_GET_DATA  :
             return{
                 ...state,

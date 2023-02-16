@@ -1,6 +1,11 @@
 import axios from 'axios'
 import * as type from './actionType'
 
+const loginFormPost=(users)=>({
+    type:type.LOGIN_USER,
+    payload:users
+})
+
 const getTimeData=(users)=>({
     type:type.TIME_IN_API_GET_DATA,
     payload:users
@@ -26,6 +31,18 @@ const attendanceGet=(users)=>({
     type:type.ATTENDANCE_GET_API,
     payload:users
 })
+
+export const loginFormPostApi=(user)=>{
+    const url="http://localhost:3004/login";
+    return function (dispatch){
+            axios.post(url,user)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(loginFormPost(resp.data))
+        })
+        .catch((error)=>console.log("error",error))
+    }
+}
 
 export const timeStartApi=(user)=>{
     const url="http://localhost:3004/timeAdd";
@@ -82,6 +99,7 @@ export const attendanceGetApi=()=>{
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(attendanceGet(resp.data))
+            dispatch(getTimeDataApi())
         })
         .catch((error)=>console.log("error",error));
     };

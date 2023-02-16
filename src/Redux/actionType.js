@@ -1,3 +1,4 @@
+export const LOGIN_USER="LOGIN_USER";
 export const TIME_IN_API_GET_DATA="TIME_IN_API_GET_DATA";
 export const TIME_OUT_API_PUT="TIME_OUT_API_PUT";
 export const TIME_ADD_API="TIME_ADD_API";

@@ -5,11 +5,14 @@ import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormContr
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import {loginFormPostApi} from '../../../Redux/actions'
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch=useDispatch()
   const [employeeGetData,setEmployeeGetData]=useState()
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -36,15 +39,17 @@ export default function LoginForm() {
     console.log("loginDataForm",loginDataForm)
       const checkData=employeeGetData?.filter((item)=>item.email===loginDataForm.email&&item.password===loginDataForm.password)
       console.log("checkData",checkData)
-      if(checkData.length){
+      if(checkData?.length){
         navigate('/dashboard/app', { replace: true })
         location.reload();
         const loginData = Math.random() * 1000000;
         console.log("loginData",loginData)
         sessionStorage.setItem("login",JSON.stringify(loginData))
+        sessionStorage.setItem("userData",JSON.stringify(checkData))
+        const  date =new Date().toLocaleDateString("es-DO");
+        console.log("Date",date)
       }
   }
-
   const validate = (values) => {
     const error = {};
     const emailRegex = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$';
@@ -97,14 +102,14 @@ export default function LoginForm() {
          <p className='login-error-text'>{errorForm.password}</p>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Checkbox name="remember" label="Remember me" />
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" >
+      <LoadingButton fullWidth sx={{marginTop:"20px"}} size="large" type="submit" variant="contained" >
         Login
       </LoadingButton>
       </form>

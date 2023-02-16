@@ -12,11 +12,13 @@ export const UserDataProvider = (props) => {
 
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
-    setUserGetData(getData);
-    console.log("getData", getData);
+    if(getData){
+      const getUserData = Object.assign({}, ...getData);
+      setUserGetData(getUserData);
+    }
   };
   useEffect(() => {
-    dispatch(getTimeDataApi());
+    // dispatch(getTimeDataApi());
   }, []);
 
   const findDateFunction = () => {
@@ -43,13 +45,13 @@ export const UserDataProvider = (props) => {
       const attendanceObject = Object.assign({}, ...addObjectTime);
       console.log(attendanceObject, "aaa");
   
-      if (attendanceObject === null && attendanceObject === undefined) {
-        console.log("lodaing data");
-      } else {
-        attendanceObject?.date === liveDate
-          ? dispatch(attendancePostApi(attendanceObject))
-          : "";
-      }
+      // if (attendanceObject === null && attendanceObject === undefined) {
+      //   console.log("lodaing data");
+      // } else {
+      //   attendanceObject?.date === liveDate
+      //     ? dispatch(attendancePostApi(attendanceObject))
+      //     : "";
+      // }
 
     }
   };

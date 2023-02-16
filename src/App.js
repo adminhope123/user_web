@@ -21,7 +21,7 @@ useEffect(() => {
         setLoginSuccess(login)
         if(!login){
            navigate('/login')
-           localStorage.removeItem("login")
+           localStorage.removeItem("/login")
         }
     }, [])
     
