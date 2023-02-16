@@ -1,7 +1,6 @@
 import { Redo, Stop } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import React, { useState, useContext } from 'react';
-import { TaskContext } from "../store/TaskContext";
 import '../TimeTracking.css'
 
 function TaskItemControls(props) {
@@ -10,7 +9,7 @@ function TaskItemControls(props) {
         deleteTask, 
         duplicateTask, 
         startRunningTask, 
-        stopRunningTask } = useContext(TaskContext);
+        stopRunningTask } = useContext(UserDataContext);
     const [ menuAnchor, setMenu ] = useState(null);
     const handleMenu = e => setMenu(e.currentTarget);
     const handleClose  = () => setMenu(null);

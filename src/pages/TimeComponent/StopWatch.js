@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { TaskContext } from '../store/TaskContext';
 import { TaskHelper } from '../store/Settings';
 import '../TimeTracking.css'
 import { PlayArrow, Stop } from '@mui/icons-material';
@@ -8,13 +7,14 @@ import Moment from 'react-moment';
 import moment from 'moment';
 import Table from 'src/theme/overrides/Table';
 import { UserListHead } from 'src/sections/@dashboard/user';
+import { UserDataContext } from '../../UserDataContext';
 
 function StopWatch(props) {
     const { 
         startRunningTask, 
         stopRunningTask, 
         getRunningTask, 
-        getModelTask } = useContext(TaskContext);
+        getModelTask } = useContext(UserDataContext);
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
 

@@ -9,8 +9,8 @@ import LayersIcon from '@material-ui/icons/Layers';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import {  withStyles } from "@material-ui/core/styles";
-import { TaskContext } from '../store/TaskContext';
 import '../TimeTracking.css'
+import { UserDataContext } from 'src/UserDataContext';
 
 const styles = theme => ({
     icon: {
@@ -20,7 +20,7 @@ const styles = theme => ({
 
 function SideBar (props) {
     const { classes } = props;
-    const { tasks } = useContext(TaskContext);
+    const { tasks } = useContext(UserDataContext);
     const handleDownload = () => {
         const taskData = tasks.map(t => `${t.description}, ${t.hours}:${t.mins}:${t.secs}\n`);
         const data = new Blob(taskData, {type: 'text/csv'});

@@ -6,11 +6,12 @@ import { Link, Container, Typography, Divider, Stack, Button } from '@mui/materi
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
+import Logo from './logo1.png';
+import './style.css'
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
-
+import LogoIcon  from './HopeIcon.png'
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
@@ -52,16 +53,12 @@ export default function LoginPage() {
       </Helmet>
 
       <StyledRoot>
-        <Logo
-          sx={{
-            position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        />
-
+    
         {mdUp && (
           <StyledSection>
+    <div className='login-logo'>
+         <img src={Logo} />
+          </div>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
@@ -71,6 +68,9 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
+            <div className='logo-icon-login-form'>
+          <img src={LogoIcon}/>
+            </div>
             <Typography variant="h4" gutterBottom>
               Sign in to Hope Web
             </Typography>

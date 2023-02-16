@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import moment from 'moment';
-import { TaskContext } from '../store/TaskContext';
 import _ from 'lodash';
 import { TextField } from '@mui/material';
 import '../TimeTracking.css'
+import { UserDataContext } from 'src/UserDataContext';
 
 
 function TaskItem(props) {
     const { task, classes } = props;
-    const { editTask } = useContext(TaskContext);
+    const { editTask } = useContext(UserDataContext);
     const startTime = task.start ? moment(task.start).format('HH:mm') : '00:00';
     const stopTime = task.stop ? moment(task.stop).format('HH:mm') : '00:00';
     const debouncedEdit = _.debounce((key, value) => editTask({ ...task, [key]: value }), 1000)

@@ -9,7 +9,7 @@ import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
-import Logo from '../../../components/logo';
+import LogoImg from './HopeLogo.png'
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
@@ -66,7 +66,7 @@ export default function Nav({ openNav, onCloseNav }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'flex',justifyContent:"space-between",alignItems:"center" }}>
-        <Logo />
+        <img src={LogoImg} width="104px"/>
         <Typography variant="subtitle2" sx={{ color: 'text.primary',fontSize:"18px  " }}>
                 {timeLive}
               </Typography>

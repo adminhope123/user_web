@@ -33,6 +33,21 @@
     margin-top: 0px;
 
 }
+.login-logo{
+    width: 218px;
+    height: auto;
+    position: absolute;
+    top: 16%;
+    left: 75px;
+}
+.logo-icon-login-form{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 87px;
+}
+.logo-icon-login-form img{
+    width: 112px;
+}
 .timer-clock form{
     display: flex;
     flex-direction: column;

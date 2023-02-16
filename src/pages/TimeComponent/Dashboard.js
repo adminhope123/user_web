@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import NewTaskArea from "./NewTaskArea";
 import Agenda from "./Agenda";
-import { TaskProvider } from "../store/TaskContext";
 import { Grid } from "@mui/material";
 import '../TimeTracking.css'
 
@@ -58,13 +57,11 @@ function Dashboard(props) {
   };
 
   return (
-    <TaskProvider>
       <div className="root">
         <Grid container className="content">
           <NewTaskArea />
         </Grid>
       </div>
-    </TaskProvider>
   );
 }
 
