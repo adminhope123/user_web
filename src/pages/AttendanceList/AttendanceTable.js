@@ -1,31 +1,84 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { TableBody,Table,TableRow, TableCell } from '@mui/material';
-import { UserListHead } from 'src/sections/@dashboard/user';
-import { attendancePostApi, getTimeDataApi} from 'src/Redux/actions';
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
-import { UserDataContext } from 'src/UserDataContext';
-
+import React, { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { TableBody, Table, TableRow, TableCell } from "@mui/material";
+import { UserListHead } from "src/sections/@dashboard/user";
+import { attendancePostApi, getTimeDataApi } from "src/Redux/actions";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
+import { UserDataContext } from "src/UserDataContext";
 
 const TABLE_HEAD = [
-    { id: 'day', label: 'Day', alignRight: false },
-    { id: 'date', label: 'Date', alignRight: false },
-    { id: 'present', label: 'Present', alignRight: false },
-    { id: 'totalWork', label: 'Total Work', alignRight: false },
-  ];
+  { id: "day", label: "Day", alignRight: false },
+  { id: "date", label: "Date", alignRight: false },
+  { id: "present", label: "Present", alignRight: false },
+  { id: "totalWork", label: "Total Work", alignRight: false },
+];
 export default function AttendanceTable() {
-    const dispatch=useDispatch()
-    const {users}=useSelector(res=>res.data)
-    const [totalWorkTime, setTotalWorkTime] = useState();
-    const [attendanceData, setAttendanceData] = useState();
-    const [attendanceGetData,setAttendanceGetData]=useState()
+  const dispatch = useDispatch();
+  const { users } = useSelector((res) => res.data);
+  const [totalWorkTime, setTotalWorkTime] = useState();
+  const [attendanceData, setAttendanceData] = useState();
+  const [attendanceGetData, setAttendanceGetData] = useState();
+
+  useEffect(() => {
+    dispatch(getTimeDataApi());
+    attendanceGetDataFunction();
+  }, []);
+
+  const attendanceGetDataFunction = () => {
+    fetch("http://localhost:3004/attendance")
+      .then((response) => response.json())
+      .then((res) => setAttendanceGetData(res));
+  };
+  // const findDateFunction = () => {
+  //   console.log("users", users);
+  //   const filterData = users?.filter(
+  //     (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
+  //   );
+  //     const lookup = users.reduce((a, e) => {
+  //       a.set(e.date, (a.get(e.date) ?? 0) + 1);
+  //       return a;
+  //     }, new Map());
+  //     const totaHours= users.filter(e => lookup.get(e.date) > 1)
+  //     const finDate= filterData.filter(e => lookup.get(e.date) > 1)
+  //     const filterDate=finDate.filter((v,i,a)=>a.findIndex(v2=>(v2.date===v.date))===i)
+  //     console.log("filterData",filterData)
+  //     const dateObjectRemove = Object.assign({}, ...filterDate);
+  //     console.log("dateObjectRemove",dateObjectRemove)
+  //    const totalWork = { "totalWork": totalWorkTime };
+  //    const addObject={...dateObjectRemove,...totalWork}
+  //    console.log("addObject",addObject)
+  //   const totalSecondsData = totaHours?.reduce(
+  //     (acc, cur) => acc + cur.totalSeconds,
+  //     0
+  //   );
+  //   const prevDate=[...filterData,addObject]
+  //   const removeDublicateData= users?.filter(
+  //     (v, i, a) => a?.findIndex((v2) => v2.id === v.id) === i
+  //   );
+  //   console.log("removeDublicateData",removeDublicateData)
+  //   console.log("prevDate",prevDate)
+  //   getPaddedTime(totalSecondsData);
+  //   console.log("totalWork",totalWork)
+  //   console.log("filterData",filterData)
+  //   // const totaWorkAddObject=filterData?.map((item)=>)
+  // };
 
 
-    useEffect(() => {
-       dispatch(getTimeDataApi())
-       attendanceGetDataFunction()
-    }, [])
+  
+  const findDateFunction = () => {
+    const getData = users?.map((item) => item);
+    console.log("getDAta", getData);
+    const liveDate = new Date().toLocaleDateString("es-DO");
+    const duplicateDate = liveDate;
+    const dublicateValue = users.filter((obj) =>
+      duplicateDate.includes(obj.date)
+    );
+    const totalSecondsData = dublicateValue?.reduce(
+      (acc, cur) => acc + cur.totalSeconds,
+      0
+    );
+    getPaddedTime(totalSecondsData);
 
     const attendanceGetDataFunction=()=>{
       fetch('http://localhost:3004/attendance')
@@ -105,12 +158,11 @@ export default function AttendanceTable() {
                        }
                        <TableCell align="center">{user?.totalWorkTime}</TableCell>
                     </TableRow>
-                     )
-                    })
-                  }
-                  </TableBody>
-                  </Table>
-                </div>
+                  );
+                })}
+          </TableBody>
+        </Table>
+      </div>
     </div>
-  )
+  );
 }
