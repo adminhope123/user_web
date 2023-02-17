@@ -73,6 +73,7 @@ export default function TimerClock(props) {
     const totalObjectCreate={"totalWork":totalWorkTime}
     const arrayOfObjectRemove=Object.assign({},...filterData)
     const addObject={...arrayOfObjectRemove,...totalObjectCreate}
+    console.log("addObject",addObject)
     if(addObject){
       sessionStorage.setItem("totalWork",JSON.stringify(addObject))
     }
