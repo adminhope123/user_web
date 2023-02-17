@@ -50,6 +50,7 @@ function StopWatch(props) {
             </div>
            <div >
            { timer.state === 'non-started' ? (
+            <div>
                 <Fab 
                     size="large" 
                     onClick={startTimer} 
@@ -57,14 +58,24 @@ function StopWatch(props) {
                     className="fab">
                         <PlayArrow/>
                 </Fab>
+                </div>
             ) : (
-                <Fab 
-                    size="large" 
-                    onClick={stopTimer} 
-                    color="secondary" 
-                    className="fab">
-                        <Stop/>
-                </Fab>
+                <div>
+                    {
+                        timer.totalSeconds>1?<Fab 
+                        size="large" 
+                        onClick={stopTimer} 
+                        color="secondary" 
+                        className="fab">
+                            <Stop/>
+                    </Fab>:<Fab 
+                        size="large" 
+                        color="secondary" 
+                        className="fab-disable">
+                            <Stop/>
+                    </Fab>
+                    }
+                    </div>
             )}
            </div>
         </React.Fragment>

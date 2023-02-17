@@ -162,7 +162,8 @@ const startRunningTask = task => {
                     ...getPaddedTime(task),
                 })
             : addTask(task)
-            dispatch(timeStartApi(task))
+                task.totalSeconds<1?
+            dispatch(timeStartApi(task)):
             console.log("taskStart",task)
             findDateFunction()
         interval = setInterval(() => { intervalRef.current() },1000)

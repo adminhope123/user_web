@@ -100,6 +100,9 @@
     
     position: relative;
   }
+  .fab-disable{
+    background-color: #799cfc;
+  }
   span.blink-stopped {
     display: block;
     width: 15px;

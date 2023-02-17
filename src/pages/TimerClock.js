@@ -129,7 +129,7 @@ const updateAppTitle = (hours, mins, secs) => {
                     </div>
                   </div>
                 <div className="employee-table">
-                  <Table>
+                  <Table id="table-1">
                   <UserListHead
                      order={order}
                      headLabel={TABLE_HEAD}
@@ -143,7 +143,7 @@ const updateAppTitle = (hours, mins, secs) => {
                       
                     <TableRow  key={user?.id}>
                     
-                       <TableCell align="center">  <div className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
+                       <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
                           <TableCell align="center">{user?.day}</TableCell>
                        <TableCell align="center">{user.start?.slice(12, 19)}</TableCell>
                        {
@@ -155,6 +155,8 @@ const updateAppTitle = (hours, mins, secs) => {
                             user.state==='running'?
                             <div class="online-indicator">
                               <span class="blink"></span>
+                              <table id="header-fixed"></table>
+                              
                             </div>
                         :""
                           }
