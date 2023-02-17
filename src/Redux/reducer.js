@@ -3,8 +3,6 @@ import * as type from './actionType'
 const  initialState={
     users:[],
     user:{},
-    attendance:[],
-    attendances:{},
     loading:true
 }
 
