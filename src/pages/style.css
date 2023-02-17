@@ -1,61 +1,83 @@
-.employee-new-user form{
+.employee-new-user form {
     display: flex;
     flex-direction: column;
     align-items: center;
 
 }
-.employee-new-user form  input{
+
+.employee-new-user form input {
     padding: 13px;
     width: 218px;
 }
-.employee-new-user .add-employee{
+
+.employee-new-user .add-employee {
     width: 252px !important;
     background-color: #162b4c;
 }
-.login-error-text{
+
+.login-error-text {
     margin: 0px !important;
     font-size: 13px;
-    color: red  ;
-    margin-top:0 !important;
+    color: red;
+    margin-top: 0 !important;
 }
-.employee-table .MuiTableCell-root div{
-  justify-content: center;
+
+.employee-table .MuiTableCell-root div {
+    justify-content: center;
 }
-.MuiTableHead-root th{
+
+.MuiTableHead-root th {
     text-align: center;
 }
-.timer-clock{
 
-}
-.timer-clock h6{
+.timer-clock {}
+
+.timer-clock h6 {
     font-size: 20px;
     margin-bottom: 15px;
     margin-top: 0px;
 
 }
-.login-logo{
+
+.login-logo {
     width: 218px;
     height: auto;
     position: absolute;
     top: 16%;
     left: 75px;
 }
-.logo-icon-login-form{
+
+.logo-icon-login-form {
     display: flex;
     justify-content: center;
     margin-bottom: 87px;
 }
-.logo-icon-login-form img{
+
+.logo-icon-login-form img {
     width: 112px;
 }
-.timer-clock form{
+
+.timer-clock form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .timer-clock form .MuiInputBase-root {
     margin-bottom: 10px
 }
-.timer-clock .time-out:hover{
-  background-color: #cd4545 ;
+
+.timer-clock .time-out:hover {
+    background-color: #cd4545;
+}
+
+.employee-table .MuiTableHead-root thead {
+    position: sticky;
+}
+.employee-table {
+    height: 512px;
+    overflow: scroll;
+    overflow-x: hidden;
+    position: relative;
+
 }

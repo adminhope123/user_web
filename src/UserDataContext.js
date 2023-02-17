@@ -16,7 +16,10 @@ export const UserDataProvider = (props) => {
   const [userGetData, setUserGetData] = useState();
   const intervalRef = useRef();
   const [ tasks, setTasks ] = useState(storedTasks);
-
+  const [totalWorkTime, setTotalWorkTime] = useState();
+  const [attendanceData, setAttendanceData] = useState();
+  const [attendanceGetData,setAttendanceGetData]=useState()
+  
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -100,6 +103,7 @@ const getPaddedTime = totalSeconds => {
     const minutes = Math.floor(remainingSecs / 60);
     const seconds = remainingSecs - minutes * 60;
     updateAppTitle(hours, minutes, seconds);
+    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
     return { 
         hours: addPadding(hours),
         mins: addPadding(minutes),
@@ -120,7 +124,32 @@ useEffect(() => {
     intervalRef.current = intervalCallback;
 },[intervalRef.current])
 
+const findDateFunction = () => {
+    const getData = users?.map((item) => item);
+    console.log("getDAta", getData);
+    const liveDate = new Date().toLocaleDateString("es-DO");
+    const duplicateDate = liveDate;
+    const dublicateValue = users.filter((obj) =>
+      duplicateDate.includes(obj.date)
+    );
+    const totalSecondsData = dublicateValue?.reduce(
+      (acc, cur) => acc + cur.totalSeconds,
+      0
+    );
+    getPaddedTime(totalSecondsData);
 
+    const filterData = dublicateValue?.filter(
+      (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
+    );
+    const attendanceObject = Object.assign({}, ...filterData);
+    const totalWorkObject = { totalWorkTime: totalWorkTime };
+    const totalWorkDataAdd = { ...attendanceObject, ...totalWorkObject };
+    console.log("totalWorkDataAdd",totalWorkDataAdd);
+    if(totalWorkDataAdd){
+      localStorage.setItem("timeTotal",JSON.stringify(totalWorkDataAdd))
+    }
+
+  };
 const startRunningTask = task => {
     const running = getRunningTask();
     if (!running) {
@@ -135,6 +164,7 @@ const startRunningTask = task => {
             : addTask(task)
             dispatch(timeStartApi(task))
             console.log("taskStart",task)
+            findDateFunction()
         interval = setInterval(() => { intervalRef.current() },1000)
     }
 }
@@ -154,6 +184,7 @@ const stopRunningTask = () => {
    const data=storedTasks?.slice(-1).pop()
     const runningTaskId=data?.id
     dispatch(timeStopApi(data,runningTaskId))
+    findDateFunction()
     console.log("stoptask",runningTaskId)
 }
   useEffect(() => {

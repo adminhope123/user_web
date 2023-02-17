@@ -1,6 +1,8 @@
 // component
 import SvgColor from '../../../components/svg-color';
-
+import TimerIcon from '@mui/icons-material/Timer';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import EventIcon from '@mui/icons-material/Event';
 // ----------------------------------------------------------------------
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
@@ -14,17 +16,17 @@ const navConfig = [
   {
     title: 'Timer Clock',
     path: '/dashboard/timerClock',
-    icon: icon('ic_user'),
+    icon: <TimerIcon/>,
   },
   {
     title: 'Attendance List',
     path: '/dashboard/attendance-list',
-    icon: icon('ic_user'),
+    icon:<EventAvailableIcon/> ,
   },
   {
     title: 'Event',
     path: '/dashboard/event',
-    icon: icon('ic_user'),
+    icon: <EventIcon/>,
   },
   {
     title: 'product',

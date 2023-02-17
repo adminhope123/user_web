@@ -104,7 +104,7 @@ export default function TimerClock(props) {
                           :""
                           }
                         </TableCell>
-                         <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.totalSeconds}</TableCell>
+                         <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.secs}</TableCell>
                     </TableRow>
                      )
                     })
