@@ -28,14 +28,14 @@ export default function AttendanceTable() {
   const { users } = useSelector((res) => res.data);
   const [data, setData] = useState();
   const [attendanceGetData, setAttendanceGetData] = useState(users);
-
+const [getData,setGetData]=useState()
   const attendancePostData = () => {
     const dataGet = JSON.parse(sessionStorage.getItem("totalWork"));
-    let uuid = crypto.randomUUID();
-    const idRemove = { ...dataGet, id: uuid };
+    setGetData(dataGet)
+    const idRemove = { ...dataGet};
     console.log("idRemove", idRemove);
+    console.log("data",data)
     const livedate = new Date().toLocaleDateString("es-DO");
-    console.log(livedate, "jjj");
     if (idRemove) {
       setData(idRemove);
     }
@@ -46,9 +46,11 @@ export default function AttendanceTable() {
       // dispatch(attendanceApiPut(data))
       console.log("data",data?.date)
       if(data?.date){
-        const dataDate=data?.id
-        const usersMap=users?.map(item=>item?.id===dataDate)
-        console.log("usersMap",usersMap)
+        const attendanceId=getData?.id
+        if(attendanceId){
+          dispatch(attendanceApiPut(data,attendanceId))
+        }
+        
       }
       users?.length
         ? console.log("data added")

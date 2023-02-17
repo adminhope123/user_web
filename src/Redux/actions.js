@@ -109,8 +109,8 @@ export const attendanceGetApi=()=>{
         .catch((error)=>console.log("error",error));
     };
 }
-export const attendanceApiPut=(user,timeStopId)=>{
-    const url=`http://localhost:3004/timeAdd/${timeStopId}`;
+export const attendanceApiPut=(user,attendanceId)=>{
+    const url=`http://localhost:3004/attendance/${attendanceId}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{

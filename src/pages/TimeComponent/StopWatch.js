@@ -62,13 +62,16 @@ function StopWatch(props) {
             ) : (
                 <div>
                     {
-                        timer.totalSeconds>1?<Fab 
+                        timer?.totalSeconds>1?
+                        <Fab 
                         size="large" 
                         onClick={stopTimer} 
                         color="secondary" 
                         className="fab">
                             <Stop/>
-                    </Fab>:<Fab 
+                    </Fab>
+                    :
+                    <Fab 
                         size="large" 
                         color="secondary" 
                         className="fab-disable">
