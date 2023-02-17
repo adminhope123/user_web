@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import CheckIcon from '@mui/icons-material/Check';
 import { Container } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
-import Pagination from './Pagination'
 import { UserListHead } from 'src/sections/@dashboard/user';
 import { TableBody,Table,TableRow, TableCell } from '@mui/material';
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded';
@@ -24,27 +23,10 @@ export default function AttendanceList() {
   const dispatch=useDispatch()
   const {users}=useSelector(res=>res.data)
   const {findDateFunction}=useContext(UserDataContext)
-  const [cardsPerPage] = useState(10);
-    const [currentPage, setCurrentPage] = useState(1);
-    let [movieCard, setmovieCard] = useState([]);
-   
-    useEffect(() => {
-      setmovieCard(users)
-    }, [currentPage])
-    
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const handleChange = (event, value) => {
-    setCurrentPage(value);
-  };
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = movieCard.slice(indexOfFirstCard, indexOfLastCard);
 
   return (
     <div className='attendance-list'>
-        <AttendanceTable movieCard={movieCard}/>
-        <Pagination count={10} page={currentPage} onChange={handleChange} />
+        <AttendanceTable />
     </div>
   )
 }

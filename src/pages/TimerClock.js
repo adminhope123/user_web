@@ -34,6 +34,10 @@ export default function TimerClock(props) {
   const [getdataaa,setGetdataaa]=useState()
   const dispatch=useDispatch()
   const [dateData,setDateData]=useState([])
+  const [totalWorkTime,setTotalWorkTime]=useState()
+  const [totalHours,setTotalHours]=useState()
+  const [totalMinite,setTotalMinite]=useState()
+  const [totalSecound,setTotalSecound]=useState()
   const {users}=useSelector(state=>state?.data)
 
   const UpdateTime=()=>{
@@ -43,21 +47,68 @@ export default function TimerClock(props) {
     const  date =new Date().toLocaleDateString("es-DO");
     setDayToday(date)
   }
+  
   useEffect(()=>{
-
+    hoursTotalFunction()
+  },[users])
+  
+  const hoursTotalFunction=()=>{
     const  date =new Date().toLocaleDateString("es-DO");
     const userFilter=users.filter((item)=>item.date===date)
     setDateData(userFilter)
-    
-    console.log("userFilter",userFilter)
-  },[users])
+    console.log("users",users)
+    const totalSecondsData = users?.reduce(
+      (acc, cur) => acc + cur.totalSeconds,
+      0
+    );
  
-  
-  useEffect(() => {
+  getPaddedTime(totalSecondsData)
+    console.log("totalSecondsData",totalSecondsData)
+    console.log("userFilter",userFilter)
+    console.log("totalWorkTime",totalWorkTime)
+    console.log("users",users)
+    const filterData=users?.filter(
+      (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
+    );
+    const totalObjectCreate={"totalWork":totalWorkTime}
+    const arrayOfObjectRemove=Object.assign({},...filterData)
+    const addObject={...arrayOfObjectRemove,...totalObjectCreate}
+    if(addObject){
+      sessionStorage.setItem("totalWork",JSON.stringify(addObject))
+    }
+    console.log("addObject",addObject)
+    console.log("arrayOfObjectRemove",arrayOfObjectRemove)
+    console.log("filterData",filterData)
+    console.log("totalWorkTime",totalWorkTime)
+  }
+  const getPaddedTime = totalSeconds => {
+    const addPadding = value => value.toString().length === 1 ? `0${value}` : value;
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSecs = totalSeconds - hours * 3600;
+    const minutes = Math.floor(remainingSecs / 60);
+    const seconds = remainingSecs - minutes * 60;
+    updateAppTitle(hours, minutes, seconds);
+    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
+    setTotalHours(hours)
+    setTotalMinite(minutes)
+    setTotalSecound(seconds)
+    return { 
+        hours: addPadding(hours),
+        mins: addPadding(minutes),
+        secs: addPadding(seconds),
+    }
+} 
+const updateAppTitle = (hours, mins, secs) => {
+  document.title = hours > 0
+                      ? `${hours} hour`
+                      : mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
+}
 
+  useEffect(() => {
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
+    hoursTotalFunction()
     }, [])
     
   return (
@@ -67,7 +118,16 @@ export default function TimerClock(props) {
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
                   {/* <button onClick={()=>data()}>click</button> */}
+                  <div className='clock-time'>
+
                   <Dashboard/>
+                   <div className='clock'>
+                    <span className='clock-text'>Today Work Time</span>
+                  <span>{totalHours}</span>:
+                  <span>{totalMinite}</span>:
+                  <span>{totalSecound}</span> 
+                    </div>
+                  </div>
                 <div className="employee-table">
                   <Table>
                   <UserListHead
@@ -80,8 +140,10 @@ export default function TimerClock(props) {
                     dateData&&dateData === undefined?"":
                     dateData&&dateData?.map((user)=>{
                      return(
+                      
                     <TableRow  key={user?.id}>
-                       <TableCell align="center">{user?.date}</TableCell>
+                    
+                       <TableCell align="center">  <div className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
                           <TableCell align="center">{user?.day}</TableCell>
                        <TableCell align="center">{user.start?.slice(12, 19)}</TableCell>
                        {

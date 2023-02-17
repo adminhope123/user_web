@@ -5,7 +5,6 @@ import { UserListHead } from 'src/sections/@dashboard/user';
 import { attendanceGetApi, attendancePostApi, getTimeDataApi} from 'src/Redux/actions';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import { UserDataContext } from 'src/UserDataContext';
 
 
 const TABLE_HEAD = [
@@ -14,37 +13,44 @@ const TABLE_HEAD = [
     { id: 'present', label: 'Present', alignRight: false },
     { id: 'totalWork', label: 'Total Work', alignRight: false },
   ];
-export default function AttendanceTable({movieCard}) {
+export default function AttendanceTable() {
     const dispatch=useDispatch()
     const {users}=useSelector(res=>res.data)
- 
+    const [data,setData]=useState()
+    const [attendanceGetData,setAttendanceGetData]=useState(users)
+
   const attendancePostData=()=>{
-    const dataGet=JSON.parse(localStorage.getItem("timeTotal"))
-    console.log("dataGet",dataGet)
-    dispatch(attendancePostApi(dataGet))
+    const dataGet=JSON.parse(sessionStorage.getItem("totalWork"))
+    let uuid = crypto.randomUUID();
+    const idRemove={...dataGet,id:uuid}
+    console.log("idRemove",idRemove)
+    if(idRemove){
+      setData(idRemove)
+    }
+    if(data){
+      dispatch(attendancePostApi(data))
+    }
+    console.log("users",users)
   }
 
     useEffect(() => {
-      attendancePostData()
       dispatch(attendanceGetApi())
-      console.log("users",users)
     }, [])
 
-   
-  
   return (
     <div>
         <div className="attendance-table">
+          <button onClick={()=>attendancePostData()}>Click</button>
                   <Table>
                   <UserListHead
                      headLabel={TABLE_HEAD}
                    />
                    <TableBody >
                  {
-                    movieCard&&movieCard === undefined?"":
-                    movieCard&&movieCard?.map((user)=>{
+                    attendanceGetData&&attendanceGetData === undefined?"":
+                    attendanceGetData&&attendanceGetData?.map((user)=>{
                      return(
-                    <TableRow  key={user?.id}>
+                    <TableRow  key={user?.id} >
                        <TableCell align="center">{user?.date}</TableCell>
                        <TableCell align="center">{user?.day}</TableCell>
                        {

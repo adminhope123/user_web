@@ -88,6 +88,7 @@ export const attendancePostApi=(user)=>{
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(attendancePost(resp.data))
+            dispatch(attendanceGetApi())
         })
         .catch((error)=>console.log("error",error))
     }
@@ -99,7 +100,6 @@ export const attendanceGetApi=()=>{
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(attendanceGet(resp.data))
-            dispatch(getTimeDataApi())
         })
         .catch((error)=>console.log("error",error));
     };

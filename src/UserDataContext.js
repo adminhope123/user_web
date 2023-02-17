@@ -1,11 +1,11 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { attendancePostApi, getTimeDataApi, timeStartApi, timeStopApi } from "./Redux/actions";
+import { attendancePostApi, timeStartApi, timeStopApi } from "./Redux/actions";
 import {v4} from 'uuid';
 import { APP_TITLE, COLORS } from './pages/store/Settings';
 import moment from 'moment';
 
-const storedString = localStorage.getItem('tasks')
+const storedString = sessionStorage.getItem('tasks')
 const storedTasks = storedString ? JSON.parse(storedString) : [];
 let interval;
 
@@ -58,7 +58,7 @@ const getTask = id => tasks.find(t => t.id === id);
 const addTask = task => {
     setTasks(prevTasks => {
         const ntask = task ? {...task } : getModelTask();
-        localStorage.setItem('tasks', JSON.stringify([...prevTasks, ntask]))
+        sessionStorage.setItem('tasks', JSON.stringify([...prevTasks, ntask]))
         return [...prevTasks, ntask]
     })
 } 
@@ -67,7 +67,7 @@ const editTask = task => {
 
         const index = prevTasks.findIndex(t => t.id === task.id);
         prevTasks[index] = task;
-        localStorage.setItem('tasks', JSON.stringify(prevTasks))
+        sessionStorage.setItem('tasks', JSON.stringify(prevTasks))
          const data=prevTasks.slice(-1).pop()
         return [...prevTasks];
     })
@@ -84,7 +84,7 @@ const duplicateTask = id => {
 const deleteTask = task => {
     let ntasks = tasks.filter(t => t.id !== task.id)
     setTasks(ntasks);
-    localStorage.setItem('tasks', JSON.stringify(ntasks))
+    sessionStorage.setItem('tasks', JSON.stringify(ntasks))
     if(task.state === 'running') {
         clearInterval(interval)
     } 
@@ -146,7 +146,7 @@ const findDateFunction = () => {
     const totalWorkDataAdd = { ...attendanceObject, ...totalWorkObject };
     console.log("totalWorkDataAdd",totalWorkDataAdd);
     if(totalWorkDataAdd){
-      localStorage.setItem("timeTotal",JSON.stringify(totalWorkDataAdd))
+      sessionStorage.setItem("timeTotal",JSON.stringify(totalWorkDataAdd))
     }
 
   };
@@ -179,7 +179,7 @@ const stopRunningTask = () => {
     })
     document.title = APP_TITLE;
     clearInterval(interval)
-    const storedString = localStorage.getItem('tasks')
+    const storedString = sessionStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
     const runningTaskId=data?.id
