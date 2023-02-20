@@ -12,7 +12,7 @@ import {
   attendanceGetApi,
   attendancePostApi,
   getTimeDataApi,
-  attendanceApiPut
+  attendanceApiPut,
 } from "src/Redux/actions";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -28,29 +28,49 @@ export default function AttendanceTable() {
   const { users } = useSelector((res) => res.data);
   const [data, setData] = useState();
   const [attendanceGetData, setAttendanceGetData] = useState(users);
-const [getData,setGetData]=useState()
+  const [getData, setGetData] = useState();
   const attendancePostData = () => {
     const dataGet = JSON.parse(sessionStorage.getItem("totalWork"));
-    setGetData(dataGet)
-    const idRemove = { ...dataGet};
+    setGetData(dataGet);
+    const idRemove = { ...dataGet };
     console.log("idRemove", idRemove);
-    console.log("data",data)
+    console.log("data", data);
     const livedate = new Date().toLocaleDateString("es-DO");
+    const dateFilter = users?.slice(-2)[0]?.date;
+    console.log("dateFilter", dateFilter);
+    console.log("livedate", livedate);
+
+    var date = dateFilter;
+    var datearray = date.split("/");
+    var newdate1 = datearray[1] + "/" + datearray[0] + "/" + datearray[2];
+
+    var date2 = livedate;
+    var datearray2 = date2.split("/");
+    var newdate2 = datearray2[1] + "/" + datearray2[0] + "/" + datearray2[2];
+
+    var date1 = new Date(newdate1.toString());
+    var date2 = new Date(newdate2.toString());
+
+    var Difference_In_Time = date2.getTime() - date1.getTime();
+
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+    console.log(Difference_In_Days, "diffrent of the days");
+
     if (dataGet) {
       setData(dataGet);
     }
     if (data) {
-      console.log("date",data)
-    
-          // const attendancePutApiData=
+      console.log("date", data);
+
+      // const attendancePutApiData=
       // dispatch(attendanceApiPut(data))
-      console.log("data",data?.date)
-      if(data?.date){
-        const attendanceId=getData?.id
-        if(attendanceId){
-          dispatch(attendanceApiPut(data,attendanceId))
+      console.log("data", data?.date);
+      if (data?.date) {
+        const attendanceId = getData?.id;
+        if (attendanceId) {
+          dispatch(attendanceApiPut(data, attendanceId));
         }
-        
       }
       users?.length
         ? console.log("data added")
@@ -58,8 +78,8 @@ const [getData,setGetData]=useState()
       {
         users?.map((item) => {
           if (item.date === livedate) {
-            console.log("data allredy")
-          }else{
+            console.log("data allredy");
+          } else {
             dispatch(attendancePostApi(data));
           }
         });
@@ -71,6 +91,9 @@ const [getData,setGetData]=useState()
   useEffect(() => {
     dispatch(attendanceGetApi());
   }, []);
+  useEffect(() => {
+    users.reverse();
+  }, [users]);
 
   return (
     <div>
@@ -108,9 +131,7 @@ const [getData,setGetData]=useState()
                           )}
                         </TableCell>
                       )}
-                      <TableCell align="center">
-                        {user?.totalWork}
-                      </TableCell>
+                      <TableCell align="center">{user?.totalWork}</TableCell>
                     </TableRow>
                   );
                 })}

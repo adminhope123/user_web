@@ -116,17 +116,18 @@ const updateAppTitle = (hours, mins, secs) => {
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
     hoursTotalFunction()
-    dateData.reverse();
   }, [])
   useEffect(() => {
-   
     dateData.reverse();
+   
   }, [dateData])
   function myfunc(){
     // dispatch(timetotal(totalSecound))
     // console.log("total",total)
     // dateData.reverse();
     // console.log(dateData,"revers")
+    dateData.reverse();
+    console.log(dateData,"aaaaa")
 
   }
   return (
@@ -162,10 +163,10 @@ const updateAppTitle = (hours, mins, secs) => {
                     
                        <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
                           <TableCell align="center">{user?.day}</TableCell>
-                       <TableCell align="center">{user.start?.slice(12, 19)}</TableCell>
+                       <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
                        {
                          user.stop?
-                         <TableCell align="center">{user.stop.slice(12,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
+                         <TableCell align="center">{user.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
                         }
                         <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
                           {
