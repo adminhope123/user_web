@@ -16,10 +16,10 @@ export const UserDataProvider = (props) => {
   const [userGetData, setUserGetData] = useState();
   const intervalRef = useRef();
   const [ tasks, setTasks ] = useState(storedTasks);
-  const [totalWorkTime, setTotalWorkTime] = useState();
+  const [totalWorkTimeData, setTotalWorkTimeData] = useState();
   const [attendanceData, setAttendanceData] = useState();
   const [attendanceGetData,setAttendanceGetData]=useState()
-  
+  const [totalTimeData,setTotalTimeData]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -52,6 +52,13 @@ const getModelTask = () => ({
     absent:false,
     totalSeconds: 0,
 })
+
+
+useEffect(() => {
+  const dataGet = JSON.parse(sessionStorage.getItem('timeTotal'))
+  setTotalTimeData(dataGet)
+}, [])
+
 
 const getRunningTask = () => tasks.find(t => t.state === 'running');
 const getTask = id => tasks.find(t => t.id === id);
@@ -103,7 +110,7 @@ const getPaddedTime = totalSeconds => {
     const minutes = Math.floor(remainingSecs / 60);
     const seconds = remainingSecs - minutes * 60;
     updateAppTitle(hours, minutes, seconds);
-    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
+    setTotalWorkTimeData(hours + ":" + minutes + ":" + seconds);
     return { 
         hours: addPadding(hours),
         mins: addPadding(minutes),
@@ -142,7 +149,8 @@ const findDateFunction = () => {
       (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
     );
     const attendanceObject = Object.assign({}, ...filterData);
-    const totalWorkObject = { totalWorkTime: totalWorkTime };
+    const totalWorkObject = { totalWorkTimeData: totalWorkTimeData };
+    console.log("totalWorkObject",totalWorkObject)
     const totalWorkDataAdd = { ...attendanceObject, ...totalWorkObject };
     console.log("totalWorkDataAdd",totalWorkDataAdd);
     if(totalWorkDataAdd){
@@ -162,10 +170,8 @@ const startRunningTask = task => {
                     ...getPaddedTime(task),
                 })
             : addTask(task)
-                task.totalSeconds<1?
-            dispatch(timeStartApi(task)):
+            dispatch(timeStartApi(task))
             console.log("taskStart",task)
-            findDateFunction()
         interval = setInterval(() => { intervalRef.current() },1000)
     }
 }
@@ -203,6 +209,8 @@ const stopRunningTask = () => {
     startRunningTask,
     stopRunningTask,
     deleteTask,
+    totalWorkTimeData,
+    totalTimeData
   };
 
   return (

@@ -36,8 +36,8 @@ const [getData,setGetData]=useState()
     console.log("idRemove", idRemove);
     console.log("data",data)
     const livedate = new Date().toLocaleDateString("es-DO");
-    if (idRemove) {
-      setData(idRemove);
+    if (dataGet) {
+      setData(dataGet);
     }
     if (data) {
       console.log("date",data)

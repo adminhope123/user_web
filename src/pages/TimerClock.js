@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { FormControl, TextField,Button, Box, TableBody, Table,TableRow, TableCell, Checkbox, TableContainer } from '@mui/material'
 import { object } from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import './style.css'
 import {getTimeDataApi, timeInApipost, timeOutApiPut} from '../Redux/actions'
@@ -10,6 +10,8 @@ import axios from 'axios';
 import USERLIST from '../_mock/user';
 import { UserListHead } from 'src/sections/@dashboard/user';
 import Dashboard from './TimeComponent/Dashboard';
+import { UserDataContext } from 'src/UserDataContext';
+import { setHours } from 'date-fns';
 
 const TABLE_HEAD = [
   { id: 'date', label: 'Date', alignRight: false },
@@ -39,7 +41,8 @@ export default function TimerClock(props) {
   const [totalMinite,setTotalMinite]=useState()
   const [totalSecound,setTotalSecound]=useState()
   const {users}=useSelector(state=>state?.data)
-
+  const {totalWorkTimeData}=useContext(UserDataContext)
+  
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
     setLiveTime(time)
@@ -70,16 +73,15 @@ export default function TimerClock(props) {
     const filterData=users?.filter(
       (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
     );
-    const totalObjectCreate={"totalWork":totalWorkTime}
+    const totalObjectCreate={"totalWork":totalWorkTimeData}
+    console.log("totalObjectCreate",totalObjectCreate)
+
     const arrayOfObjectRemove=Object.assign({},...filterData)
     const addObject={...arrayOfObjectRemove,...totalObjectCreate}
     console.log("addObject",addObject)
     if(addObject){
       sessionStorage.setItem("totalWork",JSON.stringify(addObject))
     }
-    console.log("addObject",addObject)
-    console.log("arrayOfObjectRemove",arrayOfObjectRemove)
-    console.log("filterData",filterData)
     console.log("totalWorkTime",totalWorkTime)
   }
   const getPaddedTime = totalSeconds => {
@@ -104,11 +106,20 @@ const updateAppTitle = (hours, mins, secs) => {
                       ? `${hours} hour`
                       : mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
 }
+ 
+const timeTotalDataSet=()=>{
+  const getData=JSON.parse(sessionStorage.getItem("totalWork"))
+    if(getData){
+      const getHours=getData?.totalWork
+      setTotalHours(getHours)
+    }
+}
 
   useEffect(() => {
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
+    timeTotalDataSet()
     hoursTotalFunction()
     }, [])
     
@@ -125,8 +136,8 @@ const updateAppTitle = (hours, mins, secs) => {
                    <div className='clock'>
                     <span className='clock-text'>Today Work Time</span>
                   <span>{totalHours}</span>:
-                  <span>{totalMinite}</span>:
-                  <span>{totalSecound}</span> 
+                  <span>{totalHours}</span>:
+                  <span>{totalHours?.slice(6, 19)}</span> 
                     </div>
                   </div>
                 <div className="employee-table">
