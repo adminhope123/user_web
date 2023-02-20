@@ -35,6 +35,10 @@ const attendanceGet=(users)=>({
 const attendancePut=(users)=>({
     type:type.ATTENDANCE_PUT_API,
 })
+export const timetotal=(users)=>({
+    type:type.TIME_TOTAL,
+    payload:users
+})
 
 export const loginFormPostApi=(user)=>{
     const url="http://localhost:3004/login";

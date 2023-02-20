@@ -4,7 +4,7 @@ import { object } from 'prop-types';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import './style.css'
-import {getTimeDataApi, timeInApipost, timeOutApiPut} from '../Redux/actions'
+import {getTimeDataApi, timeInApipost, timeOutApiPut,timetotal} from '../Redux/actions'
 import { useSelector } from "react-redux";
 import axios from 'axios';
 import USERLIST from '../_mock/user';
@@ -42,7 +42,8 @@ export default function TimerClock(props) {
   const [totalSecound,setTotalSecound]=useState()
   const {users}=useSelector(state=>state?.data)
   const {totalWorkTimeData}=useContext(UserDataContext)
-  
+  const {total}=useSelector(res=>res.data)
+
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
     setLiveTime(time)
@@ -53,6 +54,7 @@ export default function TimerClock(props) {
   
   useEffect(()=>{
     hoursTotalFunction()
+   
   },[users])
   
   const hoursTotalFunction=()=>{
@@ -114,11 +116,23 @@ const updateAppTitle = (hours, mins, secs) => {
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
     hoursTotalFunction()
-    }, [])
-    
+    dateData.reverse();
+  }, [])
+  useEffect(() => {
+   
+    dateData.reverse();
+  }, [dateData])
+  function myfunc(){
+    // dispatch(timetotal(totalSecound))
+    // console.log("total",total)
+    // dateData.reverse();
+    // console.log(dateData,"revers")
+
+  }
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
+      <button onClick={myfunc}>click</button>
                {/* <h6>{dayToday}</h6> */}
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
