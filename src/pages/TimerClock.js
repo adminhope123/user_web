@@ -74,8 +74,9 @@ export default function TimerClock(props) {
       (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
     );
     const totalObjectCreate={"totalWork":totalWorkTimeData}
-    console.log("totalObjectCreate",totalObjectCreate)
-
+    console.log("totalHours",totalObjectCreate)
+    const totalTimeData=totalObjectCreate?.totalWork
+    setTotalHours(totalTimeData)
     const arrayOfObjectRemove=Object.assign({},...filterData)
     const addObject={...arrayOfObjectRemove,...totalObjectCreate}
     console.log("addObject",addObject)
@@ -92,9 +93,9 @@ export default function TimerClock(props) {
     const seconds = remainingSecs - minutes * 60;
     updateAppTitle(hours, minutes, seconds);
     setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
-    setTotalHours(hours)
-    setTotalMinite(minutes)
-    setTotalSecound(seconds)
+    // setTotalHours(hours)
+    // setTotalMinite(minutes)
+    // setTotalSecound(seconds)
     return { 
         hours: addPadding(hours),
         mins: addPadding(minutes),
@@ -127,9 +128,7 @@ const updateAppTitle = (hours, mins, secs) => {
                   <Dashboard/>
                    <div className='clock'>
                     <span className='clock-text'>Today Work Time</span>
-                  <span>{totalHours}</span>:
-                  <span>{totalMinite}</span>:
-                  <span>{totalSecound}</span> 
+                  <span>{totalHours}</span>
                     </div>
                   </div>
                 <div className="employee-table">
