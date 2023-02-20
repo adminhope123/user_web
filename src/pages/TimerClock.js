@@ -107,19 +107,11 @@ const updateAppTitle = (hours, mins, secs) => {
                       : mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
 }
  
-const timeTotalDataSet=()=>{
-  const getData=JSON.parse(sessionStorage.getItem("totalWork"))
-    if(getData){
-      const getHours=getData?.totalWork
-      setTotalHours(getHours)
-    }
-}
 
   useEffect(() => {
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
-    timeTotalDataSet()
     hoursTotalFunction()
     }, [])
     
@@ -136,8 +128,8 @@ const timeTotalDataSet=()=>{
                    <div className='clock'>
                     <span className='clock-text'>Today Work Time</span>
                   <span>{totalHours}</span>:
-                  <span>{totalHours}</span>:
-                  <span>{totalHours?.slice(6, 19)}</span> 
+                  <span>{totalMinite}</span>:
+                  <span>{totalSecound}</span> 
                     </div>
                   </div>
                 <div className="employee-table">
