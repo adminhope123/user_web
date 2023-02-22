@@ -27,6 +27,8 @@ export default function AttendanceTable() {
   const dispatch = useDispatch();
   const { users } = useSelector((res) => res.data);
   const [data, setData] = useState();
+  const [between, setBetween] = useState([]);
+  const [updated,setUpdated]=useState()
   const [attendanceGetData, setAttendanceGetData] = useState(users);
   const [getData, setGetData] = useState();
   const attendancePostData = () => {
@@ -40,29 +42,65 @@ export default function AttendanceTable() {
     console.log("dateFilter", dateFilter);
     console.log("livedate", livedate);
 
-    var date = dateFilter;
-    var datearray = date.split("/");
-    var newdate1 = datearray[1] + "/" + datearray[0] + "/" + datearray[2];
+    // var date = dateFilter;
+    // var datearray = date.split("/");
+    // var newdate1 = datearray[1] + "/" + datearray[0] + "/" + datearray[2];
 
-    var date2 = livedate;
-    var datearray2 = date2.split("/");
-    var newdate2 = datearray2[1] + "/" + datearray2[0] + "/" + datearray2[2];
+    // var date2 = livedate;
+    // var datearray2 = date2.split("/");
+    // var newdate2 = datearray2[1] + "/" + datearray2[0] + "/" + datearray2[2];
 
-    var date1 = new Date(newdate1.toString());
-    var date2 = new Date(newdate2.toString());
+    // var date1 = new Date(newdate1.toString());
+    // var date2 = new Date(newdate2.toString());
 
-    var Difference_In_Time = date2.getTime() - date1.getTime();
+    // var Difference_In_Time = date2.getTime() - date1.getTime();
 
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-    console.log(Difference_In_Days, "diffrent of the days");
+    // console.log(Difference_In_Days, "diffrent of the days");
 
+    // between to dates start
+
+    var b = dateFilter.split(/\D/);
+    b = b.reverse().join("-");
+
+    var a = livedate.split(/\D/);
+    a = a.reverse().join("-");
+    function getDatesInRange(startDate, endDate) {
+      const date = new Date(startDate.getTime());
+
+      const dates = [];
+
+      while (date <= endDate) {
+        dates.push(new Date(date));
+        date.setDate(date.getDate() + 1);
+      }
+
+      for (var i = 1; i < dates.length - 1; i++) {
+        var absentdata = {
+          date: dates[i].toString().slice(0, 15),
+          absent: true,
+          totalWork: 0,
+        };
+        // console.log(absentdata,"bbbbbbbbbbbbbbbb")
+        between.push(absentdata);
+       console.log(data,"ppppppp")
+        // data.push(absentdata);
+      }
+    }
+    const d1 = new Date(b.toString());
+    const d2 = new Date(a.toString());
+    
+    getDatesInRange(d1, d2)
+    // between to dates end
+    
+    
     if (dataGet) {
       setData(dataGet);
     }
     if (data) {
       console.log("date", data);
-
+      
       // const attendancePutApiData=
       // dispatch(attendanceApiPut(data))
       console.log("data", data?.date);
@@ -73,8 +111,8 @@ export default function AttendanceTable() {
         }
       }
       users?.length
-        ? console.log("data added")
-        : dispatch(attendancePostApi(data));
+      ? console.log("data added")
+      : dispatch(attendancePostApi(data));
       {
         users?.map((item) => {
           if (item.date === livedate) {
@@ -86,15 +124,32 @@ export default function AttendanceTable() {
       }
     }
     console.log("users", users);
+   
+        
   };
-
+  
+  console.log(data,"old data")
+  between.push(data)
+  
+  console.log(between, "between dates");
+  for(var i=0;i<between.length;i++){
+    if(between[i]===undefined){
+      console.log("not valid") 
+    }else{
+      var a=between[i]
+      console.log(a,"remove array")
+      setUpdated(between[i])
+    }
+  }
   useEffect(() => {
     dispatch(attendanceGetApi());
+   
+   
   }, []);
   useEffect(() => {
     users.reverse();
   }, [users]);
-
+ 
   return (
     <div>
       <div className="attendance-table">
