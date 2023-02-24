@@ -46,3 +46,10 @@ margin-left: -57px !important;
     width: 100%;
     margin-bottom: -9px;
 }
+.model-edit-form .input-data .MuiFormGroup-root {
+    display: flex;
+    flex-direction: row;
+}
+.model-edit-form .react-select-city{
+    margin-bottom: 10px;
+}

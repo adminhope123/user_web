@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { Country, State, City } from "country-state-city";
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions, Fade, FormControl, Modal, TextField } from '@mui/material';
+import Select from "react-select";
+import { Button, CardActionArea, CardActions,FormLabel, Fade, FormControl, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
 import profileImg from './avatar_default.jpg'
 import './Profile.css'
 import { Box } from '@mui/system';
@@ -26,6 +28,21 @@ export default function Profile() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [value, setValue] = React.useState('female');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+
+  useEffect(() => {
+    console.log(selectedCountry);
+    console.log(selectedCountry?.isoCode);
+    console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
+  }, [selectedCountry]);
 
   return (
     <div className='profile-page'>
@@ -148,7 +165,7 @@ export default function Profile() {
              <FormControl>
                     <TextField
                       label="Full Name"
-                      name="fullName"
+                      name="fullname"
                       type="text"
                     />
                     <p className="employee-error-text"></p>
@@ -162,6 +179,7 @@ export default function Profile() {
                     <p className="employee-error-text"></p>
                   </FormControl>
              </div>
+         
                   <div className='input-data'>
                   <FormControl>
                     <TextField
@@ -198,6 +216,78 @@ export default function Profile() {
                     <p className="employee-error-text"></p>
                   </FormControl>
               </div>
+              <div className='input-data'>
+             <FormControl>
+                    <TextField
+                      label="Birth Date"
+                      name="birthdate"
+                      type="date"
+                    />
+                    <p className="employee-error-text"></p>
+                  </FormControl>
+                  <FormControl>
+  <FormLabel id="demo-controlled-radio-buttons-group">Gender</FormLabel>
+  <RadioGroup
+    aria-labelledby="demo-controlled-radio-buttons-group"
+    name="controlled-radio-buttons-group"
+    value={value}
+    onChange={handleChange}
+  >
+    <FormControlLabel value="female" control={<Radio />} label="Female" />
+    <FormControlLabel value="male" control={<Radio />} label="Male" />
+  </RadioGroup>
+</FormControl>
+               </div>
+          <div>
+        <div className='react-select-city'>
+        <Select
+        options={Country.getAllCountries()}
+        getOptionLabel={(options) => {
+          return options["name"];
+        }}
+        getOptionValue={(options) => {
+          return options["name"];
+        }}
+        value={selectedCountry}
+        onChange={(item) => {
+          setSelectedCountry(item);
+        }}
+      />
+        </div>
+      <div className='react-select-city'>
+      <Select
+        options={State?.getStatesOfCountry(selectedCountry?.isoCode)}
+        getOptionLabel={(options) => {
+          return options["name"];
+        }}
+        getOptionValue={(options) => {
+          return options["name"];
+        }}
+        value={selectedState}
+        onChange={(item) => {
+          setSelectedState(item);
+        }}
+      />
+      </div>
+    <div className='react-select-city'>
+    <Select
+        options={City.getCitiesOfState(
+          selectedState?.countryCode,
+          selectedState?.isoCode
+        )}
+        getOptionLabel={(options) => {
+          return options["name"];
+        }}
+        getOptionValue={(options) => {
+          return options["name"];
+        }}
+        value={selectedCity}
+        onChange={(item) => {
+          setSelectedCity(item);
+        }}
+      />
+    </div>
+          </div>
                   <div style={{display:"flex",justifyContent:"center"}}>
                   <Button
                     variant="contained"
