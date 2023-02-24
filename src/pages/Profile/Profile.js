@@ -13,7 +13,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: "600px",
+  height:"520px",
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius:"8px",
@@ -42,7 +43,7 @@ export default function Profile() {
           <Typography gutterBottom variant="h5" component="div">
             Hope Web
           </Typography>
-          <Typography gutterBottom variant="h5" component="div" sx={{fontWeight: 'normal'}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight: 'normal',fontSize:"20px"}}>
             React Js
           </Typography>
         </CardContent>
@@ -53,12 +54,36 @@ export default function Profile() {
   <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
         <CardContent>
+        <div className='profile-lable'>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+            Employee Id
+          </Typography>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+            123
+          </Typography>
+          </div>
           <div className='profile-lable'>
           <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
             Full Name 
           </Typography>
           <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
             Hope Infosys
+          </Typography>
+          </div>
+          <div className='profile-lable'>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+            BirthDate
+          </Typography>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+           11-02-2023
+          </Typography>
+          </div>
+          <div className='profile-lable'>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+            Gender
+          </Typography>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+           11-02-2023
           </Typography>
           </div>
           <div className='profile-lable'>
@@ -119,6 +144,7 @@ export default function Profile() {
           <Box sx={style}>
           <div className='model-edit-form'>
           <form>
+             <div className='input-data'>
              <FormControl>
                     <TextField
                       label="Full Name"
@@ -135,6 +161,8 @@ export default function Profile() {
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
+             </div>
+                  <div className='input-data'>
                   <FormControl>
                     <TextField
                       label="Email"
@@ -151,7 +179,9 @@ export default function Profile() {
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
-                  <FormControl>
+                  </div>
+              <div className='input-data'>
+              <FormControl>
                     <TextField
                       label="Address"
                       name="address"
@@ -167,6 +197,7 @@ export default function Profile() {
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
+              </div>
                   <div style={{display:"flex",justifyContent:"center"}}>
                   <Button
                     variant="contained"
