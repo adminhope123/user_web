@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Country, State, City } from "country-state-city";
@@ -9,6 +9,7 @@ import { Button, CardActionArea, CardActions,FormLabel, Fade, FormControl, FormC
 import profileImg from './avatar_default.jpg'
 import './Profile.css'
 import { Box } from '@mui/system';
+import { UserDataContext } from 'src/UserDataContext';
 
 const style = {
   position: 'absolute',
@@ -32,18 +33,44 @@ export default function Profile() {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [value, setValue] = React.useState('female');
+  const [editFormData,setEditFormData]=useState({
+    fullname:"",
+    post:"",
+    mobile:"",
+    address:"",
+    birthDate:"",
+    gender:""
 
+  })
+  const {userGetData}=useContext(UserDataContext)
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
+const hadnleOnChange=(e)=>{
+  if (e) {
+    const { name, value } = e.target;
+    setEditFormData({ ...editFormData, [name]: value });
+  }
+}
 
+const handleSubmitData=(e)=>{
+  e.preventDefault();
+  const data=selectedCity.name
+  console.log("Data",data)
+  console.log("editFormData",editFormData)
+  console.log("editFormData",editFormData)
+}
   useEffect(() => {
-    console.log(selectedCountry);
+    console.log("",selectedCountry);
     console.log(selectedCountry?.isoCode);
     console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
   }, [selectedCountry]);
-
+  
+const data=(e)=>{
+  const data=selectedCity.name
+  console.log("userGetData",userGetData)
+}
   return (
     <div className='profile-page'>
         <div className='profile-content'>
@@ -159,14 +186,17 @@ export default function Profile() {
       >
         <Fade in={open}>
           <Box sx={style}>
+            <button onClick={()=>data()}>Click</button>
           <div className='model-edit-form'>
-          <form>
+          <form onSubmit={handleSubmitData}>
              <div className='input-data'>
              <FormControl>
                     <TextField
                       label="Full Name"
                       name="fullname"
                       type="text"
+                      defaultValue={userGetData?.userName}
+                      onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
@@ -175,53 +205,44 @@ export default function Profile() {
                       label="Post"
                       name="post"
                       type="text"
+                      defaultValue={userGetData?.role}
+                      onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
              </div>
          
                   <div className='input-data'>
-                  <FormControl>
-                    <TextField
-                      label="Email"
-                      name="email"
-                      type="text"
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl>
+                 
                   <FormControl>
                     <TextField
                       label="Mobile No."
                       name="mobile"
                       type="text"
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl>
-                  </div>
-              <div className='input-data'>
-              <FormControl>
-                    <TextField
-                      label="Address"
-                      name="address"
-                      type="text"
+                      defaultValue={userGetData?.mobileNumber}
+                      onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
                   <FormControl>
                     <TextField
-                      label="Password"
-                      name="password"
+                      label="Address"
+                      name="address"
                       type="text"
+                      defaultValue={userGetData?.address}
+                      onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
-              </div>
+                  </div>
               <div className='input-data'>
              <FormControl>
                     <TextField
                       label="Birth Date"
                       name="birthdate"
-                      type="date"
+                      type="number"
+                      value={editFormData?.birthDate}
+                      onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
