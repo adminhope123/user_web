@@ -3,6 +3,7 @@ import SvgColor from '../../../components/svg-color';
 import TimerIcon from '@mui/icons-material/Timer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventIcon from '@mui/icons-material/Event';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // ----------------------------------------------------------------------
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
@@ -27,6 +28,11 @@ const navConfig = [
     title: 'Event',
     path: '/dashboard/event',
     icon: <EventIcon/>,
+  },
+  {
+    title: 'Profile',
+    path: '/dashboard/profile',
+    icon: <AccountCircleIcon/>,
   },
   {
     title: 'product',

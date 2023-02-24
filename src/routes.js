@@ -11,6 +11,7 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AttendanceList from './pages/AttendanceList/AttendanceList';
 import EventPage from './pages/Event/EventPage';
+import Profile from './pages/Profile/Profile';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ export default function RouterComponent() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'timerClock', element: <TimerClock /> },
         { path: 'attendance-list', element: <AttendanceList /> },
+        { path: 'profile', element: <Profile /> },
         { path: 'event', element: <EventPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },

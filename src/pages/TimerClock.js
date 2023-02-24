@@ -93,8 +93,9 @@ export default function TimerClock(props) {
     const remainingSecs = totalSeconds - hours * 3600;
     const minutes = Math.floor(remainingSecs / 60);
     const seconds = remainingSecs - minutes * 60;
+    
     updateAppTitle(hours, minutes, seconds);
-    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
+
     // setTotalHours(hours)
     // setTotalMinite(minutes)
     // setTotalSecound(seconds)
@@ -121,6 +122,10 @@ const updateAppTitle = (hours, mins, secs) => {
     dateData.reverse();
    
   }, [dateData])
+  useEffect(() => {
+    myfunc()
+  }, [])
+  
   function myfunc(){
     // dispatch(timetotal(totalSecound))
     // console.log("total",total)
@@ -128,7 +133,26 @@ const updateAppTitle = (hours, mins, secs) => {
     // console.log(dateData,"revers")
     dateData.reverse();
     console.log(dateData,"aaaaa")
-
+    const totalData=dateData?.map((item)=>{
+      return item.totalSeconds
+    })
+    const sumWithInitial = totalData.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const addPadding = value => value.toString().length === 1 ? `0${value}` : value;
+    const hours = Math.floor(sumWithInitial / 3600);
+    const remainingSecs = sumWithInitial - hours * 3600;
+    const minutes = Math.floor(remainingSecs / 60);
+    addPadding(hours)
+    addPadding(remainingSecs)
+    addPadding(minutes)
+    const seconds = remainingSecs - minutes * 60;
+    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
+    console.log("data",hours,minutes,seconds)
+    console.log("sumWithInitial",sumWithInitial)
+    console.log("totalData",totalData)
+console.log("totalTimeData",totalWorkTime)
   }
   return (
     <div className='timer-clock'> 
@@ -137,7 +161,6 @@ const updateAppTitle = (hours, mins, secs) => {
                {/* <h6>{dayToday}</h6> */}
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
-                  {/* <button onClick={()=>data()}>click</button> */}
                   <div className='clock-time'>
 
                   <Dashboard/>

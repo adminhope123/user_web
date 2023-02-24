@@ -58,69 +58,33 @@ export default function AttendanceTable() {
     console.log("dateFilter", dateFilter);
     console.log("livedate", livedate);
 
-    // var date = dateFilter;
-    // var datearray = date.split("/");
-    // var newdate1 = datearray[1] + "/" + datearray[0] + "/" + datearray[2];
-
-    // var date2 = livedate;
-    // var datearray2 = date2.split("/");
-    // var newdate2 = datearray2[1] + "/" + datearray2[0] + "/" + datearray2[2];
-
-    // var date1 = new Date(newdate1.toString());
-    // var date2 = new Date(newdate2.toString());
-
-    // var Difference_In_Time = date2.getTime() - date1.getTime();
-
-    // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-
-    // console.log(Difference_In_Days, "diffrent of the days");
-
-    // between to dates start
-
-    var b = dateFilter.split(/\D/);
-    b = b.reverse().join("-");
-
-    var a = livedate.split(/\D/);
-    a = a.reverse().join("-");
-    function getDatesInRange(startDate, endDate) {
-      const date = new Date(startDate.getTime());
-
-      const dates = [];
-
-      while (date <= endDate) {
-        dates.push(new Date(date));
-        date.setDate(date.getDate() + 1);
+  //  const firstDate=users?.map((item)=>item.date)
+  //  console.log("firstDate",firstDate)
+    var data = {
+      eid: "9",
+      end_date: "2018-01-14",
+      event: true,
+      mname: "test event2",
+      start_date: "2018-01-12",
+      user_type: "1"
+  },
+      endDate = new Date(data.end_date),
+      startDate = new Date(data.start_date),
+      result = [];
+    
+      while(endDate >= startDate) {
+        var {eid, event, mname, user_type} = data;
+        result.push({eid, event, mname, user_type, date: formatDate(startDate)});
+        startDate.setDate(startDate.getDate() + 1);
       }
-      
-      for (var i = 1; i < dates.length - 1; i++) {
-        var absentdata = {
-          date: dates[i].toString().slice(0, 15),
-          absent: true,
-          totalWork: 0,
-        };
-         console.log(absentdata,"bbbbbbbbbbbbbbbb")
-        between.push(absentdata);
-        between.push(data);
-        console.log(between,"aaaaaaa")
-        // console.log(data, "ppppppp");
-        // data.push(absentdata);
-      }
-    }
-    const d1 = new Date(b.toString());
-    const d2 = new Date(a.toString());
-
-    getDatesInRange(d1, d2);
     // between to dates end
 
     if (dataGet) {
       setData(dataGet);
     }
     if (data) {
-      console.log("date", data);
-      
-      // const attendancePutApiData=
       // dispatch(attendanceApiPut(data))
-      console.log("data", data?.date);
+      console.log("data", data);
       if (data?.date) {
         const attendanceId = getData?.id;
         if (attendanceId) {
@@ -141,28 +105,23 @@ export default function AttendanceTable() {
       }
     }
     console.log("users", users);
-    for (var i = 0; i < between.length; i++) {
-      if (between[i] === undefined) {
-        // console.log("not valid");
-      } else {
-        var a = between[i];
-        //  console.log(a,"bb")
-        updated.push(between[i]);
-      }
-    }
-    
   };
-
   // console.log(data, "old data");
+    
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-  useEffect(() => {
-    users.reverse();
-  }, [users]);
-  
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
   useEffect(() => {
     dispatch(attendanceGetApi());
     console.log(updated,"lllllllllll")
-    
   }, [between]);
 
   function TablePaginationActions(props) {
@@ -184,6 +143,8 @@ export default function AttendanceTable() {
     const handleLastPageButtonClick = (event) => {
       onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
+
+
 
     return (
       <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -315,12 +276,12 @@ export default function AttendanceTable() {
           <UserListHead headLabel={TABLE_HEAD} />
           <TableBody>
             {(rowsPerPage > 0
-              ? dataaa.slice(
+              ? dataaa?.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
               : dataaa
-            ).map((row, index) => (
+            )?.map((row, index) => (
               <TableRow key={row?.index}>
                 <TableCell style={{ width: 160 }} align="center" scope="row">
                   {row?.date}
