@@ -29,6 +29,10 @@ export const UserDataProvider = (props) => {
       setUserGetData(getUserData);
     }
   };
+  useEffect(() => {
+    userGetDataFunction()
+  }, [])
+  
   const getColor = () => {
     const random = Math.ceil(Math.random() * 7);
     return COLORS[random];
@@ -183,9 +187,6 @@ const stopRunningTask = () => {
 
     
     }
-  useEffect(() => {
-    userGetDataFunction();
-  }, []);
   const properties = {
     userGetData,
     tasks,

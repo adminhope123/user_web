@@ -17,18 +17,38 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDataApi } from 'src/Redux/actions';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const dispatch=useDispatch()
+  const {users}=useSelector(res=>res.data)
+  const [userData,setUserData]=useState()
+  
+    const getUserData=()=>{
+      console.log("user",users)
+      const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
+      if(users){
+        const filterData=users?.filter((item)=>item?.email===getUserData?.email)
+      const data=  sessionStorage.setItem("userData",JSON.stringify(filterData))
+      console.log("data",data)
+      }
+    }
 
+  useEffect(() => {
+    getUserData()
+    dispatch(getUserDataApi())
+  }, [])
+  
   return (
     <>
       <Helmet>
         <title> Dashboard |  User Web </title>
       </Helmet>
-
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome back

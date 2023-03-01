@@ -32,6 +32,10 @@ const attendanceGet=(users)=>({
     payload:users
 })
 
+const getUserData=(users)=>({
+    type:type.GET_USER_DATA,
+    payload:users
+})
 const attendancePut=(users)=>({
     type:type.ATTENDANCE_PUT_API,
 })
@@ -49,7 +53,7 @@ const profilePut=(users)=>({
 })
 
 export const loginFormPostApi=(user)=>{
-    const url="http://localhost:3004/login";
+    const url="http://127.0.0.1:8000/api/userlogin";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -155,12 +159,23 @@ export const profilePutApi=(user,attendanceId)=>{
     }
 }
 export const profileGetApi=()=>{
-    const url="http://localhost:3004/profile";
+    const url="http://127.0.0.1:8000/api/viewemployee";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(getTimeData(resp.data))
+        })
+        .catch((error)=>console.log("error",error));
+    };
+}
+export const getUserDataApi=()=>{
+    const url="http://127.0.0.1:8000/api/viewemployee";
+    return function (dispatch){
+            axios.get(url)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(getUserData(resp.data))
         })
         .catch((error)=>console.log("error",error));
     };

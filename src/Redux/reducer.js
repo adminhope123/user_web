@@ -19,6 +19,12 @@ const usersReducers = (state = initialState, action) => {
         users: action.payload,
         loading: false,
       };
+      case type.GET_USER_DATA:
+      return {
+        ...state,
+        users: action.payload,
+        loading: false,
+      };
     case type.TIME_START_POST:
       return {
         ...state,

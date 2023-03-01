@@ -13,8 +13,8 @@ import { Box } from '@mui/system';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { UserDataContext } from 'src/UserDataContext';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { useDispatch } from 'react-redux';
-import { profilePostApi } from 'src/Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { profileGetApi, profilePostApi } from 'src/Redux/actions';
 
 const style = {
   position: 'absolute',
@@ -46,6 +46,8 @@ export default function Profile() {
     address:"",
   })
   const {userGetData}=useContext(UserDataContext)
+  const {users}=useSelector(res=>res.data)
+
   const dispatch=useDispatch()
 
 const handleDateChange=(newValue)=>{
@@ -84,6 +86,7 @@ const handleSubmitData=(e)=>{
   useEffect(() => {
     console.log("",selectedCountry);
     console.log(selectedCountry?.isoCode);
+    dispatch(profileGetApi())
     console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
   }, [selectedCountry]);
   
@@ -97,18 +100,13 @@ const data=(e)=>{
 <div className='profile-card'>
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image={profileImg}
-          alt="green iguana"
-        />
+        <img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Hope Web
+           {userGetData?.userName}
           </Typography>
           <Typography gutterBottom  component="div" sx={{fontWeight: 'normal',fontSize:"20px"}}>
-            React Js
+            {userGetData?.role}
           </Typography>
         </CardContent>
       </CardActionArea>

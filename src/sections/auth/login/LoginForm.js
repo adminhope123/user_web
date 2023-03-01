@@ -23,10 +23,11 @@ export default function LoginForm() {
   })
   
   // const employeeLoginGetDataApi=()=>{
-  //    fetch('http://127.0.0.1:8000/api/userlogin')
+  //    fetch('http://127.0.0.1:8000/api/viewemployee')
   //    .then((response)=>response.json())
   //    .then((res)=>setEmployeeGetData(res))
   // }
+
   
   const hadnleLoginOnChange = (e) => {
     const name = e.target.name;
@@ -48,7 +49,7 @@ export default function LoginForm() {
     })
     console.log("reslut",result)
     result= await result.json()
-    sessionStorage.setItem("loginData",JSON.stringify(result))
+    sessionStorage.setItem("loginData",JSON.stringify(loginData))
     navigate('/dashboard/app', { replace: true })
     location.reload();
    }

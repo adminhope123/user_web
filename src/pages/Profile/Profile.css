@@ -8,8 +8,17 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .profile-card img{
-    height: 251px;
+    height: 121px;
+    object-fit: cover;
+    width: 100%;
 
+}
+.profile-card .MuiPaper-root {
+    max-width: 210px;
+}
+.profile-card .MuiTypography-root{
+    font-size: 16px;
+    text-transform: capitalize;
 }
 .profile-text{
     margin-left: -166px;
@@ -52,4 +61,7 @@ margin-left: -57px !important;
 }
 .model-edit-form .react-select-city{
     margin-bottom: 10px;
+}
+.profile-card .MuiCardContent-root {
+    padding: 11px;
 }
