@@ -60,23 +60,6 @@ export default function AttendanceTable() {
 
   //  const firstDate=users?.map((item)=>item.date)
   //  console.log("firstDate",firstDate)
-    var data = {
-      eid: "9",
-      end_date: "2018-01-14",
-      event: true,
-      mname: "test event2",
-      start_date: "2018-01-12",
-      user_type: "1"
-  },
-      endDate = new Date(data.end_date),
-      startDate = new Date(data.start_date),
-      result = [];
-    
-      while(endDate >= startDate) {
-        var {eid, event, mname, user_type} = data;
-        result.push({eid, event, mname, user_type, date: formatDate(startDate)});
-        startDate.setDate(startDate.getDate() + 1);
-      }
     // between to dates end
 
     if (dataGet) {

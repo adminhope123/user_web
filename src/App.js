@@ -17,11 +17,11 @@ export default function App() {
   const navigate=useNavigate()
    const [loginSuccess,setLoginSuccess]=useState()
 useEffect(() => {
-        var login=sessionStorage.getItem("login")
+        var login=sessionStorage.getItem("loginData")
         setLoginSuccess(login)
         if(!login){
            navigate('/login')
-           localStorage.removeItem("/login")
+           localStorage.removeItem("/loginData")
         }
     }, [])
     
