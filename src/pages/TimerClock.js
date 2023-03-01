@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { FormControl, TextField,Button, Box, TableBody, Table,TableRow, TableCell, Checkbox, TableContainer } from '@mui/material'
+import { FormControl, TextField,Button, Box, TableBody, Table,TableRow, TableCell, Checkbox, TableContainer, DialogContent, DialogTitle, Dialog, Slide, DialogContentText, DialogActions } from '@mui/material'
 import { object } from 'prop-types';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -41,8 +41,45 @@ export default function TimerClock(props) {
   const [totalMinite,setTotalMinite]=useState()
   const [totalSecound,setTotalSecound]=useState()
   const {users}=useSelector(state=>state?.data)
-  const {totalWorkTimeData}=useContext(UserDataContext)
+  const {totalWorkTimeData,findDateFunction}=useContext(UserDataContext)
   const {total}=useSelector(res=>res.data)
+  const [totalTimeModel, setTotalTimeModel] = useState(false);
+  
+  const handleTotalTimeModelClickOpen = () => {
+    setTotalTimeModel(true);
+    const getData = users?.map((item) => item);
+    const liveDate = new Date().toLocaleDateString("es-DO");
+    const duplicateDate = liveDate;
+    const dublicateValue = users.filter((obj) =>
+      duplicateDate.includes(obj.date)
+    );
+    const getTotalWorkTime=dublicateValue?.map((item)=>{
+        return item?.totalTimeWork
+      })
+      const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+  const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
+           ~~((totalSecondsdata / 60) % 60)}:${
+           ~~(totalSecondsdata % 60)}`
+           setTotalWorkTime(getTotalWorkDataObject)
+           const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+               sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+  };
+ 
+
+    const sumToSeconds = times => {
+        return times.reduce((a, e) => {
+          const parts = e.trim().split(":").map(Number);
+          parts.forEach((e, i) => {
+            if (i < parts.length - 1) {
+              parts[i+1] += e * 60;
+            }
+          });
+          return parts.pop() + a;
+        }, 0);
+      };
+  const handleTotalTimeModelClose = () => {
+    setTotalTimeModel(false);
+  };
 
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
@@ -54,7 +91,6 @@ export default function TimerClock(props) {
   
   useEffect(()=>{
     hoursTotalFunction()
-   
   },[users])
   
   const hoursTotalFunction=()=>{
@@ -62,112 +98,61 @@ export default function TimerClock(props) {
     const userFilter=users.filter((item)=>item.date===date)
     setDateData(userFilter)
     console.log("users",users)
-    const totalSecondsData = users?.reduce(
-      (acc, cur) => acc + cur.totalSeconds,
-      0
-    );
- 
-  getPaddedTime(totalSecondsData)
-    console.log("totalSecondsData",totalSecondsData)
-    console.log("userFilter",userFilter)
-    console.log("totalWorkTime",totalWorkTime)
-    console.log("users",users)
-    const filterData=users?.filter(
-      (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
-    );
-    const totalObjectCreate={"totalWork":totalWorkTimeData}
-    console.log("totalHours",totalObjectCreate)
-    const totalTimeData=totalObjectCreate?.totalWork
-    setTotalHours(totalTimeData)
-    const arrayOfObjectRemove=Object.assign({},...filterData)
-    const addObject={...arrayOfObjectRemove,...totalObjectCreate}
-    console.log("addObject",addObject)
-    if(addObject){
-      sessionStorage.setItem("totalWork",JSON.stringify(addObject))
-    }
-    console.log("totalWorkTime",totalWorkTime)
   }
-  const getPaddedTime = totalSeconds => {
-    const addPadding = value => value.toString().length === 1 ? `0${value}` : value;
-    const hours = Math.floor(totalSeconds / 3600);
-    const remainingSecs = totalSeconds - hours * 3600;
-    const minutes = Math.floor(remainingSecs / 60);
-    const seconds = remainingSecs - minutes * 60;
-    
-    updateAppTitle(hours, minutes, seconds);
 
-    // setTotalHours(hours)
-    // setTotalMinite(minutes)
-    // setTotalSecound(seconds)
-    return { 
-        hours: addPadding(hours),
-        mins: addPadding(minutes),
-        secs: addPadding(seconds),
-    }
-} 
-const updateAppTitle = (hours, mins, secs) => {
-  document.title = hours > 0
-                      ? `${hours} hour`
-                      : mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
+const getTotalWorkTime=()=>{
+   const data=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+   const getData=data?.totalWorkTime
+   setTotalWorkTime(getData)
 }
- 
-
   useEffect(() => {
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
     hoursTotalFunction()
+    getTotalWorkTime()
   }, [])
   useEffect(() => {
     dateData.reverse();
    
   }, [dateData])
-  useEffect(() => {
-    myfunc()
-  }, [])
-  
-  function myfunc(){
-    // dispatch(timetotal(totalSecound))
-    // console.log("total",total)
-    // dateData.reverse();
-    // console.log(dateData,"revers")
-    dateData.reverse();
-    console.log(dateData,"aaaaa")
-    const totalData=dateData?.map((item)=>{
-      return item.totalSeconds
-    })
-    const sumWithInitial = totalData.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0
-    );
-    const addPadding = value => value.toString().length === 1 ? `0${value}` : value;
-    const hours = Math.floor(sumWithInitial / 3600);
-    const remainingSecs = sumWithInitial - hours * 3600;
-    const minutes = Math.floor(remainingSecs / 60);
-    addPadding(hours)
-    addPadding(remainingSecs)
-    addPadding(minutes)
-    const seconds = remainingSecs - minutes * 60;
-    setTotalWorkTime(hours + ":" + minutes + ":" + seconds);
-    console.log("data",hours,minutes,seconds)
-    console.log("sumWithInitial",sumWithInitial)
-    console.log("totalData",totalData)
-console.log("totalTimeData",totalWorkTime)
-  }
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
-      <button onClick={myfunc}>click</button>
+      <button onClick={findDateFunction}>click</button>
                {/* <h6>{dayToday}</h6> */}
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
                   <div className='clock-time'>
-
+                  <Dialog
+        open={totalTimeModel}
+        onClose={handleTotalTimeModelClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Today Work"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          <FormControl>
+          <TextField
+          id="outlined-read-only-input"
+          defaultValue={totalWorkTime}
+          disabled
+        />
+          </FormControl>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleTotalTimeModelClose}>Agree</Button>
+        </DialogActions>
+      </Dialog>
                   <Dashboard/>
-                   <div className='clock'>
+                  <Button variant="contained" onClick={handleTotalTimeModelClickOpen}>
+            Total Time
+          </Button>
+                   {/* <div className='clock'>
                     <span className='clock-text'>Today Work Time</span>
-                  <span>{totalHours}</span>
-                    </div>
+                  <span>{totalWorkTime}</span>
+                    </div> */}
                   </div>
                 <div className="employee-table">
                   <Table id="table-1">
@@ -189,7 +174,7 @@ console.log("totalTimeData",totalWorkTime)
                        <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
                        {
                          user.stop?
-                         <TableCell align="center">{user.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
+                         <TableCell align="center">{user?.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
                         }
                         <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
                           {

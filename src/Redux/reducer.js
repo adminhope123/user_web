@@ -6,8 +6,6 @@ const initialState = {
   total: [],
   loading: true,
 };
-console.log(initialState.total, "vv");
-
 const usersReducers = (state = initialState, action) => {
   switch (action.type) {
     case type.LOGIN_USER:
@@ -44,12 +42,26 @@ const usersReducers = (state = initialState, action) => {
       };
     case type.TIME_STOP_PUT:
     case type.TIME_TOTAL:
-      console.log(action.payload, "www");
       return {
         ...state,
         total: action.payload,
       };
-     
+      case type.PROFILE_POST_DATA:
+        return {
+          ...state,
+          loading: false,
+        };
+        case type.PRFILE_GET_API:
+          return {
+            ...state,
+            users: action.payload,
+            loading: false,
+          };
+          case type.PROFILE_PUT_API:
+              return {
+                ...state,
+                users: action.payload,
+              };
     default:
       return state;
   }

@@ -20,6 +20,8 @@ export const UserDataProvider = (props) => {
   const [attendanceData, setAttendanceData] = useState();
   const [attendanceGetData,setAttendanceGetData]=useState()
   const [totalTimeData,setTotalTimeData]=useState()
+  const [dublicateValueData,setDublicateValueData]=useState()
+  
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -56,6 +58,7 @@ const getModelTask = () => ({
 
 useEffect(() => {
   const dataGet = JSON.parse(sessionStorage.getItem('timeTotal'))
+  console.log("dataGet",dataGet)
   setTotalTimeData(dataGet)
 }, [])
 
@@ -71,11 +74,10 @@ const addTask = task => {
 } 
 const editTask = task => {
     setTasks(prevTasks => {
-
         const index = prevTasks.findIndex(t => t.id === task.id);
         prevTasks[index] = task;
         sessionStorage.setItem('tasks', JSON.stringify(prevTasks))
-         const data=prevTasks.slice(-1).pop()
+        const data=prevTasks.slice(-1).pop()
         return [...prevTasks];
     })
 }
@@ -131,33 +133,15 @@ useEffect(() => {
     intervalRef.current = intervalCallback;
 },[intervalRef.current])
 
+useEffect(() => {
+  findDateFunction()
+}, [])
+
 const findDateFunction = () => {
-    const getData = users?.map((item) => item);
-    console.log("getDAta", getData);
-    const liveDate = new Date().toLocaleDateString("es-DO");
-    const duplicateDate = liveDate;
-    const dublicateValue = users.filter((obj) =>
-      duplicateDate.includes(obj.date)
-    );
-    const totalSecondsData = dublicateValue?.reduce(
-      (acc, cur) => acc + cur.totalSeconds,
-      0
-    );
-    getPaddedTime(totalSecondsData);
-
-    const filterData = dublicateValue?.filter(
-      (v, i, a) => a?.findIndex((v2) => v2.date === v.date) === i
-    );
-    const attendanceObject = Object.assign({}, ...filterData);
-    const totalWorkObject = { totalWorkTimeData: totalWorkTimeData };
-    console.log("totalWorkObject",totalWorkObject)
-    const totalWorkDataAdd = { ...attendanceObject, ...totalWorkObject };
-    console.log("totalWorkDataAdd",totalWorkDataAdd);
-    if(totalWorkDataAdd){
-      sessionStorage.setItem("timeTotal",JSON.stringify(totalWorkDataAdd))
-    }
-
+ 
   };
+
+  
 const startRunningTask = task => {
     const running = getRunningTask();
     if (!running) {
@@ -181,7 +165,7 @@ const stopRunningTask = () => {
     editTask({
         ...runningTask, 
         stop: moment().format(),
-        ...getPaddedTime(runningTask.totalSeconds),
+        ...getPaddedTime(runningTask?.totalSeconds),
         state: 'stopped'
     })
     document.title = APP_TITLE;
@@ -190,10 +174,15 @@ const stopRunningTask = () => {
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
     const runningTaskId=data?.id
-    dispatch(timeStopApi(data,runningTaskId))
-    findDateFunction()
-    console.log("stoptask",runningTaskId)
-}
+    console.log("data",data)
+      const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
+      const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
+      console.log("totalTimeDataAddObject",totalTimeDataAddObject)
+      const mergeObject={...data,...totalTimeDataAddObject}
+      dispatch(timeStopApi(mergeObject,runningTaskId))
+
+    
+    }
   useEffect(() => {
     userGetDataFunction();
   }, []);
@@ -206,9 +195,11 @@ const stopRunningTask = () => {
     getModelTask,
     duplicateTask,
     getRunningTask,
+    findDateFunction,
     startRunningTask,
     stopRunningTask,
     deleteTask,
+    dublicateValueData,
     totalWorkTimeData,
     totalTimeData
   };

@@ -8,8 +8,13 @@ import Select from "react-select";
 import { Button, CardActionArea, CardActions,FormLabel, Fade, FormControl, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
 import profileImg from './avatar_default.jpg'
 import './Profile.css'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Box } from '@mui/system';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { UserDataContext } from 'src/UserDataContext';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { useDispatch } from 'react-redux';
+import { profilePostApi } from 'src/Redux/actions';
 
 const style = {
   position: 'absolute',
@@ -32,19 +37,23 @@ export default function Profile() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
-  const [value, setValue] = React.useState('female');
+  const [value, setValue] = React.useState('');
+  const [birthDate, setBirthDate] =useState("");
   const [editFormData,setEditFormData]=useState({
     fullname:"",
     post:"",
     mobile:"",
     address:"",
-    birthDate:"",
-    gender:""
-
   })
   const {userGetData}=useContext(UserDataContext)
+  const dispatch=useDispatch()
+
+const handleDateChange=(newValue)=>{
+  setBirthDate(newValue);
+}
   const handleChange = (event) => {
     setValue(event.target.value);
+   
   };
 
 const hadnleOnChange=(e)=>{
@@ -57,9 +66,20 @@ const hadnleOnChange=(e)=>{
 const handleSubmitData=(e)=>{
   e.preventDefault();
   const data=selectedCity.name
-  console.log("Data",data)
-  console.log("editFormData",editFormData)
-  console.log("editFormData",editFormData)
+  const birthDateData=birthDate?.$d
+  const dataaaa={"birthdate":`${birthDateData}`}
+  const sliceDate=dataaaa?.birthdate?.slice(4,15)
+  const emailDataGet={"email":userGetData?.email}
+
+  const cityObject={"city":data}
+  const birthDateDataData={"birthDate":sliceDate}
+  const gender={"gender":value}
+  const mergeObject={...editFormData,...birthDateDataData,...cityObject,...gender,...emailDataGet}
+  console.log("mergeObject",mergeObject)
+   if(mergeObject){
+    dispatch(profilePostApi(mergeObject))
+   }
+
 }
   useEffect(() => {
     console.log("",selectedCountry);
@@ -237,13 +257,17 @@ const data=(e)=>{
                   </div>
               <div className='input-data'>
              <FormControl>
-                    <TextField
-                      label="Birth Date"
-                      name="birthdate"
-                      type="number"
-                      value={editFormData?.birthDate}
-                      onChange={hadnleOnChange}
-                    />
+             <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+             <DesktopDatePicker
+          label="Date desktop"
+          inputFormat="MM/DD/YYYY"
+          value={birthDate}
+          onChange={handleDateChange}
+          renderInput={(params) => <TextField {...params} />}
+        />
+               </LocalizationProvider>
+                   
                     <p className="employee-error-text"></p>
                   </FormControl>
                   <FormControl>

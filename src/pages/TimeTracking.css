@@ -103,6 +103,10 @@
   .fab-disable{
     background-color: #799cfc;
   }
+  .timer-clock .MuiPaper-root {
+    max-width: 487px;
+    width: 100%;
+  }
   span.blink-stopped {
     display: block;
     width: 15px;

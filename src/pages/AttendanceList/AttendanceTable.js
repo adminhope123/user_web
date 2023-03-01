@@ -47,37 +47,59 @@ export default function AttendanceTable() {
   const [updated, setUpdated] = useState([]);
   const [attendanceGetData, setAttendanceGetData] = useState(users);
   const [getData, setGetData] = useState();
+
   const attendancePostData = () => {
-    const dataGet = JSON.parse(sessionStorage.getItem("totalWork"));
-    setGetData(dataGet);
-    const idRemove = { ...dataGet };
-    console.log("idRemove", idRemove);
+    const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
+    const dataGetGet=dataGet?.totalWorkTime
+    console.log("dataGetGet",dataGetGet)
+    setGetData(dataGetGet);
     console.log("data", data);
     const livedate = new Date().toLocaleDateString("es-DO");
     const dateFilter = users?.slice(-2)[0]?.date;
     console.log("dateFilter", dateFilter);
     console.log("livedate", livedate);
+   const firstDate=users?.map((item)=>item.date)
+   console.log("firstDate",firstDate)
+ 
+   const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
+   const {id: _, ...newObj} = getTodayData;
+   const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+   const addObjectData={...newObj,...addTime}
+   console.log("addObjectData",addObjectData)
+   const userData=users?.map((item)=>{
+    return item
+   })
+   const lastValue=userData.slice(-1)[0]?.date
+   const lastFirstValue=userData.slice(-2)[0]?.date
+   console.log("lastValue",lastValue)
+   console.log("lastFirstValue",lastFirstValue)
+   console.log("userData",userData)
+   
+   var data = {
+    end_date: "2018-01-12",
+    start_date: "2018-01-14",
+},
+   endDate = new Date(data.end_date),
+   startDate = new Date(data.start_date),
+   result = [];
+   function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-  //  const firstDate=users?.map((item)=>item.date)
-  //  console.log("firstDate",firstDate)
-    var data = {
-      eid: "9",
-      end_date: "2018-01-14",
-      event: true,
-      mname: "test event2",
-      start_date: "2018-01-12",
-      user_type: "1"
-  },
-      endDate = new Date(data.end_date),
-      startDate = new Date(data.start_date),
-      result = [];
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
     
-      while(endDate >= startDate) {
-        var {eid, event, mname, user_type} = data;
-        result.push({eid, event, mname, user_type, date: formatDate(startDate)});
-        startDate.setDate(startDate.getDate() + 1);
-      }
-    // between to dates end
+while(endDate >= startDate) {
+  var {eid, event, mname, user_type} = data;
+  result.push({eid, event, mname, user_type, date: formatDate(startDate)});
+  startDate.setDate(startDate.getDate() + 1);
+}
+console.log('result',result);
 
     if (dataGet) {
       setData(dataGet);
@@ -121,7 +143,6 @@ function formatDate(date) {
 }
   useEffect(() => {
     dispatch(attendanceGetApi());
-    console.log(updated,"lllllllllll")
   }, [between]);
 
   function TablePaginationActions(props) {
@@ -143,8 +164,6 @@ function formatDate(date) {
     const handleLastPageButtonClick = (event) => {
       onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
-
-
 
     return (
       <Box sx={{ flexShrink: 0, ml: 2.5 }}>
