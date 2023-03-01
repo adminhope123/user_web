@@ -117,77 +117,77 @@ const data=(e)=>{
   <Card sx={{ maxWidth: '80%' }}>
         <CardContent>
         <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
             Employee Id
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-            123
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+            {userGetData?.E_Id}
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
             Full Name 
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-            Hope Infosys
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+          {userGetData?.userName}
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
             BirthDate
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
            11-02-2023
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
             Gender
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-           11-02-2023
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+            Male
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
             Post
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-            Android
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+            {userGetData?.role}
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
           Email
           </Typography>
           <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-            hope@gmail.com
+           {userGetData?.email}
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
           Mobile
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-            1234567890
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+            {userGetData?.mobileNumber}
           </Typography>
           </div>
           <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
           Address
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
            22,surat
           </Typography>
           </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px"}}>
+          {/* <div className='profile-lable'>
+          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
           Password
           </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-           123
+          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+           {userGetData?.password}
           </Typography>
-          </div>
+          </div> */}
         </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
@@ -260,6 +260,7 @@ const data=(e)=>{
              <DesktopDatePicker
           label="Date desktop"
           inputFormat="MM/DD/YYYY"
+          name="birthDate"
           value={birthDate}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
@@ -276,14 +277,15 @@ const data=(e)=>{
     value={value}
     onChange={handleChange}
   >
-    <FormControlLabel value="female" control={<Radio />} label="Female" />
-    <FormControlLabel value="male" control={<Radio />} label="Male" />
+    <FormControlLabel value="female" control={<Radio />} label="Female" name='female' />
+    <FormControlLabel value="male" control={<Radio />} label="Male" name='male'/>
   </RadioGroup>
 </FormControl>
                </div>
           <div>
         <div className='react-select-city'>
         <Select
+        name='countries'
         options={Country.getAllCountries()}
         getOptionLabel={(options) => {
           return options["name"];
@@ -299,6 +301,7 @@ const data=(e)=>{
         </div>
       <div className='react-select-city'>
       <Select
+         name='state'
         options={State?.getStatesOfCountry(selectedCountry?.isoCode)}
         getOptionLabel={(options) => {
           return options["name"];
@@ -314,6 +317,7 @@ const data=(e)=>{
       </div>
     <div className='react-select-city'>
     <Select
+          name='city'
         options={City.getCitiesOfState(
           selectedState?.countryCode,
           selectedState?.isoCode
