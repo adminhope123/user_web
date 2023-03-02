@@ -51,7 +51,7 @@ var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 
 const getModelTask = () => ({
     employeeId:getEmployeeId,
-    id: v4(),
+    timerid: v4(),
     state: 'non-started',
     parent: false,
     date:liveDate,
@@ -62,8 +62,6 @@ const getModelTask = () => ({
     day:dayData,
     mins: '00',
     secs: '00',
-    description: '',
-    category: '',
     present:true,
     absent:false,
     totalSeconds: 0,
