@@ -51,7 +51,7 @@ var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 
 const getModelTask = () => ({
     employeeId:getEmployeeId,
-    id: v4(),
+    timerId: v4(),
     state: 'non-started',
     parent: false,
     date:liveDate,
@@ -65,6 +65,7 @@ const getModelTask = () => ({
     present:true,
     absent:false,
     totalSeconds: 0,
+    totalTimeWork:""
 })
 
 
@@ -185,12 +186,13 @@ const stopRunningTask = () => {
     const storedString = sessionStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
-    const employeeEditIdData=data?.id
-    console.log("data",data)
+    const employeeEditIdData=data?.timerId  
+    console.log("employeeEditIdData",employeeEditIdData)
       const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
       const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
       console.log("totalTimeDataAddObject",totalTimeDataAddObject)
       const mergeObject={...data,...totalTimeDataAddObject}
+      console.log("mergeObject",mergeObject)
       dispatch(timeStopApi(mergeObject,employeeEditIdData))
 
     
