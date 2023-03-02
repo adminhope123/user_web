@@ -87,10 +87,10 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle2" noWrap textTransform="capitalize">
             {userGetData?.userName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap> 
             {userGetData?.email}
           </Typography>
         </Box>
@@ -108,7 +108,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={()=>logOutFunction()} sx={{ m: 1 }}>
-          Logout
+          Log Out
         </MenuItem>
       </Popover>
     </>

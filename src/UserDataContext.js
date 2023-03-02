@@ -21,7 +21,7 @@ export const UserDataProvider = (props) => {
   const [attendanceGetData,setAttendanceGetData]=useState()
   const [totalTimeData,setTotalTimeData]=useState()
   const [dublicateValueData,setDublicateValueData]=useState()
-  
+  const [getEmployeeId,setGetEmployeeId]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -40,7 +40,17 @@ export const UserDataProvider = (props) => {
 const liveDate=new Date().toLocaleDateString("es-DO")
 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  const dayData=days[new Date().getDay()]
+
+ useEffect(() => {
+  const getData=JSON.parse(sessionStorage.getItem("userData"))
+  const dataaa=getData?.map(item=>item?.E_Id)
+  const arrayRemove=` ${dataaa}`
+  console.log("data",arrayRemove)
+  setGetEmployeeId(arrayRemove)
+}, [])
+
 const getModelTask = () => ({
+    employeeId:getEmployeeId,
     id: v4(),
     state: 'non-started',
     parent: false,
@@ -198,6 +208,7 @@ const stopRunningTask = () => {
     getRunningTask,
     findDateFunction,
     startRunningTask,
+    getEmployeeId,
     stopRunningTask,
     deleteTask,
     dublicateValueData,

@@ -7,7 +7,9 @@ import { fCurrency } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
 import { ColorPreview } from '../../../components/color-utils';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDataApi } from 'src/Redux/actions';
+import { useEffect } from 'react';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({
@@ -25,10 +27,13 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
+  
   const { name, cover, price, colors, status, priceSale } = product;
 
   return (
-    <Card>
+         <div>
+          
+              <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {status && (
           <Label
@@ -74,5 +79,7 @@ export default function ShopProductCard({ product }) {
         </Stack>
       </Stack>
     </Card>
-  );
+
+         </div>
+     );
 }

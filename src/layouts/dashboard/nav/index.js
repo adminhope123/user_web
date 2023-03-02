@@ -79,11 +79,11 @@ export default function Nav({ openNav, onCloseNav }) {
             <Avatar src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              <Typography variant="subtitle2" sx={{ color: 'text.primary',textTransform:"capitalize" }}>
                 {userGetData?.userName}
               </Typography>
 
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' ,textTransform:"capitalize"}}>
                 {userGetData?.role}
               </Typography>
             </Box>

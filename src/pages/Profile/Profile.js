@@ -45,7 +45,7 @@ export default function Profile() {
     mobile:"",
     address:"",
   })
-  const {userGetData}=useContext(UserDataContext)
+  const {userGetData,getEmployeeId}=useContext(UserDataContext)
   const {users}=useSelector(res=>res.data)
 
   const dispatch=useDispatch()
@@ -67,16 +67,21 @@ const hadnleOnChange=(e)=>{
 
 const handleSubmitData=(e)=>{
   e.preventDefault();
-  const data=selectedCity.name
+  const data=selectedCity?.name
+  const countriesName=selectedCountry?.name
+  const stateName=selectedState?.name
+  console.log("data",selectedCountry)
   const birthDateData=birthDate?.$d
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
   const emailDataGet={"email":userGetData?.email}
-
   const cityObject={"city":data}
+  const CountruesObject={"countries":countriesName}
+  const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const gender={"gender":value}
-  const mergeObject={...editFormData,...birthDateDataData,...cityObject,...gender,...emailDataGet}
+  const employeeId={"E_Id":getEmployeeId}
+  const mergeObject={...editFormData,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
   console.log("mergeObject",mergeObject)
    if(mergeObject){
     dispatch(profilePostApi(mergeObject))
