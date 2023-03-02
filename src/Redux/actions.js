@@ -90,7 +90,7 @@ export const timeStopApi=(user,employeeEditIdData)=>{
 }
 
 export const getTimeDataApi=()=>{
-    const url="http://localhost:3004/timeAdd";
+    const url="http://127.0.0.1:8000/api/viewtimer";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{

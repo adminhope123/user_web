@@ -75,25 +75,25 @@ export default function AttendanceTable() {
    console.log("lastFirstValue",lastFirstValue)
    console.log("userData",userData)
   
-   var dataa = {
-    eid: "9",
-    end_date: "2018-01-14",
-    event: true,
-    mname: "test event2",
-    start_date: "2018-01-12",
-    user_type: "1"
-}
+//    var dataa = {
+//     eid: "9",
+//     end_date: "2018-01-14",
+//     event: true,
+//     mname: "test event2",
+//     start_date: "2018-01-12",
+//     user_type: "1"
+// }
  
-const endDate = new Date(dataa.end_date)
-const startDate = new Date(dataa.start_date)
-const result = [];
+// const endDate = new Date(dataa.end_date)
+// const startDate = new Date(dataa.start_date)
+// const result = [];
 
-console.log("result",result);
-while(endDate >= startDate) {
-  var {eid, event, mname, user_type} = dataa;
-  result.push({eid, event, mname, user_type, date: formatDate(startDate)});
-  startDate.setDate(startDate.getDate() + 1);
-}
+// console.log("result",result);
+// while(endDate >= startDate) {
+//   var {eid, event, mname, user_type} = dataa;
+//   result.push({eid, event, mname, user_type, date: formatDate(startDate)});
+//   startDate.setDate(startDate.getDate() + 1);
+// }
 
     if (dataGet) {
       setData(dataGet);

@@ -26,7 +26,7 @@ function StopWatch(props) {
             totalSeconds: 0,
             start: moment().format()
         });
-        sessionStorage.setItem("attendace",JSON.parse(timer))
+        sessionStorage.setItem("attendace",JSON.stringify(timer))
             const unloadCallback = (event) => {
               event.preventDefault();
               event.returnValue = "";
