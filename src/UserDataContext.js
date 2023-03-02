@@ -185,13 +185,13 @@ const stopRunningTask = () => {
     const storedString = sessionStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
-    const runningTaskId=data?.id
+    const employeeEditIdData=data?.id
     console.log("data",data)
       const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
       const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
       console.log("totalTimeDataAddObject",totalTimeDataAddObject)
       const mergeObject={...data,...totalTimeDataAddObject}
-      dispatch(timeStopApi(mergeObject,runningTaskId))
+      dispatch(timeStopApi(mergeObject,employeeEditIdData))
 
     
     }

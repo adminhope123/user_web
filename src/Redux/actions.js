@@ -76,8 +76,8 @@ export const timeStartApi=(user)=>{
         .catch((error)=>console.log("error",error))
     }
 }
-export const timeStopApi=(user,timeStopId)=>{
-    const url=`http://localhost:3004/timeAdd/${timeStopId}`;
+export const timeStopApi=(user,employeeEditIdData)=>{
+    const url=`http://127.0.0.1:8000/api/usertimerupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
@@ -90,7 +90,7 @@ export const timeStopApi=(user,timeStopId)=>{
 }
 
 export const getTimeDataApi=()=>{
-    const url="http://localhost:3004/timeAdd";
+    const url="http://127.0.0.1:8000/api/viewtimer";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
