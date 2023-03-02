@@ -61,11 +61,11 @@ export default function AttendanceTable() {
    const firstDate=users?.map((item)=>item.date)
    console.log("firstDate",firstDate)
  
-   const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
-   const {id: _, ...newObj} = getTodayData;
-   const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
-   const addObjectData={...newObj,...addTime}
-   console.log("addObjectData",addObjectData)
+ const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
+ const {id: _, ...newObj} = getTodayData;
+ const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+ const addObjectData={...newObj,...addTime}
+ console.log("addObjectData",addObjectData)
    const userData=users?.map((item)=>{
     return item
    })
@@ -74,32 +74,26 @@ export default function AttendanceTable() {
    console.log("lastValue",lastValue)
    console.log("lastFirstValue",lastFirstValue)
    console.log("userData",userData)
-   
-   var data = {
-    end_date: "2018-01-12",
-    start_date: "2018-01-14",
-},
-   endDate = new Date(data.end_date),
-   startDate = new Date(data.start_date),
-   result = [];
-   function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
+  
+   var dataa = {
+    eid: "9",
+    end_date: "2018-01-14",
+    event: true,
+    mname: "test event2",
+    start_date: "2018-01-12",
+    user_type: "1"
 }
-    
+ 
+const endDate = new Date(dataa.end_date)
+const startDate = new Date(dataa.start_date)
+const result = [];
+
+console.log("result",result);
 while(endDate >= startDate) {
-  var {eid, event, mname, user_type} = data;
+  var {eid, event, mname, user_type} = dataa;
   result.push({eid, event, mname, user_type, date: formatDate(startDate)});
   startDate.setDate(startDate.getDate() + 1);
 }
-console.log('result',result);
 
     if (dataGet) {
       setData(dataGet);
@@ -130,7 +124,7 @@ console.log('result',result);
   };
   // console.log(data, "old data");
     
-function formatDate(date) {
+  function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -141,6 +135,8 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+   
+
   useEffect(() => {
     dispatch(attendanceGetApi());
   }, [between]);
