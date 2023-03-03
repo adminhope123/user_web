@@ -31,6 +31,9 @@ import {
   Update,
 } from "@mui/icons-material";
 import users from "src/_mock/user";
+import { UserDataContext } from "src/UserDataContext";
+import moment from "moment";
+import { merge } from "lodash";
 
 const TABLE_HEAD = [
   { id: "date", label: "Date", alignRight: false },
@@ -42,101 +45,139 @@ const TABLE_HEAD = [
 export default function AttendanceTable() {
   const dispatch = useDispatch();
   const { users } = useSelector((res) => res.data);
-  const [data, setData] = useState();
   const [between, setBetween] = useState([]);
   const [updated, setUpdated] = useState([]);
   const [attendanceGetData, setAttendanceGetData] = useState(users);
   const [getData, setGetData] = useState();
+   const [allObjectData,setAllObjectData]=useState()
+ const {getEmployeeId}=useContext(UserDataContext)
 
   const attendancePostData = () => {
     const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
-    console.log("dataGetGet",dataGetGet)
     setGetData(dataGetGet);
-    console.log("data", data);
     const livedate = new Date().toLocaleDateString("es-DO");
     const dateFilter = users?.slice(-2)[0]?.date;
-    console.log("dateFilter", dateFilter);
-    console.log("livedate", livedate);
    const firstDate=users?.map((item)=>item.date)
-   console.log("firstDate",firstDate)
  
  const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
- const {id: _, ...newObj} = getTodayData;
+ delete getTodayData.timerId
+ delete getTodayData.totalSeconds
+ delete getTodayData.stop
+ delete getTodayData.state
+ delete getTodayData.start
+ delete getTodayData.secs
+ delete getTodayData.parent
+ delete getTodayData.mins
+ delete getTodayData.hours
+delete getTodayData.color
+
+
  const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
- const addObjectData={...newObj,...addTime}
+ const addObjectData={...getTodayData,...addTime}
  console.log("addObjectData",addObjectData)
+ console.log("users",users)
+
    const userData=users?.map((item)=>{
     return item
    })
    const lastValue=userData.slice(-1)[0]?.date
-   const lastFirstValue=userData.slice(-2)[0]?.date
+   const lastFirstValue=  userData.slice(-2)[0]?.date
    console.log("lastValue",lastValue)
    console.log("lastFirstValue",lastFirstValue)
-   console.log("userData",userData)
-  
-//    var dataa = {
-//     eid: "9",
-//     end_date: "2018-01-14",
-//     event: true,
-//     mname: "test event2",
-//     start_date: "2018-01-12",
-//     user_type: "1"
-// }
- 
-// const endDate = new Date(dataa.end_date)
-// const startDate = new Date(dataa.start_date)
-// const result = [];
+   console.log("userData",getEmployeeId)
+   var InputData = {
+    end_date:lastValue,
+    start_date:lastFirstValue,
+    date:"",
+    day:"",
+    month:"",
+    employeeId:getEmployeeId,
+    totalwork:"0:00:00",
+    present:"false",
+    absent:"true"
+}
 
-// console.log("result",result);
-// while(endDate >= startDate) {
-//   var {eid, event, mname, user_type} = dataa;
-//   result.push({eid, event, mname, user_type, date: formatDate(startDate)});
-//   startDate.setDate(startDate.getDate() + 1);
-// }
+var StartDate=moment(InputData.start_date, "DD-MM-YYYY");
+var EndDate=moment(InputData.end_date, "DD-MM-YYYY");
+var Days=EndDate.diff(StartDate, 'days')
+var OutputData=[];
 
-    if (dataGet) {
-      setData(dataGet);
-    }
-    if (data) {
-      // dispatch(attendanceApiPut(data))
-      console.log("data", data);
-      if (data?.date) {
-        const attendanceId = getData?.id;
-        if (attendanceId) {
-          dispatch(attendanceApiPut(data, attendanceId));
-        }
-      }
-      users?.length
-      ? console.log("data added")
-      : dispatch(attendancePostApi(data));
-      {
-        users?.map((item) => {
-          if (item.date === livedate) {
-            console.log("data allredy");
-          } else {
-            dispatch(attendancePostApi(data));
-          }
-        });
-      }
-    }
+var firstObj={
+  employeeId: getEmployeeId,
+    date: moment(StartDate).format("DD-MM-YYYY"),
+    totalwork:InputData.totalwork,
+    present:InputData.present,
+    absent:InputData.absent,
+    month:moment(StartDate).format("MMMM"),
+    day:moment(StartDate).format("dddd"),
+}
+
+OutputData.push(firstObj);
+
+for(var i=1;i<Days+1;i++){
+   var mydate=moment(StartDate).add(i, 'day').format("DD-MM-YYYY");
+   var mydatedata=moment(StartDate).add(i, 'day').format("dddd");
+   var mydateMonth=moment(StartDate).add(i, 'day').format("MMMM");
+   var myObj={
+    employeeId: getEmployeeId,
+    date: mydate,
+    present:InputData.present,
+    absent:InputData.absent,
+    totalwork:InputData.totalwork,
+    day:InputData.day,
+    month:mydateMonth,
+    day:mydatedata
+   };
+   
+   OutputData.push(myObj);
+}
+
+const getAbsentData=OutputData?.map((item)=>{
+  return item;  
+})
+const absentFisrtValue=getAbsentData?.shift();
+const absentSecondValue=getAbsentData?.slice(0).pop();
+const filterData=getAbsentData?.filter(item=>item!==absentFisrtValue&&item!==absentSecondValue)
+console.log("filterData",filterData)
+console.log("addObjectData",addObjectData)
+const mergeData= [...filterData,addObjectData];
+const mergeArrayOfObject= [ ...users, ...mergeData ]
+
+
+const dublicateValue=mergeArrayOfObject.filter((v,i,a)=>a.findLastIndex(v2=>(v2.date === v.date))===i)
+console.log("dublicateValue",dublicateValue) 
+const dublicateValueDataRemove=dublicateValue.filter(({ date: id1 }) => !users.some(({ date: id2 }) => id2 === id1));
+console.log("dublicateValueDataRemove",dublicateValueDataRemove)
+const dataaa=dublicateValueDataRemove?.map((item)=>{
+  dispatch(attendancePostApi(item))
+})
+//  dispatch(attendancePostApi(addObjectData))
+    // if (data) {
+    //   // dispatch(attendanceApiPut(data))
+    //   console.log("data", data);
+    //   if (data?.date) {
+    //     const employeeEditIdData = getData?.id;
+    //     if (employeeEditIdData) {
+    //       dispatch(attendanceApiPut(data, employeeEditIdData));
+    //     }
+    //   }
+    //   users?.length
+    //   ? console.log("data added")
+    //   : dispatch(attendancePostApi(data));
+    //   {
+    //     users?.map((item) => {
+    //       if (item.date === livedate) {
+    //         console.log("data allredy");
+    //       } else {
+    //         dispatch(attendancePostApi(data));
+    //       }
+    //     });
+    //   }
+    // }
     console.log("users", users);
   };
   // console.log(data, "old data");
-    
-  function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-   
-
   useEffect(() => {
     dispatch(attendanceGetApi());
   }, [between]);
@@ -309,9 +350,10 @@ export default function AttendanceTable() {
                 </TableCell>
                 {row?.totalSeconds ? (
                   <TableCell style={{ width: 160 }} align="center">
-                    {row?.present === true ? (
-                      <div className="check-icon">
-                        <CheckIcon />
+                    {row?.present === "true" ? (
+                      <div className="close-icon">
+                        <CloseIcon />
+                       
                       </div>
                     ) : (
                       ""
@@ -319,9 +361,9 @@ export default function AttendanceTable() {
                   </TableCell>
                 ) : (
                   <TableCell style={{ width: 160 }} align="center">
-                    {row?.absent === false ? (
-                      <div className="close-icon ">
-                        <CloseIcon />
+                    {row?.absent === "false" ? (
+                      <div className="check-icon ">
+                         <CheckIcon />
                       </div>
                     ) : (
                       ""
