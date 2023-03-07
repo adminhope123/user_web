@@ -95,7 +95,7 @@ export default function TimerClock(props) {
   
   const hoursTotalFunction=()=>{
     const  date =new Date().toLocaleDateString("es-DO");
-    const userFilter=users.filter((item)=>item.date===date)
+    const userFilter=users?.filter((item)=>item.date===date)
     setDateData(userFilter)
     console.log("users",users)
   }
@@ -113,8 +113,7 @@ const getTotalWorkTime=()=>{
     getTotalWorkTime()
   }, [])
   useEffect(() => {
-    dateData.reverse();
-   
+    dateData?.reverse();
   }, [dateData])
   return (
     <div className='timer-clock'> 

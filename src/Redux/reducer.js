@@ -46,7 +46,11 @@ const usersReducers = (state = initialState, action) => {
         ...state,
         loading: false,
       };
-    case type.TIME_STOP_PUT:
+      case type.TIME_STOP_PUT:
+        return {
+          ...state,
+          users: action.payload,
+        };
     case type.TIME_TOTAL:
       return {
         ...state,

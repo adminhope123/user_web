@@ -58,6 +58,7 @@ const monthData=monthNames[d.getMonth()]
 
 const getModelTask = () => ({
   employeeId :arrayRemove,
+    id:"",
     timerId: v4(),
     state: 'non-started',
     parent: false,
@@ -193,10 +194,13 @@ const stopRunningTask = () => {
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
    if(data){
-     const employeeEditIdData=data?.timerId  
+     console.log("data",data)
+     const employeeEditIdData=data?.id  
+     console.log("employeeEditIdData",employeeEditIdData)
        const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
        const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
        const mergeObject={...data,...totalTimeDataAddObject}
+       console.log("mergeData",mergeObject)
        dispatch(timeStopApi(mergeObject,employeeEditIdData))
    }
 

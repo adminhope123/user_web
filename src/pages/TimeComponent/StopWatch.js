@@ -63,14 +63,14 @@ function StopWatch(props) {
                    sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
     }
     const sumToSeconds = times => {
-        return times.reduce((a, e) => {
-          const parts = e.trim().split(":").map(Number);
-          parts.forEach((e, i) => {
+        return times?.reduce((a, e) => {
+          const parts = e?.trim().split(":").map(Number);
+          parts?.forEach((e, i) => {
             if (i < parts.length - 1) {
               parts[i+1] += e * 60;
             }
           });
-          return parts.pop() + a;
+          return parts?.pop() + a;
         }, 0);
       };
     return(
