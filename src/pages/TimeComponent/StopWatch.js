@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { TaskHelper } from '../store/Settings';
 import '../TimeTracking.css'
 import { PlayArrow, Stop } from '@mui/icons-material';
@@ -15,7 +15,7 @@ function StopWatch(props) {
         startRunningTask, 
         stopRunningTask, 
         getRunningTask, 
-        getModelTask,dublicateValueData } = useContext(UserDataContext);
+        getModelTask,dublicateValueData,taskTimerStart } = useContext(UserDataContext);
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
     const {users}=useSelector(res=>res.data)
@@ -27,6 +27,7 @@ function StopWatch(props) {
             start: moment().format()
         });
         sessionStorage.setItem("attendace",JSON.stringify(timer))
+        console.log("users",users)
             const unloadCallback = (event) => {
               event.preventDefault();
               event.returnValue = "";
@@ -38,6 +39,8 @@ function StopWatch(props) {
     }
       const stopTimer = mode => {
         stopRunningTask()
+        const checkId=users?.filter((item)=>item?.timerId!==taskTimerStart?.timerId)
+        console.log("checkId",checkId)
         const getData = users?.map((item) => item);
         console.log("getDAta", getData);
         const liveDate = new Date().toLocaleDateString("es-DO");

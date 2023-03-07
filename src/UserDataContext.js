@@ -22,6 +22,7 @@ export const UserDataProvider = (props) => {
   const [totalTimeData,setTotalTimeData]=useState()
   const [dublicateValueData,setDublicateValueData]=useState()
   const [getEmployeeId,setGetEmployeeId]=useState()
+  const [taskTimerStart,setTaskTimerStart]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -167,6 +168,7 @@ const startRunningTask = task => {
                 })
             : addTask(task)
             dispatch(timeStartApi(task))
+            setTaskTimerStart(task)
             console.log("taskStart",task)
         interval = setInterval(() => { intervalRef.current() },1000)
     }
@@ -211,6 +213,7 @@ const stopRunningTask = () => {
     deleteTask,
     dublicateValueData,
     totalWorkTimeData,
+    taskTimerStart,
     totalTimeData
   };
 

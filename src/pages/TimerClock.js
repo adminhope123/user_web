@@ -114,7 +114,6 @@ const getTotalWorkTime=()=>{
   }, [])
   useEffect(() => {
     dateData.reverse();
-   
   }, [dateData])
   return (
     <div className='timer-clock'> 
