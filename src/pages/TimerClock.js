@@ -36,50 +36,18 @@ export default function TimerClock(props) {
   const [getdataaa,setGetdataaa]=useState()
   const dispatch=useDispatch()
   const [dateData,setDateData]=useState([])
-  const [totalWorkTime,setTotalWorkTime]=useState()
   const [totalHours,setTotalHours]=useState()
   const [totalMinite,setTotalMinite]=useState()
   const [totalSecound,setTotalSecound]=useState()
+  const [filterdataTotalTime,setFilterdataTotalTime]=useState()
+  const [totalWorkTimeDataData,setTotalWorkTimeDataData]=useState()
   const {users}=useSelector(state=>state?.data)
-  const {totalWorkTimeData,findDateFunction}=useContext(UserDataContext)
+  const {totalWorkTimeData,findDateFunction,getEmployeeId,totalTimeModel,setTotalTimeModel}=useContext(UserDataContext)
   const {total}=useSelector(res=>res.data)
-  const [totalTimeModel, setTotalTimeModel] = useState(false);
-  
-  const handleTotalTimeModelClickOpen = () => {
-    setTotalTimeModel(true);
-    const getData = users?.map((item) => item);
-    const liveDate = new Date().toLocaleDateString("es-DO");
-    const duplicateDate = liveDate;
-    const dublicateValue = users.filter((obj) =>
-      duplicateDate.includes(obj.date)
-    );
-    const getTotalWorkTime=dublicateValue?.map((item)=>{
-        return item?.totalTimeWork
-      })
-      const totalSecondsdata = sumToSeconds(getTotalWorkTime);
-  const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
-           ~~((totalSecondsdata / 60) % 60)}:${
-           ~~(totalSecondsdata % 60)}`
-           setTotalWorkTime(getTotalWorkDataObject)
-           const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
-               sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
-  };
  
+  const [totalWorkData,setTotalWorkData]=useState()
+  
 
-    const sumToSeconds = times => {
-        return times.reduce((a, e) => {
-          const parts = e.trim().split(":").map(Number);
-          parts.forEach((e, i) => {
-            if (i < parts.length - 1) {
-              parts[i+1] += e * 60;
-            }
-          });
-          return parts.pop() + a;
-        }, 0);
-      };
-  const handleTotalTimeModelClose = () => {
-    setTotalTimeModel(false);
-  };
 
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
@@ -96,21 +64,69 @@ export default function TimerClock(props) {
   const hoursTotalFunction=()=>{
     const  date =new Date().toLocaleDateString("es-DO");
     const userFilter=users?.filter((item)=>item.date===date)
-    setDateData(userFilter)
-    console.log("users",users)
+    const getUserDataGet=JSON.parse(sessionStorage.getItem("userData"))
+    const getUserDataTime=getUserDataGet?.map((item)=>{
+        const filterData=userFilter?.filter((ele)=>{return ele.employeeId===item.E_Id})
+        console.log("filterData",filterData)
+        setDateData(filterData)
+        console.log("users",users)
+    })
   }
+  const handleTotalTimeModelClose = () => {
+    setTotalTimeModel(false);
+  };
+  const handleTotalTime = () => {
+    setTotalTimeModel(true)
+    const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
+    getDatadaaa?.map((ele)=>{
+       ele.getEmployeeId
+       console.log("item",  ele.E_Id)
+       const filterdataaa=users?.filter((item)=>ele.E_Id=== item?.employeeId)
+       console.log("filterDAta",filterdataaa)
+       if(filterdataaa){
+         setFilterdataTotalTime(filterdataaa)
+       }
+      })
+    const liveDate = new Date().toLocaleDateString("es-DO");
+    const duplicateDate = liveDate;
+    const dublicateValue = filterdataTotalTime.filter((obj) =>
+      duplicateDate.includes(obj.date)
+    );
+    const getTotalWorkTime=dublicateValue?.map((item)=>{
+        return item?.totalTimeWork
+      })
+      const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+  const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
+           ~~((totalSecondsdata / 60) % 60)}:${
+           ~~(totalSecondsdata % 60)}`
+           setTotalWorkTimeDataData(getTotalWorkDataObject)
+           const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+               sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+  };
+ 
 
-const getTotalWorkTime=()=>{
-   const data=JSON.parse(sessionStorage.getItem("totalWorkTime"))
-   const getData=data?.totalWorkTime
-   setTotalWorkTime(getData)
-}
+    const sumToSeconds = times => {
+        return times.reduce((a, e) => {
+          const parts = e.trim().split(":").map(Number);
+          parts.forEach((e, i) => {
+            if (i < parts.length - 1) {
+              parts[i+1] += e * 60;
+            }
+          });
+          return parts.pop() + a;
+        }, 0);
+      };
+
+// const getTotalWorkTime=()=>{
+//    const data=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+//    const getData=data?.totalWorkTime
+//    setTotalWorkTime(getData)
+// }
   useEffect(() => {
     UpdateTime()
     setInterval(UpdateTime,1000)
     dispatch(getTimeDataApi())
     hoursTotalFunction()
-    getTotalWorkTime()
   }, [])
   useEffect(() => {
     dateData?.reverse();
@@ -118,7 +134,7 @@ const getTotalWorkTime=()=>{
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
-      <button onClick={findDateFunction}>click</button>
+      <button onClick={hoursTotalFunction}>Click</button>
                {/* <h6>{dayToday}</h6> */}
                   {/* <h6>{liveTime }</h6> */}
                   {props.children}
@@ -134,7 +150,7 @@ const getTotalWorkTime=()=>{
           <FormControl>
           <TextField
           id="outlined-read-only-input"
-          defaultValue={totalWorkTime}
+          defaultValue={totalWorkTimeDataData}
           disabled
         />
           </FormControl>
@@ -145,7 +161,7 @@ const getTotalWorkTime=()=>{
         </DialogActions>
       </Dialog>
                   <Dashboard/>
-                  <Button variant="contained" onClick={handleTotalTimeModelClickOpen}>
+                  <Button variant="contained" onClick={handleTotalTime}>
             Total Time
           </Button>
                    {/* <div className='clock'>

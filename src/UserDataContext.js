@@ -22,6 +22,11 @@ export const UserDataProvider = (props) => {
   const [totalTimeData,setTotalTimeData]=useState()
   const [dublicateValueData,setDublicateValueData]=useState()
   const [getEmployeeId,setGetEmployeeId]=useState()
+  const [filterdataTotalTime,setFilterdataTotalTime]=useState()
+  const [timerStartData,setTimerStartData]=useState()
+  const [totalWorkTimeDataData,setTotalWorkTimeDataData]=useState()
+  const [totalTimeModel, setTotalTimeModel] = useState(false);
+  const [timeData,setTimeData]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -176,12 +181,18 @@ const startRunningTask = task => {
                 })
             : addTask(task)
             dispatch(timeStartApi(task))
+            setTimerStartData(task)
+            sessionStorage.setItem("timerData",JSON.stringify(users))
         interval = setInterval(() => { intervalRef.current() },1000)
     }
 }
 
 const stopRunningTask = () => {
     const runningTask = getRunningTask();
+    const checkIdData=users?.filter((item)=>timerStartData?.timerId===item.timerid)
+            console.log("userDAta",users)
+            console.log("timerStartData",timerStartData)
+            console.log("checkIdData",checkIdData)
     editTask({
         ...runningTask, 
         stop: moment().format(),
@@ -195,17 +206,48 @@ const stopRunningTask = () => {
    const data=storedTasks?.slice(-1).pop()
    if(data){
      console.log("data",data)
-     const employeeEditIdData=data?.id  
-     console.log("employeeEditIdData",employeeEditIdData)
        const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
        const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
        const mergeObject={...data,...totalTimeDataAddObject}
        console.log("mergeData",mergeObject)
-       dispatch(timeStopApi(mergeObject,employeeEditIdData))
+       sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
+        const getIdData=checkIdData?.map((item)=>{
+          const employeeEditIdData=item?.id
+          dispatch(timeStopApi(mergeObject,employeeEditIdData))
+        })
+        
    }
-
-    
+  // const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
+  // getDatadaaa?.map((ele)=>{
+  //    ele.getEmployeeId
+  //    console.log("item",  ele.E_Id)
+  //    const filterdataaa=users?.filter((item)=>ele.E_Id=== item?.employeeId)
+  //    console.log("filterDAta",filterdataaa)
+  //    setFilterdataTotalTime(filterdataaa)
+  //   })
+  //     const liveDate = new Date().toLocaleDateString("es-DO");
+  //     const duplicateDate = liveDate;
+  //     console.log("duplicateDate",duplicateDate)
+  //     const dublicateValue = filterdataTotalTime.filter((obj) =>
+  //       duplicateDate.includes(obj?.date)
+  //     );
+  //     console.log("dublicateValue",dublicateValue)
+  //     const getTotalWorkTime=dublicateValue?.map((item)=>{
+  //         return item?.totalTimeWork
+  //       })
+  //       console.log("dublicateValueData",dublicateValue)
+  //       console.log("getTotalWorkTime",getTotalWorkTime)
+  //       const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+  //   const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
+  //            ~~((totalSecondsdata / 60) % 60)}:${
+  //            ~~(totalSecondsdata % 60)}`
+  //            console.log("totalWork",getTotalWorkDataObject)
+  //            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+  //            console.log("totalTimeobj",totalTimeobjData)
+  //                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
     }
+ 
+  
   const properties = {
     userGetData,
     tasks,
@@ -217,9 +259,15 @@ const stopRunningTask = () => {
     getRunningTask,
     findDateFunction,
     startRunningTask,
+    timeData,
     getEmployeeId,
     stopRunningTask,
+    totalTimeModel,
+    setTotalTimeModel,
     deleteTask,
+    filterdataTotalTime,
+    totalWorkTimeDataData,
+    timerStartData,
     dublicateValueData,
     totalWorkTimeData,
     totalTimeData

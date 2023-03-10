@@ -29,7 +29,8 @@ export default function DashboardAppPage() {
   const {users}=useSelector(res=>res.data)
   const [userData,setUserData]=useState()
   
-    const getUserData=()=>{
+    const getUserData=async()=>{
+      await dispatch(getUserDataApi())
       console.log("user",users)
       const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
       if(users){
@@ -41,8 +42,7 @@ export default function DashboardAppPage() {
 
   useEffect(() => {
     getUserData()
-    dispatch(getUserDataApi())
-  }, [])
+  }, [users])
   
   return (
     <>

@@ -76,7 +76,10 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />
+            {
+              userGetData?<Avatar src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />:""
+            }
+            
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary',textTransform:"capitalize" }}>

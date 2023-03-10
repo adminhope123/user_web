@@ -64,7 +64,8 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar  src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />
+        {userGetData?  <Avatar  src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />:""}
+      
       </IconButton>
 
       <Popover

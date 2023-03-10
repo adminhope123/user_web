@@ -125,7 +125,7 @@ export const attendanceGetApi=()=>{
     };
 }
 export const attendanceApiPut=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/viewUattendence/${employeeEditIdData}`;
+    const url=`http://127.0.0.1:8000/api/Uattendenceupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{

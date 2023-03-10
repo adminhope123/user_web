@@ -8,10 +8,12 @@ import {
   Pagination,
   TableHead,
   TablePagination,
+  Button,
   IconButton,
   Box,
 } from "@mui/material";
 import { UserListHead } from "src/sections/@dashboard/user";
+import RefreshIcon from '@mui/icons-material/Refresh';
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -40,6 +42,7 @@ const TABLE_HEAD = [
   { id: "day", label: "Day", alignRight: false },
   { id: "totalWork", label: "Total Work", alignRight: false },
   { id: "present", label: "Present", alignRight: false },
+  { id: "absent", label: "Absent", alignRight: false },
 ];
 
 export default function AttendanceTable() {
@@ -49,35 +52,48 @@ export default function AttendanceTable() {
   const [updated, setUpdated] = useState([]);
   const [attendanceGetData, setAttendanceGetData] = useState(users);
   const [getData, setGetData] = useState();
+  const [filterdataTotalTime,setFilterdataTotalTime]=useState()
    const [allObjectData,setAllObjectData]=useState()
- const {getEmployeeId}=useContext(UserDataContext)
+   const [attendaceDataStore,setAttendaceDataStore]=useState()
+   const [dateSort,setDateSort]=useState()
+   const [presentData,setPresentData]=useState()
+ const {getEmployeeId,timeData,handleTotalTime,totalWorkTimeDataData}=useContext(UserDataContext)
 
   const attendancePostData = () => {
+    // handleTotalTime()
     const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
     setGetData(dataGetGet);
+    getUserDataFunction()
+    console.log("users",users)
     const livedate = new Date().toLocaleDateString("es-DO");
     const dateFilter = users?.slice(-2)[0]?.date;
    const firstDate=users?.map((item)=>item.date)
- 
- const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
- delete getTodayData.timerId
- delete getTodayData.totalSeconds
- delete getTodayData.stop
- delete getTodayData.state
- delete getTodayData.start
- delete getTodayData.secs
- delete getTodayData.parent
- delete getTodayData.mins
- delete getTodayData.hours
-delete getTodayData.color
 
+ const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
+ delete getTodayData?.timerId
+ delete getTodayData?.totalSeconds
+ delete getTodayData?.stop
+ delete getTodayData?.state
+ delete getTodayData?.start
+ delete getTodayData?.secs
+ delete getTodayData?.parent
+ delete getTodayData?.mins
+ delete getTodayData?.absent
+ delete getTodayData?.present
+ delete getTodayData?.hours
+delete getTodayData?.color
 
  const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
- const addObjectData={...getTodayData,...addTime}
+ console.log("getTodatyDataq",getTodayData)
+ const absentData={"absent":false.toString()}
+ console.log("absetData",absentData)
+ const presentDataData={"present":true.toString()}
+ const objectmergePresentAbsent={...absentData,...presentDataData,...getTodayData}
+ console.log("objectmergePresentAbsent",objectmergePresentAbsent)
+ const addObjectData={...objectmergePresentAbsent,...addTime}
  console.log("addObjectData",addObjectData)
  console.log("users",users)
-
    const userData=users?.map((item)=>{
     return item
    })
@@ -93,7 +109,7 @@ delete getTodayData.color
     day:"",
     month:"",
     employeeId:getEmployeeId,
-    totalwork:"0:00:00",
+    totalWorkTime:"0:00:00",
     present:"false",
     absent:"true"
 }
@@ -106,7 +122,7 @@ var OutputData=[];
 var firstObj={
   employeeId: getEmployeeId,
     date: moment(StartDate).format("DD-MM-YYYY"),
-    totalwork:InputData.totalwork,
+    totalWorkTime:InputData.totalWorkTime,
     present:InputData.present,
     absent:InputData.absent,
     month:moment(StartDate).format("MMMM"),
@@ -124,7 +140,7 @@ for(var i=1;i<Days+1;i++){
     date: mydate,
     present:InputData.present,
     absent:InputData.absent,
-    totalwork:InputData.totalwork,
+    totalWorkTime:InputData.totalWorkTime,
     day:InputData.day,
     month:mydateMonth,
     day:mydatedata
@@ -152,36 +168,49 @@ console.log("dublicateValueDataRemove",dublicateValueDataRemove)
 const dataaa=dublicateValueDataRemove?.map((item)=>{
   dispatch(attendancePostApi(item))
 })
-//  dispatch(attendancePostApi(addObjectData))
-    // if (data) {
-    //   // dispatch(attendanceApiPut(data))
-    //   console.log("data", data);
-    //   if (data?.date) {
-    //     const employeeEditIdData = getData?.id;
-    //     if (employeeEditIdData) {
-    //       dispatch(attendanceApiPut(data, employeeEditIdData));
-    //     }
-    //   }
-    //   users?.length
-    //   ? console.log("data added")
-    //   : dispatch(attendancePostApi(data));
-    //   {
-    //     users?.map((item) => {
-    //       if (item.date === livedate) {
-    //         console.log("data allredy");
-    //       } else {
-    //         dispatch(attendancePostApi(data));
-    //       }
-    //     });
-    //   }
-    // }
-    console.log("users", users);
-  };
-  // console.log(data, "old data");
-  useEffect(() => {
-    dispatch(attendanceGetApi());
-  }, [between]);
 
+
+const dataAdd=addObjectData
+console.log("dataAdd",dataAdd)
+const employeeId=getEmployeeId
+const dataCheck=dataAdd?.employeeId===employeeId
+console.log("dataCheck",dataCheck)
+if(dataCheck===true){
+  const getTotalTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+  const createObject={"totalWorkTime":totalWorkTimeDataData}
+  console.log("addDAtra",createObject)
+  const mergeObject={...dataAdd,...getTotalTime}
+  console.log("mergeObject",mergeObject)
+  console.log("users",users)
+  const livedate = new Date().toLocaleDateString("es-DO");
+  console.log("liveDate",livedate)
+  const getTodayDate=users?.filter((item)=>item.date===livedate&&employeeId&&item.id)
+  console.log("getTodayData",getTodayDate)
+  const employeeEditIdData=getTodayDate?.map((item)=>item.id)
+  console.log("employeeEditIdData",employeeEditIdData)
+  setTimeout(() => {
+    dispatch(attendanceApiPut(mergeObject,employeeEditIdData))
+  },2000 );
+}
+// function sortByDate(a, b) {
+//   if (a.date < b.date) {
+//       return 1;
+//   }
+//   if (a.date > b.date) {
+//       return -1;
+//   }
+//   return 0;
+// }
+
+// const sorted = users?.sort(sortByDate);
+// setDateSort(sorted)
+  };
+const handleTotalTimeModelClose = () => {
+setTotalTimeModel(false);
+};
+useEffect(() => {
+  dispatch(attendanceGetApi());
+}, []);
   function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -250,16 +279,28 @@ const dataaa=dublicateValueDataRemove?.map((item)=>{
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
   };
-  function createData(date, day, present, totalWork, totalSeconds, absent) {
-    return { date, day, present, absent, totalWork, totalSeconds };
+  function createData(date, day, present, totalWorkTime, totalSeconds, absent) {
+    return { date, day, present, absent, totalWorkTime, totalSeconds };
   }
-  const rows = users?.map((item) => {
+const getUserDataFunction=()=>{
+  const getEmployeeIdGetData=JSON.parse(sessionStorage.getItem("userData"))
+  const getEmployeeIdData=getEmployeeIdGetData?.map((item)=>{
+    const employeeGetData=users?.filter((ele)=>ele.employeeId===item.E_Id)
+    console.log("employeeGetData",employeeGetData)
+    setAttendaceDataStore(employeeGetData)
+  })
+}
+useEffect(() => {
+  getUserDataFunction()
+}, [])
+
+  const rows =attendaceDataStore?.map((item) => {
     return [
       createData(
         item?.date,
         item?.day,
         item?.present,
-        item?.totalWork,
+        item?.totalWorkTime,
         item?.totalSeconds,
         item?.absent
       ),
@@ -289,7 +330,10 @@ const dataaa=dublicateValueDataRemove?.map((item)=>{
   return (
     <div>
       <div className="attendance-table">
-        <button onClick={() => attendancePostData()}>Click</button>
+        <Button  variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
+           <span> Data Refresh</span>
+          <RefreshIcon sx={{marginLeft:"10px"}}/>
+          </Button>
         {/* <Table>
           <UserListHead headLabel={TABLE_HEAD} />
           <TableBody>
@@ -346,14 +390,32 @@ const dataaa=dublicateValueDataRemove?.map((item)=>{
                   {row?.day}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {row?.totalWork}
+                  {row?.totalWorkTime}
                 </TableCell>
-                {row?.totalSeconds ? (
+                <TableCell style={{ width: 160 }} align="center">
+                    {row?.present === "true" ? (
+                      <div className="check-icon ">
+                  <CheckIcon />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </TableCell>
+                <TableCell style={{ width: 160 }} align="center">
+                    {row?.absent === "true" ? (
+                      <div className="close-icon">
+                         <CloseIcon />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </TableCell>
+                
+                {/* {row?.totalSeconds ? (
                   <TableCell style={{ width: 160 }} align="center">
                     {row?.present === "true" ? (
                       <div className="close-icon">
-                        <CloseIcon />
-                       
+                     
                       </div>
                     ) : (
                       ""
@@ -361,15 +423,15 @@ const dataaa=dublicateValueDataRemove?.map((item)=>{
                   </TableCell>
                 ) : (
                   <TableCell style={{ width: 160 }} align="center">
-                    {row?.absent === "false" ? (
+                    {row?.absent === "true" ? (
                       <div className="check-icon ">
-                         <CheckIcon />
+                         <CloseIcon />
                       </div>
                     ) : (
                       ""
                     )}
                   </TableCell>
-                )}
+                )} */}
               </TableRow>
             ))}
 

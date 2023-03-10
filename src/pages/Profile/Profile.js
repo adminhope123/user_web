@@ -105,7 +105,10 @@ const data=(e)=>{
 <div className='profile-card'>
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
-        <img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>
+        {
+          userGetData?<img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>:""
+        }
+        
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
            {userGetData?.userName}

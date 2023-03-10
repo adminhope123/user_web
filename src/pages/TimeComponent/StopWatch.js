@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { TaskHelper } from '../store/Settings';
 import '../TimeTracking.css'
 import { PlayArrow, Stop } from '@mui/icons-material';
@@ -15,7 +15,7 @@ function StopWatch(props) {
         startRunningTask, 
         stopRunningTask, 
         getRunningTask, 
-        getModelTask,dublicateValueData } = useContext(UserDataContext);
+        getModelTask,dublicateValueData,storedTasks,timerStartData,getEmployeeId } = useContext(UserDataContext);
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
     const {users}=useSelector(res=>res.data)
@@ -26,7 +26,7 @@ function StopWatch(props) {
             totalSeconds: 0,
             start: moment().format()
         });
-        sessionStorage.setItem("attendace",JSON.stringify(timer))
+ 
             const unloadCallback = (event) => {
               event.preventDefault();
               event.returnValue = "";
@@ -36,43 +36,13 @@ function StopWatch(props) {
             window.addEventListener("beforeunload", unloadCallback);
             return () => window.removeEventListener("beforeunload", unloadCallback);
     }
+    
       const stopTimer = mode => {
         stopRunningTask()
-        const getData = users?.map((item) => item);
-        console.log("getDAta", getData);
-        const liveDate = new Date().toLocaleDateString("es-DO");
-        const duplicateDate = liveDate;
-        console.log("duplicateDate",duplicateDate)
-        const dublicateValue = users.filter((obj) =>
-          duplicateDate.includes(obj.date)
-        );
-        console.log("dublicateValue",dublicateValue)
-        console.log("dublicateValueData",dublicateValueData)
-        const getTotalWorkTime=dublicateValue?.map((item)=>{
-            return item?.totalTimeWork
-          })
-          console.log("dublicateValueData",dublicateValue)
-          console.log("getTotalWorkTime",getTotalWorkTime)
-          const totalSecondsdata = sumToSeconds(getTotalWorkTime);
-      const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
-               ~~((totalSecondsdata / 60) % 60)}:${
-               ~~(totalSecondsdata % 60)}`
-               console.log("totalWork",getTotalWorkDataObject)
-               const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
-               console.log("totalTimeobj",totalTimeobjData)
-                   sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+ 
     }
-    const sumToSeconds = times => {
-        return times?.reduce((a, e) => {
-          const parts = e?.trim().split(":").map(Number);
-          parts?.forEach((e, i) => {
-            if (i < parts.length - 1) {
-              parts[i+1] += e * 60;
-            }
-          });
-          return parts?.pop() + a;
-        }, 0);
-      };
+ 
+      
     return(
         <div className='stop-watch'>
 <React.Fragment>
@@ -122,6 +92,7 @@ function StopWatch(props) {
                     </div>
             )}
            </div>   
+           <button onClick={stopTimer}>Click</button>
         </React.Fragment>
         </div>
     ) 

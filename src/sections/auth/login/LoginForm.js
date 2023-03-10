@@ -51,7 +51,11 @@ export default function LoginForm() {
     result= await result.json()
     sessionStorage.setItem("loginData",JSON.stringify(loginData))
     navigate('/dashboard/app', { replace: true })
-    location.reload();
+    const getData=JSON.parse(sessionStorage.getItem("loginData"))
+    if(getData?.length===0){
+    }else{
+      location.reload()
+    }
    }
 
   // const handleLoginSubmit=(e)=>{
