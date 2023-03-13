@@ -4,6 +4,8 @@ import TimerIcon from '@mui/icons-material/Timer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventIcon from '@mui/icons-material/Event';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import TaskIcon from '@mui/icons-material/Task';
+import TaskPage from 'src/pages/TaskPage/TaskPage';
 // ----------------------------------------------------------------------
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
@@ -24,7 +26,11 @@ const navConfig = [
     path: '/dashboard/attendance-list',
     icon:<EventAvailableIcon/> ,
   },
-
+  {
+    title: 'Task',
+    path: '/dashboard/task',
+    icon: <TaskIcon/>,
+  },
   {
     title: 'Event',
     path: '/dashboard/event',

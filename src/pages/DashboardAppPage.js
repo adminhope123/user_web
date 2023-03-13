@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography,Button,Box} from '@mui/material';
+import { Grid, Container, Typography,Button,Box, Modal, FormControl, TextField} from '@mui/material';
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -18,7 +18,7 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDataApi } from 'src/Redux/actions';
+import { addTask, getUserDataApi } from 'src/Redux/actions';
 import { useEffect, useState } from 'react';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -26,8 +26,19 @@ import AbsentIcon from './presentIcon.png'
 import PresentIcon from './presentIcon.png'
 import TimeTrackingIcon from './timeTracking.png'
 import EmployeeIcon from './employeeImg.png'
-
 // ----------------------------------------------------------------------
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "400px",
+  borderRadius:"10px",
+  bgcolor: 'background.paper',
+  hight:"266px",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function DashboardAppPage() {
   const theme = useTheme();
@@ -40,6 +51,7 @@ export default function DashboardAppPage() {
   const [presentDataDataData,setPresentDataDataData]=useState()
   const [closeIconShow,setCloseIconShow]=useState(true)
 const [onlineData,setOnlineData]=useState()
+
 
     const getUserData=async()=>{
       await dispatch(getUserDataApi())
@@ -131,9 +143,6 @@ console.log("mergeDatadata",mergeDatadata)
             />
           </Grid>
           <Grid item sx={{width:"100%"}} >
-            <Box sx={{display:"flex",justifyContent:"flex-end",marginBottom:"10px"}}>
-            <Button>Add Task</Button>
-            </Box>
             <AppTasks
               title="Tasks"
               list={[
@@ -255,9 +264,9 @@ console.log("mergeDatadata",mergeDatadata)
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item sx={{width:"100% "}}>
             <AppTrafficBySite
-              title="Traffic by Site"
+              title="Hope Social Media"
               list={[
                 {
                   name: 'FaceBook',

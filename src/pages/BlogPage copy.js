@@ -53,9 +53,7 @@ export default function BlogPage() {
           <BlogPostsSearch posts={POSTS} />
           <BlogPostsSort options={SORT_OPTIONS} />
         </Stack>
-  <Box>
-    
-  </Box>
+
         <Grid container spacing={3}>
           {POSTS.map((post, index) => (
             <BlogPostCard key={post.id} post={post} index={index} />

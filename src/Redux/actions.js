@@ -57,6 +57,29 @@ const getProfileData=(users)=>({
     payload:users
 })
 
+export const addTask = payload => {
+
+    return {
+      type: "TASK_ADD",
+      payload
+    };
+  };
+  
+  export const editTask = payload => {
+    return {
+      type: "TASK_EDIT",
+      payload
+    };
+  };
+  
+  export const deleteTask = payload => {
+    return {
+      type: "TASK_DELETE",
+      payload
+    };
+  };
+  
+
 export const loginFormPostApi=(user)=>{
     const url="http://127.0.0.1:8000/api/userlogin";
     return function (dispatch){
