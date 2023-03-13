@@ -165,6 +165,7 @@ export const profilePutApi=(user,employeeEditIdData)=>{
         .catch((error)=>console.log("error",error))
     }
 }
+
 export const profileGetApi=()=>{
     const url="http://127.0.0.1:8000/api/viewuserprofile";
     return function (dispatch){
