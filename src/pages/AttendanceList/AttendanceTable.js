@@ -36,6 +36,7 @@ import users from "src/_mock/user";
 import { UserDataContext } from "src/UserDataContext";
 import moment from "moment";
 import { merge } from "lodash";
+import LoaderComp from "src/loader/LoaderComp";
 
 const TABLE_HEAD = [
   { id: "date", label: "Date", alignRight: false },
@@ -57,7 +58,7 @@ export default function AttendanceTable() {
    const [attendaceDataStore,setAttendaceDataStore]=useState()
    const [dateSort,setDateSort]=useState()
    const [presentData,setPresentData]=useState()
- const {getEmployeeId,timeData,handleTotalTime,totalWorkTimeDataData}=useContext(UserDataContext)
+ const {getEmployeeId,timeData,handleTotalTime}=useContext(UserDataContext)
 
   const attendancePostData = () => {
     // handleTotalTime()
@@ -152,6 +153,7 @@ for(var i=1;i<Days+1;i++){
 const getAbsentData=OutputData?.map((item)=>{
   return item;  
 })
+console.log("getAbsentData",getAbsentData)
 const absentFisrtValue=getAbsentData?.shift();
 const absentSecondValue=getAbsentData?.slice(0).pop();
 const filterData=getAbsentData?.filter(item=>item!==absentFisrtValue&&item!==absentSecondValue)
@@ -177,7 +179,8 @@ const dataCheck=dataAdd?.employeeId===employeeId
 console.log("dataCheck",dataCheck)
 if(dataCheck===true){
   const getTotalTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
-  const createObject={"totalWorkTime":totalWorkTimeDataData}
+  const totalWorkGet=getTotalTime?.totalWorkTime
+  const createObject={"totalWorkTime":totalWorkGet}
   console.log("addDAtra",createObject)
   const mergeObject={...dataAdd,...getTotalTime}
   console.log("mergeObject",mergeObject)
@@ -191,6 +194,23 @@ if(dataCheck===true){
   setTimeout(() => {
     dispatch(attendanceApiPut(mergeObject,employeeEditIdData))
   },2000 );
+  console.log("allEmployeeData",attendaceDataStore)
+  let presentData = attendaceDataStore.map(tab=>keyFilters(tab, ["present"]))
+  const daatta=[...presentData]
+  console.log("dataa",daatta)
+  const presentDataFilter =daatta.filter((item)=>item.present==="true")
+  const presentDataData=presentDataFilter.length
+  let absentData = attendaceDataStore.map(tab=>keyFilters(tab, ["absent"]))
+  const absentDataArrayOf=[...absentData]
+  console.log("dataa",absentDataArrayOf)
+  const absentDataFilter =absentDataArrayOf.filter((item)=>item.absent==="true")
+  const absentDataData=absentDataFilter.length
+  console.log("filters",absentDataData)
+  const presentDataDataData={"presentData":presentDataData}
+  const absentDataDataData={"absentData":absentDataData}
+  const mergeObjectdata=[presentDataDataData,absentDataDataData]
+  console.log("mergeObject",mergeObjectdata)
+  sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
 }
 // function sortByDate(a, b) {
 //   if (a.date < b.date) {
@@ -205,9 +225,22 @@ if(dataCheck===true){
 // const sorted = users?.sort(sortByDate);
 // setDateSort(sorted)
   };
+  let keyFilters = function(values, keys){
+    let filteredKeys = {}
+    Object.keys(values).map((key, index)=>{
+      if (keys.includes(key)){
+         filteredKeys[key] = values[key]
+      }
+    }) 
+  
+    return filteredKeys;
+  }
 const handleTotalTimeModelClose = () => {
 setTotalTimeModel(false);
 };
+
+
+
 useEffect(() => {
   dispatch(attendanceGetApi());
 }, []);
@@ -285,6 +318,7 @@ useEffect(() => {
 const getUserDataFunction=()=>{
   const getEmployeeIdGetData=JSON.parse(sessionStorage.getItem("userData"))
   const getEmployeeIdData=getEmployeeIdGetData?.map((item)=>{
+    console.log("users",users)
     const employeeGetData=users?.filter((ele)=>ele.employeeId===item.E_Id)
     console.log("employeeGetData",employeeGetData)
     setAttendaceDataStore(employeeGetData)
@@ -293,8 +327,11 @@ const getUserDataFunction=()=>{
 useEffect(() => {
   getUserDataFunction()
 }, [])
+var isDescending = true;
 
-  const rows =attendaceDataStore?.map((item) => {
+const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).getTime() - new Date(a.date).getTime() : new Date(a.date).getTime() - new Date(b.date).getTime());
+console.log("dataaaa",dataaaa)
+  const rows =dataaaa?.map((item) => {
     return [
       createData(
         item?.date,
@@ -372,94 +409,96 @@ useEffect(() => {
                 })}
           </TableBody>
         </Table> */}
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <UserListHead headLabel={TABLE_HEAD} />
-          <TableBody>
-            {(rowsPerPage > 0
-              ? dataaa?.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : dataaa
-            )?.map((row, index) => (
-              <TableRow key={row?.index}>
-                <TableCell style={{ width: 160 }} align="center" scope="row">
-                  {row?.date}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row?.day}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row?.totalWorkTime}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                    {row?.present === "true" ? (
-                      <div className="check-icon ">
-                  <CheckIcon />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                    {row?.absent === "true" ? (
-                      <div className="close-icon">
-                         <CloseIcon />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                
-                {/* {row?.totalSeconds ? (
-                  <TableCell style={{ width: 160 }} align="center">
-                    {row?.present === "true" ? (
-                      <div className="close-icon">
-                     
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                ) : (
-                  <TableCell style={{ width: 160 }} align="center">
-                    {row?.absent === "true" ? (
-                      <div className="check-icon ">
-                         <CloseIcon />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                )} */}
-              </TableRow>
-            ))}
+      {
+        dataaa?.length? <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <UserListHead headLabel={TABLE_HEAD} />
+        <TableBody>
+          {(rowsPerPage > 0
+            ? dataaa?.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
+            : dataaa
+          )?.map((row, index) => (
+         <TableRow key={row?.index}>
+          <TableCell style={{ width: 160 }} align="center" scope="row">
+            {row?.date}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+            {row?.day}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+            {row?.totalWorkTime}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+              {row?.present === "true" ? (
+                <div className="check-icon ">
+            <CheckIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+              {row?.absent === "true" ? (
+                <div className="close-icon">
+                   <CloseIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          
+          {/* {row?.totalSeconds ? (
+            <TableCell style={{ width: 160 }} align="center">
+              {row?.present === "true" ? (
+                <div className="close-icon">
+               
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          ) : (
+            <TableCell style={{ width: 160 }} align="center">
+              {row?.absent === "true" ? (
+                <div className="check-icon ">
+                   <CloseIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          )} */}
+        </TableRow>
+          ))}
 
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={3}
-              count={dataaa?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  "aria-label": "rows per page",
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </Table>
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+        </TableBody>
+        <TableRow>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+            colSpan={3}
+            count={dataaa?.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            SelectProps={{
+              inputProps: {
+                "aria-label": "rows per page",
+              },
+              native: true,
+            }}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+          />
+        </TableRow>
+      </Table>:<LoaderComp/>
+      }
       </div>
     </div>
   );

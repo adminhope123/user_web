@@ -16,6 +16,8 @@
 .profile-card .MuiPaper-root {
     max-width: 210px;
 }
+.address-input .MuiInputBase-root {
+}
 .profile-card .MuiTypography-root{
     font-size: 16px;
     text-transform: capitalize;

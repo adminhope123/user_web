@@ -12,6 +12,7 @@ import { UserListHead } from 'src/sections/@dashboard/user';
 import Dashboard from './TimeComponent/Dashboard';
 import { UserDataContext } from 'src/UserDataContext';
 import { setHours } from 'date-fns';
+import LoaderComp from 'src/loader/LoaderComp';
 
 const TABLE_HEAD = [
   { id: 'date', label: 'Date', alignRight: false },
@@ -102,8 +103,22 @@ export default function TimerClock(props) {
            setTotalWorkTimeDataData(getTotalWorkDataObject)
            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
-  };
+
+               console.log("filterdataTotalTime",filterdataTotalTime)
+               const getTotalWorkTimeTime=filterdataTotalTime?.map((item)=>{
+                 return item?.totalTimeWork
+               })
+               const totalSecondsdataData = sumToSeconds(getTotalWorkTimeTime);
+               console.log("getTo",totalSecondsdataData)
+               const getTotalWorkDataObjectData=`${~~(totalSecondsdataData / 60 / 60)}:${
+                ~~((totalSecondsdataData / 60) % 60)}:${
+                ~~(totalSecondsdataData % 60)}`
+                const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
+                console.log("totalTimeobjDataData",totalTimeobjDataData)
+                sessionStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+              };
  
+
 
     const sumToSeconds = times => {
         return times.reduce((a, e) => {
@@ -134,89 +149,93 @@ export default function TimerClock(props) {
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
-      <button onClick={hoursTotalFunction}>Click</button>
-               {/* <h6>{dayToday}</h6> */}
-                  {/* <h6>{liveTime }</h6> */}
-                  {props.children}
-                  <div className='clock-time'>
-                  <Dialog
-        open={totalTimeModel}
-        onClose={handleTotalTimeModelClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Today Work"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          <FormControl>
-          <TextField
-          id="outlined-read-only-input"
-          defaultValue={totalWorkTimeDataData}
-          disabled
-        />
-          </FormControl>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleTotalTimeModelClose}>Agree</Button>
-        </DialogActions>
-      </Dialog>
-                  <Dashboard/>
-                  <Button variant="contained" onClick={handleTotalTime}>
-            Total Time
-          </Button>
-                   {/* <div className='clock'>
-                    <span className='clock-text'>Today Work Time</span>
-                  <span>{totalWorkTime}</span>
-                    </div> */}
-                  </div>
-                <div className="employee-table">
-                  <Table id="table-1">
-                  <UserListHead
-                     order={order}
-                     headLabel={TABLE_HEAD}
-                     rowCount={USERLIST?.length}
-                   />
-                   <TableBody >
-                 {
-                    dateData&&dateData === undefined?"":
-                    dateData&&dateData?.map((user)=>{
-                     return(
-                      
-                    <TableRow  key={user?.id}>
-                    
-                       <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
-                          <TableCell align="center">{user?.day}</TableCell>
-                       <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
-                       {
-                         user.stop?
-                         <TableCell align="center">{user?.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
-                        }
-                        <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
-                          {
-                            user.state==='running'?
-                            <div class="online-indicator">
-                              <span class="blink"></span>
-                              <table id="header-fixed"></table>
-                              
-                            </div>
-                        :""
-                          }
-                          {
-                            user.state==='stopped'?
-                            <div class="online-indicator-stopped">
-                            <span class="blink-stopped"></span>
-                          </div>
-                          :""
-                          }
-                        </TableCell>
-                         <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.secs}</TableCell>
-                    </TableRow>
-                     )
-                    })
-                  }
-                  </TableBody>
-                  </Table>
-                </div>
+       {
+        users?.length?   <div>
+        <button onClick={hoursTotalFunction}>Click</button>
+              {/* <h6>{dayToday}</h6> */}
+                 {/* <h6>{liveTime }</h6> */}
+                 {props.children}
+                 <div className='clock-time'>
+                 <Dialog
+       open={totalTimeModel}
+       onClose={handleTotalTimeModelClose}
+       aria-describedby="alert-dialog-slide-description"
+     >
+       <DialogTitle>{"Today Work"}</DialogTitle>
+       <DialogContent>
+         <DialogContentText id="alert-dialog-slide-description">
+         <FormControl>
+         <TextField
+         id="outlined-read-only-input"
+         defaultValue={totalWorkTimeDataData}
+         disabled
+       />
+         </FormControl>
+         </DialogContentText>
+       </DialogContent>
+       <DialogActions>
+         <Button onClick={handleTotalTimeModelClose}>Agree</Button>
+       </DialogActions>
+     </Dialog>
+                 <Dashboard/>
+                 <Button variant="contained" onClick={handleTotalTime}>
+           Total Time
+         </Button>
+                  {/* <div className='clock'>
+                   <span className='clock-text'>Today Work Time</span>
+                 <span>{totalWorkTime}</span>
+                   </div> */}
+                 </div>
+               <div className="employee-table">
+                 <Table id="table-1">
+                 <UserListHead
+                    order={order}
+                    headLabel={TABLE_HEAD}
+                    rowCount={USERLIST?.length}
+                  />
+                  <TableBody >
+                {
+                   dateData&&dateData === undefined?"":
+                   dateData&&dateData?.map((user)=>{
+                    return(
+                     
+                   <TableRow  key={user?.id}>
+                   
+                      <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
+                         <TableCell align="center">{user?.day}</TableCell>
+                      <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
+                      {
+                        user.stop?
+                        <TableCell align="center">{user?.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
+                       }
+                       <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
+                         {
+                           user.state==='running'?
+                           <div class="online-indicator">
+                             <span class="blink"></span>
+                             <table id="header-fixed"></table>
+                             
+                           </div>
+                       :""
+                         }
+                         {
+                           user.state==='stopped'?
+                           <div class="online-indicator-stopped">
+                           <span class="blink-stopped"></span>
+                         </div>
+                         :""
+                         }
+                       </TableCell>
+                        <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.secs}</TableCell>
+                   </TableRow>
+                    )
+                   })
+                 }
+                 </TableBody>
+                 </Table>
+               </div>
+        </div>:<LoaderComp/>
+       }
                 {/* <BorderLinearProgress variant="determinate" value={50} /> */}
     </div>
   )

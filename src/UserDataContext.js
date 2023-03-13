@@ -184,6 +184,7 @@ const startRunningTask = task => {
             setTimerStartData(task)
             sessionStorage.setItem("timerData",JSON.stringify(users))
         interval = setInterval(() => { intervalRef.current() },1000)
+   
     }
 }
 
@@ -215,7 +216,7 @@ const stopRunningTask = () => {
           const employeeEditIdData=item?.id
           dispatch(timeStopApi(mergeObject,employeeEditIdData))
         })
-        
+     
    }
   // const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
   // getDatadaaa?.map((ele)=>{

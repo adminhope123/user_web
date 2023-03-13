@@ -6,7 +6,8 @@ import { Card, Typography } from '@mui/material';
 import { fShortenNumber } from '../../../utils/formatNumber';
 // components
 import Iconify from '../../../components/iconify';
-
+import '../../../pages/employeePage.css'
+import CloseIcon from '@mui/icons-material/Close';
 // ----------------------------------------------------------------------
 
 const StyledIcon = styled('div')(({ theme }) => ({
@@ -25,12 +26,18 @@ const StyledIcon = styled('div')(({ theme }) => ({
 AppWidgetSummary.propTypes = {
   color: PropTypes.string,
   icon: PropTypes.string,
+  imgIcon: PropTypes.any.isRequired,
+  imgIconPresent: PropTypes.any.isRequired,
   title: PropTypes.string.isRequired,
+  imgIconEmployeeIcon:PropTypes.any.isRequired,
+  imgIconTimeTrackingIcon:PropTypes.any.isRequired,
   total: PropTypes.number.isRequired,
+  closeIconShow:PropTypes.any.isRequired,
+  setCloseIconShow: PropTypes.any.isRequired,
   sx: PropTypes.object,
 };
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+  export default function AppWidgetSummary({ title,imgIcon,imgIconPresent,imgIconEmployeeIcon,imgIconTimeTrackingIcon, total, icon,closeIconShow,setCloseIconShow,color= 'primary', sx, ...other }) {
   return (
     <Card
       sx={{
@@ -53,10 +60,25 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
             )} 100%)`,
         }}
       >
-        <Iconify icon={icon} width={24} height={24} />
+        <div className='icon-icon'>
+        {icon}
+        </div>
+        <img src={imgIconEmployeeIcon}/>
+        <img src={imgIconTimeTrackingIcon}/>
+        <img src={imgIconPresent}/>
+        {
+          closeIconShow===true&&(
+            <div className='absent-data'>
+        <div className='close-icon'>
+        <CloseIcon/>
+        </div>
+        <img src={imgIcon}/>
+        </div>
+          )
+        }
       </StyledIcon>
 
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
+      <Typography variant="h3">{total}</Typography>
 
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}

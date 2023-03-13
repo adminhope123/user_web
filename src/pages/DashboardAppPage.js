@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography,Button,Box} from '@mui/material';
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -20,6 +20,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDataApi } from 'src/Redux/actions';
 import { useEffect, useState } from 'react';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AbsentIcon from './presentIcon.png'
+import PresentIcon from './presentIcon.png'
+import TimeTrackingIcon from './timeTracking.png'
+import EmployeeIcon from './employeeImg.png'
 
 // ----------------------------------------------------------------------
 
@@ -28,21 +34,62 @@ export default function DashboardAppPage() {
   const dispatch=useDispatch()
   const {users}=useSelector(res=>res.data)
   const [userData,setUserData]=useState()
-  
+  const [allEmployeeData,setAllEmployeeData]=useState()
+  const [totalAllTimeWork,setTotalAllTimeWork]=useState()
+  const [absentData,setAbsentData]=useState()
+  const [presentDataDataData,setPresentDataDataData]=useState()
+  const [closeIconShow,setCloseIconShow]=useState(true)
+const [onlineData,setOnlineData]=useState()
+
     const getUserData=async()=>{
       await dispatch(getUserDataApi())
-      console.log("user",users)
       const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
       if(users){
         const filterData=users?.filter((item)=>item?.email===getUserData?.email)
       const data=  sessionStorage.setItem("userData",JSON.stringify(filterData))
-      console.log("data",data)
       }
+      const getTotalWorkTime=JSON.parse(sessionStorage.getItem("totalAllTimeWork"))
+      const dataTotalTimeEork=getTotalWorkTime?.totalWorkTime
+      setTotalAllTimeWork(dataTotalTimeEork)
+      const allEmployee=users?.length
+      setAllEmployeeData(allEmployee)
+      const attendaceDataGet=JSON.parse(sessionStorage.getItem("attendaceData"))
+      const attendaceDataGetData=attendaceDataGet&&attendaceDataGet?.map((item)=>{
+        const absentDataData=item?.absentData
+        setAbsentData(absentDataData)
+        const presentDataData=item?.presentData
+        if(presentDataData){
+          setPresentDataDataData(presentDataData)
+        }
+      })
+
+      const getOnlineData=JSON.parse(sessionStorage.getItem("online"))
+
+      const getUserDataData=users?.filter((item)=>getOnlineData?.find((ele)=>ele.employeeId===item.E_Id))
+ 
+      const addValue=getUserDataData?.map((item)=>{
+    const {state}=getOnlineData?.find((ele)=>ele.employeeId===item.E_Id)
+    console.log("state",state)
+    return{...item,state}
+    
+  })
+   const filterData=users?.filter(function(cv){
+    return !addValue.find(function(e){
+        return e.E_Id == cv.E_Id;
+    });
+});
+const mergeDatadata=[...addValue,...filterData]
+const mergeDatadataAdd=mergeDatadata?.map((item)=>item)
+setOnlineData(mergeDatadata)
+console.log("mergeDatadata",mergeDatadata)
+      console.log("getUserDataData",filterData)
+      // console.log("getUserDataData",getOnlineData)
+      // console.log("getUserDataData",users)
     }
 
   useEffect(() => {
     getUserData()
-  }, [users])
+  }, [])
   
   return (
     <>
@@ -50,27 +97,54 @@ export default function DashboardAppPage() {
         <title> Dashboard |  User Web </title>
       </Helmet>
       <Container maxWidth="xl">
+        <button onClick={()=>getUserData()}>Click</button>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome back
         </Typography>
-
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Employee" total={allEmployeeData}   icon={<GroupsIcon/>} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Work " total={totalAllTimeWork} color="info"  icon={<AccessTimeFilledIcon/>}  />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Present" total={presentDataDataData} color="warning" imgIconPresent={PresentIcon} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Absent" total={absentData} color="error" imgIcon={AbsentIcon} setCloseIconShow={setCloseIconShow} closeIconShow={closeIconShow}/>
           </Grid>
-
+          <Grid item sx={{width:"100%",overflow:"hidden"}}>
+            <AppNewsUpdate
+              title="Employee Status"
+              list={onlineData?.map((item, index) => ({
+                id:item?.E_Id,
+                title: item?.userName,
+                description: item?.role,
+                image: `http://127.0.0.1:8000/${item&&item?.image}`,
+                online:item?.state,
+                postedAt: faker.date.recent(),
+              }))}
+            />
+          </Grid>
+          <Grid item sx={{width:"100%"}} >
+            <Box sx={{display:"flex",justifyContent:"flex-end",marginBottom:"10px"}}>
+            <Button>Add Task</Button>
+            </Box>
+            <AppTasks
+              title="Tasks"
+              list={[
+                { id: '1', label: 'Create FireStone Logo' },
+                { id: '2', label: 'Add SCSS and JS files if required' },
+                { id: '3', label: 'Stakeholder Meeting' },
+                { id: '4', label: 'Scoping & Estimations' },
+                { id: '5', label: 'Sprint Showcase' },
+              ]}
+            />
+          </Grid>
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
@@ -161,18 +235,7 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
-            <AppNewsUpdate
-              title="News Update"
-              list={[...Array(5)].map((_, index) => ({
-                id: faker.datatype.uuid(),
-                title: faker.name.jobTitle(),
-                description: faker.name.jobTitle(),
-                image: `/assets/images/covers/cover_${index + 1}.jpg`,
-                postedAt: faker.date.recent(),
-              }))}
-            />
-          </Grid>
+   
 
           <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline
@@ -220,18 +283,7 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
-            <AppTasks
-              title="Tasks"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
-            />
-          </Grid>
+        
         </Grid>
       </Container>
     </>

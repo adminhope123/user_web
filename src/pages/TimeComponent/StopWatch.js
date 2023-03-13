@@ -19,6 +19,7 @@ function StopWatch(props) {
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
     const {users}=useSelector(res=>res.data)
+    
     const startTimer = () => {
         startRunningTask({
             ...timer, 
@@ -26,7 +27,10 @@ function StopWatch(props) {
             totalSeconds: 0,
             start: moment().format()
         });
- 
+        const dataRunning=users?.filter((item)=>item?.state==="running")
+        console.log("dagtaa",users)
+        console.log("dataRunning",dataRunning)
+          sessionStorage.setItem("online",JSON.stringify(dataRunning))
             const unloadCallback = (event) => {
               event.preventDefault();
               event.returnValue = "";
@@ -35,6 +39,7 @@ function StopWatch(props) {
           
             window.addEventListener("beforeunload", unloadCallback);
             return () => window.removeEventListener("beforeunload", unloadCallback);
+        
     }
     
       const stopTimer = mode => {
