@@ -52,6 +52,11 @@ const profilePut=(users)=>({
     type:type.PROFILE_PUT_API,
 })
 
+const getProfileData=(users)=>({
+    type:type.PRFILE_GET_API,
+    payload:users
+})
+
 export const loginFormPostApi=(user)=>{
     const url="http://127.0.0.1:8000/api/userlogin";
     return function (dispatch){
@@ -143,28 +148,30 @@ export const profilePostApi=(user)=>{
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(profilePost(resp.data))
+            dispatch(profileGetApi())
         })
         .catch((error)=>console.log("error",error))
     }
 }
-export const profilePutApi=(user,attendanceId)=>{
-    const url=`http://localhost:3004/attendance/${attendanceId}`;
+export const profilePutApi=(user,employeeEditIdData)=>{
+    const url=`http://127.0.0.1:8000/api/userprofileupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
             console.log("resp",resp)
             dispatch(profilePut(resp.data))
+            dispatch(profileGetApi())
         })
         .catch((error)=>console.log("error",error))
     }
 }
 export const profileGetApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewemployee";
+    const url="http://127.0.0.1:8000/api/viewuserprofile";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
             console.log("resp",resp)
-            dispatch(getTimeData(resp.data))
+            dispatch(getProfileData(resp.data))
         })
         .catch((error)=>console.log("error",error));
     };

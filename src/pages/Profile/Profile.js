@@ -14,7 +14,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { UserDataContext } from 'src/UserDataContext';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useDispatch, useSelector } from 'react-redux';
-import { profileGetApi, profilePostApi } from 'src/Redux/actions';
+import { profileGetApi, profilePostApi, profilePutApi } from 'src/Redux/actions';
 import { TextFields } from '@mui/icons-material';
 
 const style = {
@@ -40,6 +40,7 @@ export default function Profile() {
   const [selectedCity, setSelectedCity] = useState(null);
   const [value, setValue] = React.useState('');
   const [birthDate, setBirthDate] =useState("");
+  const [userProfileData,setUserProfileData]=useState()
   const [editFormData,setEditFormData]=useState({
     address:"",
   })
@@ -62,6 +63,8 @@ const hadnleOnChange=(e)=>{
     setEditFormData({ ...editFormData, [name]: value });
   }
 }
+
+
 
 const handleSubmitData=(e)=>{
   e.preventDefault();
@@ -87,21 +90,46 @@ console.log("name",name)
   const mergeObject={...editFormData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
   console.log("mergeObject",mergeObject)
    if(mergeObject){
-    dispatch(profilePostApi(mergeObject))
+    const checkData=users?.map((item)=>item.E_Id===employeeId.E_Id)
+    if(!checkData){
+      dispatch(profilePostApi(mergeObject))
+    }
    }
+   const getIdData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
+   const getIdDataData=getIdData?.map((item)=>{
+     const employeeEditIdData=item?.id
+     dispatch(profilePutApi(mergeObject,employeeEditIdData))
+   })
+   console.log("getIf",getIdData)
+    // dispatch(profilePutApi())
+}
 
+const getApiFunction=async()=>{
+  await dispatch(profileGetApi())
+
+}
+useEffect(() => {
+  getApiFunction()
+}, []);
+
+const userProfileDataFunction=()=>{
+
+setTimeout(() => {
+  if(users){
+    const filterData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
+    console.log("filterData",filterData)
+    setUserProfileData(filterData)
+  }
+}, 1000);
 }
   useEffect(() => {
     console.log("",selectedCountry);
     console.log(selectedCountry?.isoCode);
-    dispatch(profileGetApi())
+
+    userProfileDataFunction()
     console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
   }, [selectedCountry]);
   
-const data=(e)=>{
-  const data=selectedCity.name
-  console.log("userGetData",userGetData)
-}
   return (
     <div className='profile-page'>
         <div className='profile-content'>
@@ -122,84 +150,109 @@ const data=(e)=>{
         </CardContent>
       </CardActionArea>
     </Card>
+<Button onClick={()=>userProfileDataFunction()}>Click</Button>
 </div>
 <div>
   <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
+       {
+        userProfileData?.map((item)=>{
+       return(
+        <div>
         <CardContent>
-        <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-            Employee Id
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-            {userGetData?.E_Id}
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-            Full Name 
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-          {userGetData?.userName}
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-            BirthDate
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-           11-02-2023
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-            Gender
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-            Male
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-            Post
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-            {userGetData?.role}
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-          Email
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-           {userGetData?.email}
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-          Mobile
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-            {userGetData?.mobileNumber}
-          </Typography>
-          </div>
-          <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-          Address
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-           22,surat
-          </Typography>
-          </div>
-          {/* <div className='profile-lable'>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-          Password
-          </Typography>
-          <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-           {userGetData?.password}
-          </Typography>
-          </div> */}
-        </CardContent>
+   <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+       Employee Id
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+       {userGetData?.E_Id}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+       Full Name 
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+     {userGetData?.userName}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+       BirthDate
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+      {item?.birthDate}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+       Gender
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+     {item?.gender}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+       Post
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+       {userGetData?.role}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     Email
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
+      {userGetData?.email}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     Mobile
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+       {userGetData?.mobileNumber}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     Address
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+     {item?.address}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     State
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+     {item?.state}
+     </Typography>
+     </div>
+     <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     City
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+     {item?.city}
+     </Typography>
+     </div>
+     {/* <div className='profile-lable'>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
+     Password
+     </Typography>
+     <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
+      {userGetData?.password}
+     </Typography>
+     </div> */}
+   </CardContent>
+     </div>
+       )
+        })
+       }
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
           Edit
