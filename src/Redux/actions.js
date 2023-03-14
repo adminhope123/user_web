@@ -52,32 +52,30 @@ const profilePut=(users)=>({
     type:type.PROFILE_PUT_API,
 })
 
+
 const getProfileData=(users)=>({
     type:type.PRFILE_GET_API,
     payload:users
 })
 
-export const addTask = payload => {
+const taskAdd=(users)=>({
+    type:type.TASK_ADD,
+    payload:users
+})
 
-    return {
-      type: "TASK_ADD",
-      payload
-    };
-  };
-  
-  export const editTask = payload => {
-    return {
-      type: "TASK_EDIT",
-      payload
-    };
-  };
-  
-  export const deleteTask = payload => {
-    return {
-      type: "TASK_DELETE",
-      payload
-    };
-  };
+const taskPut=(users)=>({
+    type:type.TASK_EDIT,
+})
+
+const taskGet=(users)=>({
+    type:type.TASK_GET,
+    payload:users
+})
+
+const taskDelete = () => ({
+    type: type.TASK_DELETE,
+  });
+
   
 
 export const loginFormPostApi=(user)=>{
@@ -211,3 +209,53 @@ export const getUserDataApi=()=>{
         .catch((error)=>console.log("error",error));
     };
 }
+
+export const taskAddApi=(user)=>{
+    const url="http://127.0.0.1:8000/api/task";
+    return function (dispatch){
+            axios.post(url,user)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(taskAdd(resp.data))
+            dispatch(taskgetApi())
+        })
+        .catch((error)=>console.log("error",error))
+    }
+}
+export const taskEditApi=(user,employeeEditIdData)=>{
+    const url=`http://127.0.0.1:8000/api/deletetask/${employeeEditIdData}`;
+    return function (dispatch){
+            axios.put(url,user)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(taskPut(resp.data))
+            dispatch(taskgetApi())
+        })
+        .catch((error)=>console.log("error",error))
+    }
+}
+
+export const taskgetApi=()=>{
+    const url="http://127.0.0.1:8000/api/viewtask";
+    return function (dispatch){
+            axios.get(url)
+            .then((resp)=>{
+            console.log("resp",resp)
+            dispatch(taskGet(resp.data))
+        })
+        .catch((error)=>console.log("error",error));
+    };
+}
+export const taskDeleteApi = (employeeEditIdData) => {
+    const dataaa = `http://127.0.0.1:8000/api/deletetask/${employeeEditIdData}`;
+    return function (dispatch) {
+      axios
+        .delete(dataaa)
+        .then((resp) => {
+          console.log('resp', resp);
+          dispatch(taskDelete());
+          dispatch(taskgetApi());
+        })
+        .catch((error) => console.log('error', error));
+    };
+  };

@@ -1,10 +1,10 @@
 import { Box, Button, FormControl,Typography, Modal, TextField } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppTasks } from 'src/sections/@dashboard/app';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
-import { addTask } from 'src/Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, taskAddApi, taskgetApi } from 'src/Redux/actions';
 
 const style = {
     position: 'absolute',
@@ -28,11 +28,21 @@ const [taskAdd,setTaskAdd]=useState({
 
 })
 const dispatch=useDispatch()
+const {users}=useSelector(res=>res.data)
 
 const handleOnChage=(e)=>{
     const value = e.target.value;
     setTaskAdd(value); 
 }
+const getTaskApiData=async()=>{
+await  dispatch(taskgetApi())
+}
+
+useEffect (() => {
+  getTaskApiData()
+}, [])
+
+
 const handleOpen = () => setTaskModel(true);
   const handleClose = (e) => {
     setTaskModel(false)
@@ -42,8 +52,9 @@ const handleOpen = () => setTaskModel(true);
     const getUserId=JSON.parse(sessionStorage.getItem("userData"))
     const getUserIdData=getUserId?.map((item)=>{return item?.E_Id})
     const employeeId={"E_Id":getUserIdData.toString()}
-    const readData={"readTask":false}
+    const readData={"read":false}
     const dataMerge={...taskAddObject,...employeeId,...readData}
+    dispatch(taskAddApi(dataMerge))
     console.log("taskAddObject",dataMerge)
   };
 
@@ -77,13 +88,14 @@ const handleOpen = () => setTaskModel(true);
       </Modal>
       <AppTasks
               title="Tasks"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
+             list={users}
+              // list={[
+              //   { id: '1', label: 'Create FireStone Logo' },
+              //   { id: '2', label: 'Add SCSS and JS files if required' },
+              //   { id: '3', label: 'Stakeholder Meeting' },
+              //   { id: '4', label: 'Scoping & Estimations' },
+              //   { id: '5', label: 'Sprint Showcase' },
+              // ]}
             />
     </div>
   )

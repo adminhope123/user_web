@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
+import { taskDeleteApi } from 'src/Redux/actions';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -39,17 +41,17 @@ export default function AppTasks({ title, subheader, list, ...other }) {
         name="taskCompleted"
         control={control}
         render={({ field }) => {
-          const onSelected = (task) =>
-            field.value.includes(task) ? field.value.filter((value) => value !== task) : [...field.value, task];
+          const onSelected = (taskData) =>
+            field.value.includes(taskData) ? field.value.filter((value) => value !== taskData) : [...field.value, taskData];
 
           return (
             <>
-              {list.map((task) => (
+              {list.map((taskData) => (
                 <TaskItem
-                  key={task.id}
-                  task={task}
-                  checked={field.value.includes(task.id)}
-                  onChange={() => field.onChange(onSelected(task.id))}
+                  key={taskData.id}
+                  taskData={taskData}
+                  checked={field.value.includes(taskData.id)}
+                  onChange={() => field.onChange(onSelected(taskData.id))}
                 />
               ))}
             </>
@@ -65,14 +67,15 @@ export default function AppTasks({ title, subheader, list, ...other }) {
 TaskItem.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
-  task: PropTypes.shape({
+  taskData: PropTypes.shape({
     id: PropTypes.string,
     label: PropTypes.string,
   }),
 };
 
-function TaskItem({ task, checked, onChange }) {
+function TaskItem({ taskData, checked, onChange }) {
   const [open, setOpen] = useState(null);
+  const dispatch=useDispatch()
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -84,22 +87,26 @@ function TaskItem({ task, checked, onChange }) {
 
   const handleMarkComplete = () => {
     handleCloseMenu();
-    console.log('MARK COMPLETE', task.id);
+    console.log('MARK COMPLETE', taskData.id);
   };
 
   const handleShare = () => {
     handleCloseMenu();
-    console.log('SHARE', task.id);
+    console.log('SHARE', taskData.id);
   };
 
   const handleEdit = () => {
     handleCloseMenu();
-    console.log('EDIT', task.id);
+    console.log('EDIT', taskData.id);
   };
 
   const handleDelete = () => {
     handleCloseMenu();
-    console.log('DELETE', task.id);
+    console.log('DELETE', taskData.id);
+    const employeeEditIdData=taskData?.id
+    if(employeeEditIdData){
+      dispatch(taskDeleteApi(employeeEditIdData))
+    }
   };
 
   return (
@@ -116,7 +123,7 @@ function TaskItem({ task, checked, onChange }) {
     >
       <FormControlLabel
         control={<Checkbox checked={checked} onChange={onChange} />}
-        label={task.label}
+        label={taskData?.task}
         sx={{ flexGrow: 1, m: 0 }}
       />
 

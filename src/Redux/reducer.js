@@ -72,6 +72,27 @@ const usersReducers = (state = initialState, action) => {
                 ...state,
                 users: action.payload,
               };
+              case type.TASK_ADD:
+                return {
+                  ...state,
+                  loading: false,
+                };
+                case type.TASK_GET:
+                  return {
+                    ...state,
+                    users: action.payload,
+                    loading: false,
+                  };
+                  case type.TASK_EDIT:
+                      return {
+                        ...state,
+                        users: action.payload,
+                      };
+                      case type.TASK_DELETE:
+                        return {
+                          ...state,
+                          loading: false,
+                        };
     default:
       return state;
   }
