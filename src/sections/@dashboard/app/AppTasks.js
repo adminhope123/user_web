@@ -87,6 +87,7 @@ TaskItem.propTypes = {
 
 function TaskItem({ taskData, checked, onChange }) {
   const [open, setOpen] = useState(null);
+  const [isTrue, setIsTrue] =useState(false);
   const dispatch=useDispatch()
 
   const handleOpenMenu = (event) => {
@@ -120,25 +121,38 @@ function TaskItem({ taskData, checked, onChange }) {
       dispatch(taskDeleteApi(employeeEditIdData))
     }
   };
-
+const checkBoxTaskOnChange=(event)=>{
+  setIsTrue(event.target.checked);
+  console.log("task",isTrue)
+  const readData={"read":isTrue}
+  console.log("readData",readData)
+  const employeeEditIdData=taskData?.id
+  const dataMergemerge={...taskData,...readData}
+  dispatch(taskEditApi(employeeEditIdData,dataMergemerge))
+  console.log("Data",dataMergemerge)
+}
   return (
     <Stack
       direction="row"
       sx={{
         px: 2,
         py: 0.75,
-        ...(checked && {
+        ...(isTrue && {
           color: 'text.disabled',
           textDecoration: 'line-through',
         }),
       }}
     >
       <FormControlLabel
-        control={<Checkbox checked={checked} onChange={onChange} />}
+        control={ <Checkbox
+          checked={isTrue}
+          onChange={checkBoxTaskOnChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+       />}
         label={taskData?.task}
         sx={{ flexGrow: 1, m: 0 }}
       />
-
+ 
       <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpenMenu}>
         <Iconify icon={'eva:more-vertical-fill'} />
       </IconButton>
