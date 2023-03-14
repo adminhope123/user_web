@@ -22,7 +22,11 @@ export const UserDataProvider = (props) => {
   const [totalTimeData,setTotalTimeData]=useState()
   const [dublicateValueData,setDublicateValueData]=useState()
   const [getEmployeeId,setGetEmployeeId]=useState()
-  const [taskTimerStart,setTaskTimerStart]=useState()
+  const [filterdataTotalTime,setFilterdataTotalTime]=useState()
+  const [timerStartData,setTimerStartData]=useState()
+  const [totalWorkTimeDataData,setTotalWorkTimeDataData]=useState()
+  const [totalTimeModel, setTotalTimeModel] = useState(false);
+  const [timeData,setTimeData]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -30,8 +34,15 @@ export const UserDataProvider = (props) => {
       setUserGetData(getUserData);
     }
   };
+  const employeeGetIdFucntion = () => {
+    const getData = JSON.parse(sessionStorage.getItem("attendace"));
+    const getId=getData?.employeeId
+    setGetEmployeeId(getId)
+  };
+
   useEffect(() => {
     userGetDataFunction()
+    employeeGetIdFucntion()
   }, [])
   
   const getColor = () => {
@@ -41,18 +52,19 @@ export const UserDataProvider = (props) => {
 const liveDate=new Date().toLocaleDateString("es-DO")
 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  const dayData=days[new Date().getDay()]
-
- useEffect(() => {
-  const getData=JSON.parse(sessionStorage.getItem("userData"))
-  const dataaa=getData?.map(item=>item?.E_Id)
-  const arrayRemove=` ${dataaa}`
-  console.log("data",arrayRemove)
-  setGetEmployeeId(arrayRemove)
-}, [])
+ const monthNames = ["January", "February", "March", "April", "May", "June",
+ "July", "August", "September", "October", "November", "December"
+];
+const d = new Date();
+const monthData=monthNames[d.getMonth()]
+ const getData=JSON.parse(sessionStorage.getItem("userData"))
+ const dataaa=getData?.map(item=>item?.E_Id)
+ const arrayRemove=` ${dataaa}`
 
 const getModelTask = () => ({
-    employeeId:getEmployeeId,
-    timerid: v4(),
+  employeeId :arrayRemove,
+    id:"",
+    timerId: v4(),
     state: 'non-started',
     parent: false,
     date:liveDate,
@@ -66,18 +78,19 @@ const getModelTask = () => ({
     present:true,
     absent:false,
     totalSeconds: 0,
+    month:monthData,
+    totalTimeWork:""
 })
 
 
 useEffect(() => {
   const dataGet = JSON.parse(sessionStorage.getItem('timeTotal'))
-  console.log("dataGet",dataGet)
   setTotalTimeData(dataGet)
 }, [])
 
 
 const getRunningTask = () => tasks.find(t => t.state === 'running');
-const getTask = id => tasks.find(t => t.id === id);
+const getTask = timerId => tasks.find(t => t.timerId === timerId);
 const addTask = task => {
     setTasks(prevTasks => {
         const ntask = task ? {...task } : getModelTask();
@@ -87,24 +100,24 @@ const addTask = task => {
 } 
 const editTask = task => {
     setTasks(prevTasks => {
-        const index = prevTasks.findIndex(t => t.id === task.id);
+        const index = prevTasks.findIndex(t => t.timerId === task.timerId);
         prevTasks[index] = task;
         sessionStorage.setItem('tasks', JSON.stringify(prevTasks))
         const data=prevTasks.slice(-1).pop()
         return [...prevTasks];
     })
 }
-const duplicateTask = id => {
-    const parent = getTask(id);
+const duplicateTask = timerId => {
+    const parent = getTask(timerId);
     addTask({
         ...getModelTask(), 
         description: parent.description,
         category: parent.category,
-        parent: parent.id || id,
+        parent: parent.timerId || timerId,
     })
 }
 const deleteTask = task => {
-    let ntasks = tasks.filter(t => t.id !== task.id)
+    let ntasks = tasks.filter(t => t.timerId !== task.timerId)
     setTasks(ntasks);
     sessionStorage.setItem('tasks', JSON.stringify(ntasks))
     if(task.state === 'running') {
@@ -158,7 +171,7 @@ const findDateFunction = () => {
 const startRunningTask = task => {
     const running = getRunningTask();
     if (!running) {
-        getTask(task.id) 
+        getTask(task.timerId) 
             ? editTask({ 
                     ...task,
                     state: 'running',
@@ -168,14 +181,19 @@ const startRunningTask = task => {
                 })
             : addTask(task)
             dispatch(timeStartApi(task))
-            setTaskTimerStart(task)
-            console.log("taskStart",task)
+            setTimerStartData(task)
+            sessionStorage.setItem("timerData",JSON.stringify(users))
         interval = setInterval(() => { intervalRef.current() },1000)
+   
     }
 }
 
 const stopRunningTask = () => {
     const runningTask = getRunningTask();
+    const checkIdData=users?.filter((item)=>timerStartData?.timerId===item.timerid)
+            console.log("userDAta",users)
+            console.log("timerStartData",timerStartData)
+            console.log("checkIdData",checkIdData)
     editTask({
         ...runningTask, 
         stop: moment().format(),
@@ -187,16 +205,50 @@ const stopRunningTask = () => {
     const storedString = sessionStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
-    const employeeEditIdData=data?.id
-    console.log("data",data)
-      const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
-      const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
-      console.log("totalTimeDataAddObject",totalTimeDataAddObject)
-      const mergeObject={...data,...totalTimeDataAddObject}
-      dispatch(timeStopApi(mergeObject,employeeEditIdData))
-
-    
+   if(data){
+     console.log("data",data)
+       const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
+       const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
+       const mergeObject={...data,...totalTimeDataAddObject}
+       console.log("mergeData",mergeObject)
+       sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
+        const getIdData=checkIdData?.map((item)=>{
+          const employeeEditIdData=item?.id
+          dispatch(timeStopApi(mergeObject,employeeEditIdData))
+        })
+     
+   }
+  // const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
+  // getDatadaaa?.map((ele)=>{
+  //    ele.getEmployeeId
+  //    console.log("item",  ele.E_Id)
+  //    const filterdataaa=users?.filter((item)=>ele.E_Id=== item?.employeeId)
+  //    console.log("filterDAta",filterdataaa)
+  //    setFilterdataTotalTime(filterdataaa)
+  //   })
+  //     const liveDate = new Date().toLocaleDateString("es-DO");
+  //     const duplicateDate = liveDate;
+  //     console.log("duplicateDate",duplicateDate)
+  //     const dublicateValue = filterdataTotalTime.filter((obj) =>
+  //       duplicateDate.includes(obj?.date)
+  //     );
+  //     console.log("dublicateValue",dublicateValue)
+  //     const getTotalWorkTime=dublicateValue?.map((item)=>{
+  //         return item?.totalTimeWork
+  //       })
+  //       console.log("dublicateValueData",dublicateValue)
+  //       console.log("getTotalWorkTime",getTotalWorkTime)
+  //       const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+  //   const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
+  //            ~~((totalSecondsdata / 60) % 60)}:${
+  //            ~~(totalSecondsdata % 60)}`
+  //            console.log("totalWork",getTotalWorkDataObject)
+  //            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+  //            console.log("totalTimeobj",totalTimeobjData)
+  //                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
     }
+ 
+  
   const properties = {
     userGetData,
     tasks,
@@ -208,9 +260,15 @@ const stopRunningTask = () => {
     getRunningTask,
     findDateFunction,
     startRunningTask,
+    timeData,
     getEmployeeId,
     stopRunningTask,
+    totalTimeModel,
+    setTotalTimeModel,
     deleteTask,
+    filterdataTotalTime,
+    totalWorkTimeDataData,
+    timerStartData,
     dublicateValueData,
     totalWorkTimeData,
     taskTimerStart,

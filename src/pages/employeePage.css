@@ -2,3 +2,21 @@
     max-width: 100%;
     margin-bottom: 23px;
 }
+.absent-data{
+    position: relative;
+}
+.absent-data .close-icon svg{
+    position: absolute;
+    right: 0px;
+    top: 28px;
+    background-color: red;
+    border-radius: 10px;
+    width: 21px;
+    height: 20px;
+    color: white;
+}
+.icon-icon svg{
+    width: 35px;
+    height: 35px;
+    margin-top: 6px;
+}

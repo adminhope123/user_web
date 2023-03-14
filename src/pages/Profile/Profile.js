@@ -15,6 +15,7 @@ import { UserDataContext } from 'src/UserDataContext';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileGetApi, profilePostApi } from 'src/Redux/actions';
+import { TextFields } from '@mui/icons-material';
 
 const style = {
   position: 'absolute',
@@ -22,7 +23,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: "600px",
-  height:"520px",
+  height:"auto",
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius:"8px",
@@ -40,9 +41,6 @@ export default function Profile() {
   const [value, setValue] = React.useState('');
   const [birthDate, setBirthDate] =useState("");
   const [editFormData,setEditFormData]=useState({
-    fullname:"",
-    post:"",
-    mobile:"",
     address:"",
   })
   const {userGetData,getEmployeeId}=useContext(UserDataContext)
@@ -75,13 +73,18 @@ const handleSubmitData=(e)=>{
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
   const emailDataGet={"email":userGetData?.email}
+  const name={"email":userGetData?.userName}
+console.log("name",name)
   const cityObject={"city":data}
+  const fullnameObject={"fullname":userGetData?.userName}
   const CountruesObject={"countries":countriesName}
+  const mobileObject={"mobile":userGetData?.mobileNumber}
+  const role={"post":userGetData?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const gender={"gender":value}
   const employeeId={"E_Id":getEmployeeId}
-  const mergeObject={...editFormData,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
+  const mergeObject={...editFormData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
   console.log("mergeObject",mergeObject)
    if(mergeObject){
     dispatch(profilePostApi(mergeObject))
@@ -105,7 +108,10 @@ const data=(e)=>{
 <div className='profile-card'>
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
-        <img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>
+        {
+          userGetData?<img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>:""
+        }
+        
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
            {userGetData?.userName}
@@ -209,10 +215,13 @@ const data=(e)=>{
       >
         <Fade in={open}>
           <Box sx={style}>
-            <button onClick={()=>data()}>Click</button>
           <div className='model-edit-form'>
+          <Typography 
+           variant='h3'
+           sx={{color:"#465767",marginBottom:"10px",marginTop:"-16px",fontSize:"17px"}}
+           >Edit Employee Profile</Typography>
           <form onSubmit={handleSubmitData}>
-             <div className='input-data'>
+             {/* <div className='input-data'>
              <FormControl>
                     <TextField
                       label="Full Name"
@@ -233,10 +242,21 @@ const data=(e)=>{
                     />
                     <p className="employee-error-text"></p>
                   </FormControl>
-             </div>
-         
+             </div> */}
+         <div className='address-input'>
+
+         <TextField
+                      label="Address"
+                      name="address"
+                      type="text"
+                      defaultValue={userGetData?.address}
+                      onChange={hadnleOnChange}
+                      sx={{paddingBottom:"10px",width:"100%"}}
+                    />
+                    <p className="employee-error-text"></p>
                   <div className='input-data'>
-                 
+         </div>
+{/*                  
                   <FormControl>
                     <TextField
                       label="Mobile No."
@@ -246,22 +266,12 @@ const data=(e)=>{
                       onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
-                  </FormControl>
-                  <FormControl>
-                    <TextField
-                      label="Address"
-                      name="address"
-                      type="text"
-                      defaultValue={userGetData?.address}
-                      onChange={hadnleOnChange}
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl>
+                  </FormControl> */}
+
                   </div>
               <div className='input-data'>
              <FormControl>
              <LocalizationProvider dateAdapter={AdapterDayjs}>
-
              <DesktopDatePicker
           label="Date desktop"
           inputFormat="MM/DD/YYYY"

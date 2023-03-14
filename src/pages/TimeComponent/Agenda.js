@@ -14,7 +14,7 @@ function Agenda({ classes }) {
             <AgendaHeader/>
             <div className="tasks-container">
                 <div>
-                { tasks.map(task => <TaskItem task={task} key={task.id}/>) }
+                { tasks.map(task => <TaskItem task={task} key={task.timerId}/>) }
                 </div>
             </div>
         </Grid>

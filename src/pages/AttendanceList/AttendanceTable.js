@@ -8,10 +8,12 @@ import {
   Pagination,
   TableHead,
   TablePagination,
+  Button,
   IconButton,
   Box,
 } from "@mui/material";
 import { UserListHead } from "src/sections/@dashboard/user";
+import RefreshIcon from '@mui/icons-material/Refresh';
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -31,116 +33,217 @@ import {
   Update,
 } from "@mui/icons-material";
 import users from "src/_mock/user";
+import { UserDataContext } from "src/UserDataContext";
+import moment from "moment";
+import { merge } from "lodash";
+import LoaderComp from "src/loader/LoaderComp";
 
 const TABLE_HEAD = [
   { id: "date", label: "Date", alignRight: false },
   { id: "day", label: "Day", alignRight: false },
   { id: "totalWork", label: "Total Work", alignRight: false },
   { id: "present", label: "Present", alignRight: false },
+  { id: "absent", label: "Absent", alignRight: false },
 ];
 
 export default function AttendanceTable() {
   const dispatch = useDispatch();
   const { users } = useSelector((res) => res.data);
-  const [data, setData] = useState();
   const [between, setBetween] = useState([]);
   const [updated, setUpdated] = useState([]);
   const [attendanceGetData, setAttendanceGetData] = useState(users);
   const [getData, setGetData] = useState();
+  const [filterdataTotalTime,setFilterdataTotalTime]=useState()
+   const [allObjectData,setAllObjectData]=useState()
+   const [attendaceDataStore,setAttendaceDataStore]=useState()
+   const [dateSort,setDateSort]=useState()
+   const [presentData,setPresentData]=useState()
+ const {getEmployeeId,timeData,handleTotalTime}=useContext(UserDataContext)
 
   const attendancePostData = () => {
+    // handleTotalTime()
     const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
-    console.log("dataGetGet",dataGetGet)
     setGetData(dataGetGet);
-    console.log("data", data);
+    getUserDataFunction()
+    console.log("users",users)
     const livedate = new Date().toLocaleDateString("es-DO");
     const dateFilter = users?.slice(-2)[0]?.date;
-    console.log("dateFilter", dateFilter);
-    console.log("livedate", livedate);
    const firstDate=users?.map((item)=>item.date)
-   console.log("firstDate",firstDate)
- 
+
  const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
- const {id: _, ...newObj} = getTodayData;
+ delete getTodayData?.timerId
+ delete getTodayData?.totalSeconds
+ delete getTodayData?.stop
+ delete getTodayData?.state
+ delete getTodayData?.start
+ delete getTodayData?.secs
+ delete getTodayData?.parent
+ delete getTodayData?.mins
+ delete getTodayData?.absent
+ delete getTodayData?.present
+ delete getTodayData?.hours
+delete getTodayData?.color
+
  const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
- const addObjectData={...newObj,...addTime}
+ console.log("getTodatyDataq",getTodayData)
+ const absentData={"absent":false.toString()}
+ console.log("absetData",absentData)
+ const presentDataData={"present":true.toString()}
+ const objectmergePresentAbsent={...absentData,...presentDataData,...getTodayData}
+ console.log("objectmergePresentAbsent",objectmergePresentAbsent)
+ const addObjectData={...objectmergePresentAbsent,...addTime}
  console.log("addObjectData",addObjectData)
+ console.log("users",users)
    const userData=users?.map((item)=>{
     return item
    })
    const lastValue=userData.slice(-1)[0]?.date
-   const lastFirstValue=userData.slice(-2)[0]?.date
+   const lastFirstValue=  userData.slice(-2)[0]?.date
    console.log("lastValue",lastValue)
    console.log("lastFirstValue",lastFirstValue)
-   console.log("userData",userData)
-  
-//    var dataa = {
-//     eid: "9",
-//     end_date: "2018-01-14",
-//     event: true,
-//     mname: "test event2",
-//     start_date: "2018-01-12",
-//     user_type: "1"
-// }
- 
-// const endDate = new Date(dataa.end_date)
-// const startDate = new Date(dataa.start_date)
-// const result = [];
-
-// console.log("result",result);
-// while(endDate >= startDate) {
-//   var {eid, event, mname, user_type} = dataa;
-//   result.push({eid, event, mname, user_type, date: formatDate(startDate)});
-//   startDate.setDate(startDate.getDate() + 1);
-// }
-
-    if (dataGet) {
-      setData(dataGet);
-    }
-    if (data) {
-      // dispatch(attendanceApiPut(data))
-      console.log("data", data);
-      if (data?.date) {
-        const attendanceId = getData?.id;
-        if (attendanceId) {
-          dispatch(attendanceApiPut(data, attendanceId));
-        }
-      }
-      users?.length
-      ? console.log("data added")
-      : dispatch(attendancePostApi(data));
-      {
-        users?.map((item) => {
-          if (item.date === livedate) {
-            console.log("data allredy");
-          } else {
-            dispatch(attendancePostApi(data));
-          }
-        });
-      }
-    }
-    console.log("users", users);
-  };
-  // console.log(data, "old data");
-    
-  function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
+   console.log("userData",getEmployeeId)
+   var InputData = {
+    end_date:lastValue,
+    start_date:lastFirstValue,
+    date:"",
+    day:"",
+    month:"",
+    employeeId:getEmployeeId,
+    totalWorkTime:"0:00:00",
+    present:"false",
+    absent:"true"
 }
+
+var StartDate=moment(InputData.start_date, "DD-MM-YYYY");
+var EndDate=moment(InputData.end_date, "DD-MM-YYYY");
+var Days=EndDate.diff(StartDate, 'days')
+var OutputData=[];
+
+var firstObj={
+  employeeId: getEmployeeId,
+    date: moment(StartDate).format("DD-MM-YYYY"),
+    totalWorkTime:InputData.totalWorkTime,
+    present:InputData.present,
+    absent:InputData.absent,
+    month:moment(StartDate).format("MMMM"),
+    day:moment(StartDate).format("dddd"),
+}
+
+OutputData.push(firstObj);
+
+for(var i=1;i<Days+1;i++){
+   var mydate=moment(StartDate).add(i, 'day').format("DD-MM-YYYY");
+   var mydatedata=moment(StartDate).add(i, 'day').format("dddd");
+   var mydateMonth=moment(StartDate).add(i, 'day').format("MMMM");
+   var myObj={
+    employeeId: getEmployeeId,
+    date: mydate,
+    present:InputData.present,
+    absent:InputData.absent,
+    totalWorkTime:InputData.totalWorkTime,
+    day:InputData.day,
+    month:mydateMonth,
+    day:mydatedata
+   };
    
+   OutputData.push(myObj);
+}
 
-  useEffect(() => {
-    dispatch(attendanceGetApi());
-  }, [between]);
+const getAbsentData=OutputData?.map((item)=>{
+  return item;  
+})
+console.log("getAbsentData",getAbsentData)
+const absentFisrtValue=getAbsentData?.shift();
+const absentSecondValue=getAbsentData?.slice(0).pop();
+const filterData=getAbsentData?.filter(item=>item!==absentFisrtValue&&item!==absentSecondValue)
+console.log("filterData",filterData)
+console.log("addObjectData",addObjectData)
+const mergeData= [...filterData,addObjectData];
+const mergeArrayOfObject= [ ...users, ...mergeData ]
 
+
+const dublicateValue=mergeArrayOfObject.filter((v,i,a)=>a.findLastIndex(v2=>(v2.date === v.date))===i)
+console.log("dublicateValue",dublicateValue) 
+const dublicateValueDataRemove=dublicateValue.filter(({ date: id1 }) => !users.some(({ date: id2 }) => id2 === id1));
+console.log("dublicateValueDataRemove",dublicateValueDataRemove)
+const dataaa=dublicateValueDataRemove?.map((item)=>{
+  dispatch(attendancePostApi(item))
+})
+
+
+const dataAdd=addObjectData
+console.log("dataAdd",dataAdd)
+const employeeId=getEmployeeId
+const dataCheck=dataAdd?.employeeId===employeeId
+console.log("dataCheck",dataCheck)
+if(dataCheck===true){
+  const getTotalTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+  const totalWorkGet=getTotalTime?.totalWorkTime
+  const createObject={"totalWorkTime":totalWorkGet}
+  console.log("addDAtra",createObject)
+  const mergeObject={...dataAdd,...getTotalTime}
+  console.log("mergeObject",mergeObject)
+  console.log("users",users)
+  const livedate = new Date().toLocaleDateString("es-DO");
+  console.log("liveDate",livedate)
+  const getTodayDate=users?.filter((item)=>item.date===livedate&&employeeId&&item.id)
+  console.log("getTodayData",getTodayDate)
+  const employeeEditIdData=getTodayDate?.map((item)=>item.id)
+  console.log("employeeEditIdData",employeeEditIdData)
+  setTimeout(() => {
+    dispatch(attendanceApiPut(mergeObject,employeeEditIdData))
+  },2000 );
+  console.log("allEmployeeData",attendaceDataStore)
+  let presentData = attendaceDataStore.map(tab=>keyFilters(tab, ["present"]))
+  const daatta=[...presentData]
+  console.log("dataa",daatta)
+  const presentDataFilter =daatta.filter((item)=>item.present==="true")
+  const presentDataData=presentDataFilter.length
+  let absentData = attendaceDataStore.map(tab=>keyFilters(tab, ["absent"]))
+  const absentDataArrayOf=[...absentData]
+  console.log("dataa",absentDataArrayOf)
+  const absentDataFilter =absentDataArrayOf.filter((item)=>item.absent==="true")
+  const absentDataData=absentDataFilter.length
+  console.log("filters",absentDataData)
+  const presentDataDataData={"presentData":presentDataData}
+  const absentDataDataData={"absentData":absentDataData}
+  const mergeObjectdata=[presentDataDataData,absentDataDataData]
+  console.log("mergeObject",mergeObjectdata)
+  sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
+}
+// function sortByDate(a, b) {
+//   if (a.date < b.date) {
+//       return 1;
+//   }
+//   if (a.date > b.date) {
+//       return -1;
+//   }
+//   return 0;
+// }
+
+// const sorted = users?.sort(sortByDate);
+// setDateSort(sorted)
+  };
+  let keyFilters = function(values, keys){
+    let filteredKeys = {}
+    Object.keys(values).map((key, index)=>{
+      if (keys.includes(key)){
+         filteredKeys[key] = values[key]
+      }
+    }) 
+  
+    return filteredKeys;
+  }
+const handleTotalTimeModelClose = () => {
+setTotalTimeModel(false);
+};
+
+
+
+useEffect(() => {
+  dispatch(attendanceGetApi());
+}, []);
   function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -209,16 +312,32 @@ export default function AttendanceTable() {
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
   };
-  function createData(date, day, present, totalWork, totalSeconds, absent) {
-    return { date, day, present, absent, totalWork, totalSeconds };
+  function createData(date, day, present, totalWorkTime, totalSeconds, absent) {
+    return { date, day, present, absent, totalWorkTime, totalSeconds };
   }
-  const rows = users?.map((item) => {
+const getUserDataFunction=()=>{
+  const getEmployeeIdGetData=JSON.parse(sessionStorage.getItem("userData"))
+  const getEmployeeIdData=getEmployeeIdGetData?.map((item)=>{
+    console.log("users",users)
+    const employeeGetData=users?.filter((ele)=>ele.employeeId===item.E_Id)
+    console.log("employeeGetData",employeeGetData)
+    setAttendaceDataStore(employeeGetData)
+  })
+}
+useEffect(() => {
+  getUserDataFunction()
+}, [])
+var isDescending = true;
+
+const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).getTime() - new Date(a.date).getTime() : new Date(a.date).getTime() - new Date(b.date).getTime());
+console.log("dataaaa",dataaaa)
+  const rows =dataaaa?.map((item) => {
     return [
       createData(
         item?.date,
         item?.day,
         item?.present,
-        item?.totalWork,
+        item?.totalWorkTime,
         item?.totalSeconds,
         item?.absent
       ),
@@ -248,7 +367,10 @@ export default function AttendanceTable() {
   return (
     <div>
       <div className="attendance-table">
-        <button onClick={() => attendancePostData()}>Click</button>
+        <Button  variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
+           <span> Data Refresh</span>
+          <RefreshIcon sx={{marginLeft:"10px"}}/>
+          </Button>
         {/* <Table>
           <UserListHead headLabel={TABLE_HEAD} />
           <TableBody>
@@ -287,75 +409,96 @@ export default function AttendanceTable() {
                 })}
           </TableBody>
         </Table> */}
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <UserListHead headLabel={TABLE_HEAD} />
-          <TableBody>
-            {(rowsPerPage > 0
-              ? dataaa?.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : dataaa
-            )?.map((row, index) => (
-              <TableRow key={row?.index}>
-                <TableCell style={{ width: 160 }} align="center" scope="row">
-                  {row?.date}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row?.day}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row?.totalWork}
-                </TableCell>
-                {row?.totalSeconds ? (
-                  <TableCell style={{ width: 160 }} align="center">
-                    {row?.present === true ? (
-                      <div className="check-icon">
-                        <CheckIcon />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                ) : (
-                  <TableCell style={{ width: 160 }} align="center">
-                    {row?.absent === false ? (
-                      <div className="close-icon ">
-                        <CloseIcon />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                )}
-              </TableRow>
-            ))}
+      {
+        dataaa?.length? <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <UserListHead headLabel={TABLE_HEAD} />
+        <TableBody>
+          {(rowsPerPage > 0
+            ? dataaa?.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
+            : dataaa
+          )?.map((row, index) => (
+         <TableRow key={row?.index}>
+          <TableCell style={{ width: 160 }} align="center" scope="row">
+            {row?.date}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+            {row?.day}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+            {row?.totalWorkTime}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+              {row?.present === "true" ? (
+                <div className="check-icon ">
+            <CheckIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+              {row?.absent === "true" ? (
+                <div className="close-icon">
+                   <CloseIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          
+          {/* {row?.totalSeconds ? (
+            <TableCell style={{ width: 160 }} align="center">
+              {row?.present === "true" ? (
+                <div className="close-icon">
+               
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          ) : (
+            <TableCell style={{ width: 160 }} align="center">
+              {row?.absent === "true" ? (
+                <div className="check-icon ">
+                   <CloseIcon />
+                </div>
+              ) : (
+                ""
+              )}
+            </TableCell>
+          )} */}
+        </TableRow>
+          ))}
 
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={3}
-              count={dataaa?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  "aria-label": "rows per page",
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </Table>
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+        </TableBody>
+        <TableRow>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+            colSpan={3}
+            count={dataaa?.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            SelectProps={{
+              inputProps: {
+                "aria-label": "rows per page",
+              },
+              native: true,
+            }}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+          />
+        </TableRow>
+      </Table>:<LoaderComp/>
+      }
       </div>
     </div>
   );

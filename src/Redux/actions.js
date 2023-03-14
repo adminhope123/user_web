@@ -102,7 +102,7 @@ export const getTimeDataApi=()=>{
 }
 
 export const attendancePostApi=(user)=>{
-    const url="http://localhost:3004/attendance";
+    const url="http://127.0.0.1:8000/api/Uattendence";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -114,7 +114,7 @@ export const attendancePostApi=(user)=>{
     }
 }
 export const attendanceGetApi=()=>{
-    const url="http://localhost:3004/attendance";
+    const url="http://127.0.0.1:8000/api/viewUattendence";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -124,8 +124,8 @@ export const attendanceGetApi=()=>{
         .catch((error)=>console.log("error",error));
     };
 }
-export const attendanceApiPut=(user,attendanceId)=>{
-    const url=`http://localhost:3004/attendance/${attendanceId}`;
+export const attendanceApiPut=(user,employeeEditIdData)=>{
+    const url=`http://127.0.0.1:8000/api/Uattendenceupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
