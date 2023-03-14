@@ -223,7 +223,7 @@ export const taskAddApi=(user)=>{
     }
 }
 export const taskEditApi=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/deletetask/${employeeEditIdData}`;
+    const url=`http://127.0.0.1:8000/api/updatesavetask/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{

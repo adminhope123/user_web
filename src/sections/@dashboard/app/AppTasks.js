@@ -58,7 +58,7 @@ export default function AppTasks({ title, subheader, list, ...other }) {
            })
             return (
             <>
-              {list.map((taskData) => (
+              {list?.map((taskData) => (
                 <TaskItem
                   key={taskData.id}
                   taskData={taskData}
@@ -111,6 +111,8 @@ function TaskItem({ taskData, checked, onChange }) {
   const handleEdit = () => {
     handleCloseMenu();
     console.log('EDIT', taskData.id);
+    const data=JSON.parse(taskData?.read)
+    console.log("Data",data)
   };
 
   const handleDelete = () => {
@@ -123,29 +125,26 @@ function TaskItem({ taskData, checked, onChange }) {
   };
 const checkBoxTaskOnChange=(event)=>{
   setIsTrue(event.target.checked);
-  console.log("task",isTrue)
   const readData={"read":isTrue}
-  console.log("readData",readData)
   const employeeEditIdData=taskData?.id
   const dataMergemerge={...taskData,...readData}
-  dispatch(taskEditApi(employeeEditIdData,dataMergemerge))
   console.log("Data",dataMergemerge)
+  // dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+ 
 }
+
   return (
     <Stack
       direction="row"
       sx={{
         px: 2,
         py: 0.75,
-        ...(isTrue && {
-          color: 'text.disabled',
-          textDecoration: 'line-through',
-        }),
+        ...(taskData?.read==true)
       }}
     >
       <FormControlLabel
         control={ <Checkbox
-          checked={isTrue}
+          checked={JSON.parse(taskData?.read)}
           onChange={checkBoxTaskOnChange}
           inputProps={{ 'aria-label': 'controlled' }}
        />}
