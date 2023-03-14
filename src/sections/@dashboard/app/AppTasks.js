@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
-import { taskDeleteApi } from 'src/Redux/actions';
+import { taskDeleteApi, taskEditApi } from 'src/Redux/actions';
 import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
@@ -28,6 +28,7 @@ AppTasks.propTypes = {
 };
 
 export default function AppTasks({ title, subheader, list, ...other }) {
+ const dispatch=useDispatch()
   const { control } = useForm({
     defaultValues: {
       taskCompleted: ['2'],
@@ -42,9 +43,20 @@ export default function AppTasks({ title, subheader, list, ...other }) {
         control={control}
         render={({ field }) => {
           const onSelected = (taskData) =>
-            field.value.includes(taskData) ? field.value.filter((value) => value !== taskData) : [...field.value, taskData];
-
-          return (
+         field.value.includes(taskData) ? field.value.filter((value) => value !== taskData) : [...field.value, taskData];
+            const dataId=field.value.shift()
+            const readData=list?.filter((item)=>item.id===dataId)
+            const dataGet=readData?.map((item)=>{
+              const dataRead={"read":true}
+              const datadata={...item,...dataRead}
+                 return datadata
+            })
+            console.log("read",readData)
+           const dataDataData=dataGet?.map((item)=>{
+                const employeeEditIdData=item?.id
+                dispatch(taskEditApi(item,employeeEditIdData))
+           })
+            return (
             <>
               {list.map((taskData) => (
                 <TaskItem
