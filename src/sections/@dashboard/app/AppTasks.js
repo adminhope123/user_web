@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
+import { taskDeleteApi, taskEditApi } from 'src/Redux/actions';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +28,7 @@ AppTasks.propTypes = {
 };
 
 export default function AppTasks({ title, subheader, list, ...other }) {
+ const dispatch=useDispatch()
   const { control } = useForm({
     defaultValues: {
       taskCompleted: ['2'],
@@ -39,17 +42,28 @@ export default function AppTasks({ title, subheader, list, ...other }) {
         name="taskCompleted"
         control={control}
         render={({ field }) => {
-          const onSelected = (task) =>
-            field.value.includes(task) ? field.value.filter((value) => value !== task) : [...field.value, task];
-
-          return (
+          const onSelected = (taskData) =>
+         field.value.includes(taskData) ? field.value.filter((value) => value !== taskData) : [...field.value, taskData];
+            const dataId=field.value.shift()
+            const readData=list?.filter((item)=>item.id===dataId)
+            const dataGet=readData?.map((item)=>{
+              const dataRead={"read":true}
+              const datadata={...item,...dataRead}
+                 return datadata
+            })
+            console.log("read",readData)
+           const dataDataData=dataGet?.map((item)=>{
+                const employeeEditIdData=item?.id
+                dispatch(taskEditApi(item,employeeEditIdData))
+           })
+            return (
             <>
-              {list.map((task) => (
+              {list?.map((taskData) => (
                 <TaskItem
-                  key={task.id}
-                  task={task}
-                  checked={field.value.includes(task.id)}
-                  onChange={() => field.onChange(onSelected(task.id))}
+                  key={taskData.id}
+                  taskData={taskData}
+                  checked={field.value.includes(taskData.id)}
+                  onChange={() => field.onChange(onSelected(taskData.id))}
                 />
               ))}
             </>
@@ -65,14 +79,16 @@ export default function AppTasks({ title, subheader, list, ...other }) {
 TaskItem.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
-  task: PropTypes.shape({
+  taskData: PropTypes.shape({
     id: PropTypes.string,
     label: PropTypes.string,
   }),
 };
 
-function TaskItem({ task, checked, onChange }) {
+function TaskItem({ taskData, checked, onChange }) {
   const [open, setOpen] = useState(null);
+  const [isTrue, setIsTrue] =useState(false);
+  const dispatch=useDispatch()
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -84,23 +100,38 @@ function TaskItem({ task, checked, onChange }) {
 
   const handleMarkComplete = () => {
     handleCloseMenu();
-    console.log('MARK COMPLETE', task.id);
+    console.log('MARK COMPLETE', taskData.id);
   };
 
   const handleShare = () => {
     handleCloseMenu();
-    console.log('SHARE', task.id);
+    console.log('SHARE', taskData.id);
   };
 
   const handleEdit = () => {
     handleCloseMenu();
-    console.log('EDIT', task.id);
+    console.log('EDIT', taskData.id);
+    const data=JSON.parse(taskData?.read)
+    console.log("Data",data)
   };
 
   const handleDelete = () => {
     handleCloseMenu();
-    console.log('DELETE', task.id);
+    console.log('DELETE', taskData.id);
+    const employeeEditIdData=taskData?.id
+    if(employeeEditIdData){
+      dispatch(taskDeleteApi(employeeEditIdData))
+    }
   };
+const checkBoxTaskOnChange=(event)=>{
+  setIsTrue(event.target.checked);
+  const readData={"read":isTrue}
+  const employeeEditIdData=taskData?.id
+  const dataMergemerge={...taskData,...readData}
+  console.log("Data",dataMergemerge)
+  // dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+ 
+}
 
   return (
     <Stack
@@ -108,18 +139,19 @@ function TaskItem({ task, checked, onChange }) {
       sx={{
         px: 2,
         py: 0.75,
-        ...(checked && {
-          color: 'text.disabled',
-          textDecoration: 'line-through',
-        }),
+        ...(taskData?.read==true)
       }}
     >
       <FormControlLabel
-        control={<Checkbox checked={checked} onChange={onChange} />}
-        label={task.label}
+        control={ <Checkbox
+          checked={JSON.parse(taskData?.read)}
+          onChange={checkBoxTaskOnChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+       />}
+        label={taskData?.task}
         sx={{ flexGrow: 1, m: 0 }}
       />
-
+ 
       <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpenMenu}>
         <Iconify icon={'eva:more-vertical-fill'} />
       </IconButton>

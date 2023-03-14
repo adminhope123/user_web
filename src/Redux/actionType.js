@@ -12,3 +12,8 @@ export const PROFILE_POST_DATA="PROFILE_POST_DATA"
 export const PROFILE_PUT_API="PROFILE_PUT_API"
 export const PRFILE_GET_API="PRFILE_GET_API"
 export const GET_USER_DATA="GET_USER_DATA"
+export const TASK_GET="TASK_GET"
+export const TASK_ADD="TASK_ADD"
+export const TASK_EDIT="TASK_EDIT"
+export const TASK_DELETE="TASK_DELETE"
+
