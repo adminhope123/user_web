@@ -38,12 +38,13 @@ AppWidgetSummary.propTypes = {
 };
 
   export default function AppWidgetSummary({ title,imgIcon,imgIconPresent,imgIconEmployeeIcon,imgIconTimeTrackingIcon, total, icon,closeIconShow,setCloseIconShow,color= 'primary', sx, ...other }) {
-  return (
+    return (
     <Card
       sx={{
         py: 5,
         boxShadow: 0,
         textAlign: 'center',
+        height:"238px",
         color: (theme) => theme.palette[color].darker,
         bgcolor: (theme) => theme.palette[color].lighter,
         ...sx,
@@ -77,8 +78,10 @@ AppWidgetSummary.propTypes = {
           )
         }
       </StyledIcon>
-
-      <Typography variant="h3">{total}</Typography>
+      {
+        total===undefined ?    <Typography  sx={{fontSize:"23px",fontWeight:"500",marginBottom:"11px"}}>Data Refresh</Typography>:  <Typography variant="h3">{total}</Typography>
+      }
+  
 
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}

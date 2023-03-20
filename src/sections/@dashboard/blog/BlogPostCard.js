@@ -59,7 +59,7 @@ BlogPostCard.propTypes = {
 };
 
 export default function BlogPostCard({ postData, index }) {
-  const { image,birthDate,fullname,post,cover, title, view, comment, share, author, createdAt } = postData;
+  const { image,birthDate,fullname,post,cover,city, title, view, comment, share, author, createdAt } = postData;
   // const latestPostLarge = index === 0;
   // const latestPost = index === 1 || index === 2;
 
@@ -96,7 +96,7 @@ export default function BlogPostCard({ postData, index }) {
               )
             })
           }
-          <StyledCover alt={fullname} src={`http://127.0.0.1:8000/${image}`} />
+          <StyledCover alt={fullname} src={`https://hopeusers.hopeinfosys.com/${image}`} />
         </StyledCardMedia>
 
         <CardContent
@@ -112,7 +112,13 @@ export default function BlogPostCard({ postData, index }) {
           >
             {fullname}
           </StyledTitle>
-
+          <StyledTitle
+            color="inherit"
+            variant="subtitle2"
+            underline="hover"
+          >
+            {city}
+          </StyledTitle>
           <StyledInfo>
             {POST_INFO?.map((info, index) => (
               <Box

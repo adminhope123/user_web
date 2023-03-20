@@ -27,6 +27,7 @@ const [taskAdd,setTaskAdd]=useState({
     read:""
 
 })
+const [getUserData,setGetUserData]=useState()
 const dispatch=useDispatch()
 const {users}=useSelector(res=>res.data)
 
@@ -38,8 +39,19 @@ const getTaskApiData=async()=>{
 await  dispatch(taskgetApi())
 }
 
+const dataFunction=()=>{
+  const getUserData=JSON.parse(sessionStorage.getItem("userData"))
+if(getUserData,users){
+  const dataFilter=users?.filter((item)=>getUserData?.find(el=>item?.E_Id===el?.E_Id))
+  console.log("DataFilter",dataFilter)
+  if(dataFilter){
+    setGetUserData(dataFilter)
+  }
+}
+}
 useEffect (() => {
   getTaskApiData()
+  dataFunction()
 }, [])
 
 
@@ -52,7 +64,7 @@ const handleOpen = () => setTaskModel(true);
     const getUserId=JSON.parse(sessionStorage.getItem("userData"))
     const getUserIdData=getUserId?.map((item)=>{return item?.E_Id})
     const employeeId={"E_Id":getUserIdData.toString()}
-    const readData={"read":false}
+    const readData={"read":"false"}
     const dataMerge={...taskAddObject,...employeeId,...readData}
     dispatch(taskAddApi(dataMerge))
     console.log("taskAddObject",dataMerge)
@@ -88,7 +100,7 @@ const handleOpen = () => setTaskModel(true);
       </Modal>
       <AppTasks
               title="Tasks"
-             list={users}
+             list={getUserData}
               // list={[
               //   { id: '1', label: 'Create FireStone Logo' },
               //   { id: '2', label: 'Add SCSS and JS files if required' },

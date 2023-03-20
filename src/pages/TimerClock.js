@@ -80,9 +80,9 @@ export default function TimerClock(props) {
     setTotalTimeModel(true)
     const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
     getDatadaaa?.map((ele)=>{
-       ele.getEmployeeId
-       console.log("item",  ele.E_Id)
-       const filterdataaa=users?.filter((item)=>ele.E_Id=== item?.employeeId)
+       ele?.getEmployeeId
+       console.log("item",  ele?.E_Id)
+       const filterdataaa=users?.filter((item)=>ele?.E_Id=== item?.employeeId)
        console.log("filterDAta",filterdataaa)
        if(filterdataaa){
          setFilterdataTotalTime(filterdataaa)
@@ -90,16 +90,19 @@ export default function TimerClock(props) {
       })
     const liveDate = new Date().toLocaleDateString("es-DO");
     const duplicateDate = liveDate;
-    const dublicateValue = filterdataTotalTime.filter((obj) =>
-      duplicateDate.includes(obj.date)
+    const dublicateValue = filterdataTotalTime?.filter((obj) =>
+      duplicateDate?.includes(obj?.date)
     );
     const getTotalWorkTime=dublicateValue?.map((item)=>{
         return item?.totalTimeWork
       })
+    
       const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+      
   const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
            ~~((totalSecondsdata / 60) % 60)}:${
            ~~(totalSecondsdata % 60)}`
+           
            setTotalWorkTimeDataData(getTotalWorkDataObject)
            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
@@ -108,6 +111,7 @@ export default function TimerClock(props) {
                const getTotalWorkTimeTime=filterdataTotalTime?.map((item)=>{
                  return item?.totalTimeWork
                })
+               console.log("getTotalWorkTimeTime",getTotalWorkTimeTime)
                const totalSecondsdataData = sumToSeconds(getTotalWorkTimeTime);
                console.log("getTo",totalSecondsdataData)
                const getTotalWorkDataObjectData=`${~~(totalSecondsdataData / 60 / 60)}:${
@@ -115,20 +119,20 @@ export default function TimerClock(props) {
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
                 console.log("totalTimeobjDataData",totalTimeobjDataData)
-                sessionStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+                localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
               };
  
 
 
     const sumToSeconds = times => {
-        return times.reduce((a, e) => {
-          const parts = e.trim().split(":").map(Number);
-          parts.forEach((e, i) => {
+        return times?.reduce((a, e) => {
+          const parts = e?.trim().split(":").map(Number);
+          parts?.forEach((e, i) => {
             if (i < parts.length - 1) {
               parts[i+1] += e * 60;
             }
           });
-          return parts.pop() + a;
+          return parts?.pop() + a;
         }, 0);
       };
 
@@ -151,9 +155,6 @@ export default function TimerClock(props) {
       <h6>Timer Clock</h6>
        {
         users?.length?   <div>
-        <button onClick={hoursTotalFunction}>Click</button>
-              {/* <h6>{dayToday}</h6> */}
-                 {/* <h6>{liveTime }</h6> */}
                  {props.children}
                  <div className='clock-time'>
                  <Dialog

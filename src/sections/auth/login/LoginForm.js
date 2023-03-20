@@ -5,8 +5,8 @@ import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormContr
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
-import {loginFormPostApi} from '../../../Redux/actions'
-import { useDispatch } from 'react-redux';
+import {getUserDataApi} from '../../../Redux/actions'
+import { useDispatch, useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +17,7 @@ export default function LoginForm() {
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {users}=useSelector(res=>res.data)
   const [loginDataForm,setLoginDataForm]=useState({
     email:"",
     password:""
@@ -39,7 +40,7 @@ export default function LoginForm() {
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
     const loginData=loginDataForm
-    let result=await fetch("http://127.0.0.1:8000/api/userlogin",{
+    let result=await fetch("https://hopeusers.hopeinfosys.com/userlogin",{
      method:"POST",
      headers:{
        "Content-Type":"application/json",
@@ -50,11 +51,22 @@ export default function LoginForm() {
     console.log("reslut",result)
     result= await result.json()
     sessionStorage.setItem("loginData",JSON.stringify(loginData))
-    navigate('/dashboard/app', { replace: true })
+    // navigate('/dashb oard/app', { replace: true })
     const getData=JSON.parse(sessionStorage.getItem("loginData"))
     if(getData?.length===0){
     }else{
-      location.reload()
+      // location.reload()
+    }
+    if(users){
+      const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)
+      const dataGet=JSON.parse(sessionStorage.getItem("userData"))
+      if(dataGet?.length===0){
+      }
+      sessionStorage.setItem("viewEmployee",JSON.stringify(users))
+      if(filterData){
+        console.log("filterData",filterData)
+        sessionStorage.setItem("userData",JSON.stringify(filterData))
+      }
     }
    }
 
@@ -90,6 +102,9 @@ export default function LoginForm() {
     }
     return error;
   };
+useEffect(() => {
+dispatch(getUserDataApi())
+}, [])
 
   // const handleClick = () => {
   //   navigate('/dashboard', { replace: true });

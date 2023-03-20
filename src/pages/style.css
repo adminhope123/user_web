@@ -30,6 +30,12 @@
     text-align: center;
 }
 
+.task-data:nth-last-child(1){
+    border: none;
+}
+.task-data{
+    border-bottom: 1px dashed #919EAB;
+}
 .timer-clock {}
 
 .timer-clock h6 {

@@ -78,7 +78,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Link underline="none">
           <StyledAccount>
             {
-              userGetData?<Avatar src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />:""
+              userGetData?<Avatar src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt="photoURL" />:""
             }
             
 

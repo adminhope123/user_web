@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
+import'../../../pages/style.css';
 // @mui
 import {
   Card,
@@ -18,6 +19,7 @@ import {
 import Iconify from '../../../components/iconify';
 import { taskDeleteApi, taskEditApi } from 'src/Redux/actions';
 import { useDispatch } from 'react-redux';
+import users from 'src/_mock/user';
 
 // ----------------------------------------------------------------------
 
@@ -36,26 +38,15 @@ export default function AppTasks({ title, subheader, list, ...other }) {
   });
 
   return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+    <Card {...other} sx={{padding:"0px 24px"}}>
+      <CardHeader title={title} subheader={subheader} sx={{paddingLeft:"0px"}}/>
       <Controller
         name="taskCompleted"
+        sx={{padding:"0px"}}
         control={control}
         render={({ field }) => {
           const onSelected = (taskData) =>
          field.value.includes(taskData) ? field.value.filter((value) => value !== taskData) : [...field.value, taskData];
-            const dataId=field.value.shift()
-            const readData=list?.filter((item)=>item.id===dataId)
-            const dataGet=readData?.map((item)=>{
-              const dataRead={"read":true}
-              const datadata={...item,...dataRead}
-                 return datadata
-            })
-            console.log("read",readData)
-           const dataDataData=dataGet?.map((item)=>{
-                const employeeEditIdData=item?.id
-                dispatch(taskEditApi(item,employeeEditIdData))
-           })
             return (
             <>
               {list?.map((taskData) => (
@@ -84,7 +75,6 @@ TaskItem.propTypes = {
     label: PropTypes.string,
   }),
 };
-
 function TaskItem({ taskData, checked, onChange }) {
   const [open, setOpen] = useState(null);
   const [isTrue, setIsTrue] =useState(false);
@@ -111,7 +101,7 @@ function TaskItem({ taskData, checked, onChange }) {
   const handleEdit = () => {
     handleCloseMenu();
     console.log('EDIT', taskData.id);
-    const data=JSON.parse(taskData?.read)
+    const data=taskData?.read?JSON.parse(taskData?.read):null
     console.log("Data",data)
   };
 
@@ -125,26 +115,52 @@ function TaskItem({ taskData, checked, onChange }) {
   };
 const checkBoxTaskOnChange=(event)=>{
   setIsTrue(event.target.checked);
-  const readData={"read":isTrue}
-  const employeeEditIdData=taskData?.id
-  const dataMergemerge={...taskData,...readData}
-  console.log("Data",dataMergemerge)
-  // dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
- 
+  console.log(" ",event.target.checked)
+  const data=event.target.checked
+  taskTableData(data)
 }
 
+const taskTableData=(data)=>{
+  const trueData=isTrue===true
+  console.log("trueData",trueData)
+  if(trueData){
+    const readData={"read":JSON.stringify(trueData)}
+    const employeeEditIdData=taskData?.id
+    const dataMergemerge={...taskData,...readData}
+    console.log("Data",dataMergemerge)
+    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+  }
+ console.log("trueData",taskData?.read)
+ const falseData=isTrue===false
+ if(falseData,data){
+   const readData={"read":JSON.stringify(data)}
+   const employeeEditIdData=taskData?.id
+   const dataMergemerge={...taskData,...readData}
+   console.log("Data",dataMergemerge)
+   dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+  console.log("task",taskData?.read)
+ }
+ 
+}
   return (
     <Stack
       direction="row"
+      className='task-data'
       sx={{
-        px: 2,
         py: 0.75,
-        ...(taskData?.read==true)
+        // borderStyle: 'dashed',
+        ...(taskData?.read==="true"&& {
+          color: 'text.disabled',
+          textDecoration: 'line-through',
+        }),
       }}
     >
+
       <FormControlLabel
         control={ <Checkbox
-          checked={JSON.parse(taskData?.read)}
+          checked={taskData?.read ?JSON.parse(taskData?.read):null}
+          // value={JSON.parse(taskData?.read)}
+          defaultChecked={taskData?.read ?JSON.parse(taskData?.read):null}
           onChange={checkBoxTaskOnChange}
           inputProps={{ 'aria-label': 'controlled' }}
        />}
@@ -173,7 +189,7 @@ const checkBoxTaskOnChange=(event)=>{
           },
         }}
       >
-        <MenuItem onClick={handleMarkComplete}>
+        {/* <MenuItem onClick={handleMarkComplete}>
           <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ mr: 2 }} />
           Mark Complete
         </MenuItem>
@@ -186,7 +202,7 @@ const checkBoxTaskOnChange=(event)=>{
         <MenuItem onClick={handleShare}>
           <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
           Share
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

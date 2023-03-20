@@ -27,6 +27,7 @@ import PresentIcon from './presentIcon.png'
 import TimeTrackingIcon from './timeTracking.png'
 import EmployeeIcon from './employeeImg.png'
 import LoaderComp from 'src/loader/LoaderComp';
+import { useLocation } from 'react-router-dom';
 // ----------------------------------------------------------------------
 const style = {
   position: 'absolute',
@@ -50,18 +51,19 @@ export default function DashboardAppPage() {
   const [totalAllTimeWork,setTotalAllTimeWork]=useState()
   const [absentData,setAbsentData]=useState()
   const [presentDataDataData,setPresentDataDataData]=useState()
+  const [viewAllDataShow,setViewAllDataShow]=useState(true)
   const [closeIconShow,setCloseIconShow]=useState(true)
 const [onlineData,setOnlineData]=useState()
-
+const [getPostData,setGetPostData]=useState()
+const [postCount,setPostCount]=useState()
 
     const getUserData=async()=>{
       await dispatch(getUserDataApi())
       const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
       if(users){
-        const filterData=users?.filter((item)=>item?.email===getUserData?.email)
-      const data=  sessionStorage.setItem("userData",JSON.stringify(filterData))
+      
       }
-      const getTotalWorkTime=JSON.parse(sessionStorage.getItem("totalAllTimeWork"))
+      const getTotalWorkTime=JSON.parse(localStorage.getItem("totalAllTimeWork"))
       const dataTotalTimeEork=getTotalWorkTime?.totalWorkTime
       setTotalAllTimeWork(dataTotalTimeEork)
       const allEmployee=users?.length
@@ -75,29 +77,20 @@ const [onlineData,setOnlineData]=useState()
           setPresentDataDataData(presentDataData)
         }
       })
-
-      const getOnlineData=JSON.parse(sessionStorage.getItem("online"))
-
-      const getUserDataData=users?.filter((item)=>getOnlineData?.find((ele)=>ele.employeeId===item.E_Id))
- 
-      const addValue=getUserDataData?.map((item)=>{
-    const {state}=getOnlineData?.find((ele)=>ele.employeeId===item.E_Id)
-    console.log("state",state)
-    return{...item,state}
-    
-  })
-   const filterData=users?.filter(function(cv){
-    return !addValue.find(function(e){
-        return e.E_Id == cv.E_Id;
-    });
-});
-const mergeDatadata=[...addValue,...filterData]
-const mergeDatadataAdd=mergeDatadata?.map((item)=>item)
-setOnlineData(mergeDatadata)
-console.log("mergeDatadata",mergeDatadata)
-      console.log("getUserDataData",filterData)
-      // console.log("getUserDataData",getOnlineData)
-      // console.log("getUserDataData",users)
+      const allUsersData=JSON.parse(sessionStorage.getItem("viewEmployee"))
+      const postData=allUsersData?.map((item)=>{return item ?.role})
+      console.log("allUsers",postData)
+      var mapdata = postData?.reduce(function(prev, cur) {
+     prev[cur] = (prev[cur] || 0) + 1;
+     const data=prev[cur]
+        const dataCount={"countData":data}
+        const dataPost=cur
+        const dataPostObject={"postData":dataPost}
+        const dataMergeObject={...dataPostObject,...dataCount}
+        // setPostCount(dataMergeObject)
+        return dataMergeObject
+      }, {});
+      console.log("postCount",mapdata)
     }
 
   useEffect(() => {
@@ -131,32 +124,7 @@ console.log("mergeDatadata",mergeDatadata)
       <Grid item xs={12} sm={6} md={3}>
         <AppWidgetSummary title="Absent" total={absentData} color="error" imgIcon={AbsentIcon} setCloseIconShow={setCloseIconShow} closeIconShow={closeIconShow}/>
       </Grid>
-      <Grid item sx={{width:"100%",overflow:"hidden"}}>
-        <AppNewsUpdate
-          title="Employee Status"
-          list={onlineData?.map((item, index) => ({
-            id:item?.E_Id,
-            title: item?.userName,
-            description: item?.role,
-            image: `http://127.0.0.1:8000/${item&&item?.image}`,
-            online:item?.state,
-            postedAt: faker.date.recent(),
-          }))}
-        />
-      </Grid>
-      <Grid item sx={{width:"100%"}} >
-        <AppTasks
-          title="Tasks"
-          list={[
-            { id: '1', label: 'Create FireStone Logo' },
-            { id: '2', label: 'Add SCSS and JS files if required' },
-            { id: '3', label: 'Stakeholder Meeting' },
-            { id: '4', label: 'Scoping & Estimations' },
-            { id: '5', label: 'Sprint Showcase' },
-          ]}
-        />
-      </Grid>
-      <Grid item xs={12} md={6} lg={8}>
+      {/* <Grid item xs={12} md={6} lg={8}>
         <AppWebsiteVisits
           title="Website Visits"
           subheader="(+43%) than last year"
@@ -194,16 +162,16 @@ console.log("mergeDatadata",mergeDatadata)
             },
           ]}
         />
-      </Grid>
+      </Grid> */}
 
       <Grid item xs={12} md={6} lg={4}>
         <AppCurrentVisits
           title="Current Visits"
           chartData={[
-            { label: 'America', value: 4344 },
-            { label: 'Asia', value: 5435 },
-            { label: 'Europe', value: 1443 },
-            { label: 'Africa', value: 4443 },
+            { label: 'React Js', value: 4344 },
+            { label: 'Student', value: 5435 },
+            { label: 'Angluer', value: 1443 },
+            { label: 'Android', value: 4443 },
           ]}
           chartColors={[
             theme.palette.primary.main,
@@ -233,7 +201,7 @@ console.log("mergeDatadata",mergeDatadata)
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={4}>
+      {/* <Grid item xs={12} md={6} lg={4}>
         <AppCurrentSubject
           title="Current Subject"
           chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
@@ -244,10 +212,10 @@ console.log("mergeDatadata",mergeDatadata)
           ]}
           chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
         />
-      </Grid>
+      </Grid> */}
 
 
-
+{/* 
       <Grid item xs={12} md={6} lg={4}>
         <AppOrderTimeline
           title="Order Timeline"
@@ -264,7 +232,7 @@ console.log("mergeDatadata",mergeDatadata)
             time: faker.date.past(),
           }))}
         />
-      </Grid>
+      </Grid> */}
 
       <Grid item sx={{width:"100% "}}>
         <AppTrafficBySite

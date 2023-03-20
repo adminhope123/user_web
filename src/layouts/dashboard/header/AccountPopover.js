@@ -5,6 +5,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 // mocks_
 import account from '../../../_mock/account';
 import { UserDataContext } from 'src/UserDataContext';
+import users from 'src/_mock/user';
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        {userGetData?  <Avatar  src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`} alt="photoURL" />:""}
+        {userGetData?  <Avatar  src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt={userGetData?.userName} />:""}
       
       </IconButton>
 

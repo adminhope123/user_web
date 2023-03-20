@@ -271,7 +271,6 @@ const stopRunningTask = () => {
     timerStartData,
     dublicateValueData,
     totalWorkTimeData,
-    taskTimerStart,
     totalTimeData
   };
 

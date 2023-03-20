@@ -97,7 +97,6 @@ function StopWatch(props) {
                     </div>
             )}
            </div>   
-           <button onClick={stopTimer}>Click</button>
         </React.Fragment>
         </div>
     ) 

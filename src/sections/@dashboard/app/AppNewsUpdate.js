@@ -13,10 +13,11 @@ import { useDispatch, useSelector } from 'react-redux';
 AppNewsUpdate.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
+  viewDataShow:PropTypes.any.isRequired,
   list: PropTypes.array.isRequired,
 };
 
-export default function AppNewsUpdate({ title, subheader, list, ...other }) {
+export default function AppNewsUpdate({ title, subheader, list,viewDataShow, ...other }) {
   
   return (
     <Card {...other}>
@@ -31,12 +32,14 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
       </Scrollbar>
 
       <Divider />
-
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
-          View all
-        </Button>
-      </Box>
+{
+  viewDataShow===true?<Box sx={{ p: 2, textAlign: 'right' }}>
+  <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
+    View all
+  </Button>
+</Box>:""
+}
+      
     </Card>
   );
 }
@@ -49,13 +52,13 @@ NewsItem.propTypes = {
     image: PropTypes.string,
     postedAt: PropTypes.instanceOf(Date),
     title: PropTypes.string,
+    start:PropTypes.string,
     online: PropTypes.string
   }),
 };
 
 function NewsItem({ news }) {
-  const { image, title, description, postedAt,online } = news;
-
+  const { image, title, description, postedAt,online,start } = news;
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Box component="img" alt={title} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0,objectFit:"cover" }} />
@@ -77,6 +80,9 @@ function NewsItem({ news }) {
                             <table id="header-fixed"></table>
                             <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, marginLeft:"-8px",position:"absolute",top:"20px",color: 'text.secondary' }}>
            Online
+        </Typography> 
+        <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, marginLeft:"-8px",left:"-107px",position:"absolute",top:"20px",color: 'text.secondary' }}>
+           Start Time : {start?.slice(11,16)}
         </Typography> 
                           </div>
                           ))

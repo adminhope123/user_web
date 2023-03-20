@@ -13,6 +13,7 @@ import AttendanceList from './pages/AttendanceList/AttendanceList';
 import EventPage from './pages/Event/EventPage';
 import Profile from './pages/Profile/Profile';
 import TaskPage from './pages/TaskPage/TaskPage';
+import ActivePage from './pages/ActivePage';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ export default function RouterComponent() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
+        { path: 'employeestatus', element: <ActivePage /> },
         { path: 'timerClock', element: <TimerClock /> },
         { path: 'attendance-list', element: <AttendanceList /> },
         { path: 'profile', element: <Profile /> },

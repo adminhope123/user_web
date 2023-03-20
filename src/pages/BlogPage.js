@@ -14,7 +14,8 @@ import BidderIcon from './IconBlog/Bidder.png'
 import CeoIcon from './IconBlog/CEO.png'
 import HrIcon from './IconBlog/Hr.png'
 import LaravelIcon from './IconBlog/laravelIcon.png'
-import ReactIcon from './IconBlog/ReactIcon.png'
+import StaffIcon from './IconBlog/staff.png'
+import ReactIconData from './IconBlog/ReactIcon.png'
 import StudentsIcon from './IconBlog/Students.png'
 import UIUXDesignIcon from './IconBlog/UIUXDesignIcon.png'
 
@@ -36,7 +37,7 @@ const postData=[
   {id:"2",post:"HR",icon:HrIcon},
   {id:"3",post:"Students",icon:StudentsIcon},
   {id:"4",post:"Bidder",icon:BidderIcon},
-  {id:"5",post:"React Js",icon:ReactIcon},
+  {id:"5",post:"React Js",icon:ReactIconData},
   {id:"6",post:"UI/UX Designer",icon:UIUXDesignIcon},
   {id:"7",post:"Laravel",icon:LaravelIcon},
   {id:"8",post:"Android",icon:AndroidIcon}
@@ -102,20 +103,18 @@ export default function BlogPage() {
     }
     </ButtonGroup>
     </Box>
-    {
-      userEmployeeData?.length
-      ? <Box sx={{display:"flex",justifyContent:"center",marginBottom:"20px"}}>
-      <Box sx={{border:"1px solid #dfe2e7",width:"100px",height:"100px",display:"flex",justifyContent:"center",alignItems:"center",}}>
-        All Employee
-      </Box>
-  </Box>
-  :
+  {
+    userEmployeeData?.length ?
   <Box sx={{display:"flex",justifyContent:"center",marginBottom:"20px"}}>
-  <Box sx={{border:"1px solid #dfe2e7",width:"100px",height:"100px",display:"flex",justifyContent:"center",alignItems:"center",}}>
+  <Box sx={{border:"1px solid #dfe2e7",width:"100px",height:"100px",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center",}}>
   <img  key={iconPost} src={iconPost} width="66px" height="66px"/>
   </Box>
+</Box>:<Box sx={{display:"flex",justifyContent:"center",marginBottom:"20px"}}>
+<Box sx={{border:"1px solid #dfe2e7",width:"100px",height:"100px",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center",}}>
+  <img   src={StaffIcon} width="66px" height="66px"/>
+  </Box>
 </Box>
-    }
+  }
  
 
         <Grid container spacing={3}>
