@@ -18,7 +18,7 @@ const StyledCardMedia = styled('div')({
 });
 
 const StyledTitle = styled(Link)({
-  height: 44,
+  marginBottom:"5px",
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
@@ -28,11 +28,12 @@ const StyledTitle = styled(Link)({
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   zIndex: 9,
-  width: 32,
-  height: 32,
+  width: 39,
+  height: 39,
   position: 'absolute',
-  left: theme.spacing(3),
-  bottom: theme.spacing(-2),
+  left: '21px',
+  bottom:'-23px',
+  background:"linear-gradient(90deg, #61aa71 0%, #319793 100%)"
 }));
 
 const StyledInfo = styled('div')(({ theme }) => ({
@@ -86,40 +87,35 @@ export default function BlogPostCard({ postData, index }) {
               color: 'background.paper',
             }}
           />
-          {
-            POSTS?.map((item)=>{
-              return(
-                <StyledAvatar
-                alt={item}
-                src={item?.author?.avatarUrl}
-              />
-              )
-            })
-          }
+       
+                <StyledAvatar>
+                  <Typography sx={{fontSize:"13px"}}>{postData?.E_Id}</Typography>
+                </StyledAvatar>
           <StyledCover alt={fullname} src={`https://hopeusers.hopeinfosys.com/${image}`} />
         </StyledCardMedia>
 
         <CardContent
+        sx={{marginTop:"10px"}}
         >
-          <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {birthDate}
-          </Typography>
+         
 
           <StyledTitle
             color="inherit"
             variant="subtitle2"
             underline="hover"
           >
-            {fullname}
+            {postData?.userName}
           </StyledTitle>
-          <StyledTitle
-            color="inherit"
-            variant="subtitle2"
-            underline="hover"
-          >
-            {city}
-          </StyledTitle>
-          <StyledInfo>
+          <Typography gutterBottom variant="caption" sx={{ display: 'block' }}>
+            {"10/02/200"}
+          </Typography>
+          <Typography gutterBottom variant="caption" sx={{ display: 'block' }}>
+            {postData?.mobileNumber}
+          </Typography>
+          <Typography gutterBottom variant="caption" sx={{ display: 'block' }}>
+          {"Surat"}
+          </Typography>
+          {/* <StyledInfo>
             {POST_INFO?.map((info, index) => (
               <Box
                 key={index}
@@ -134,7 +130,7 @@ export default function BlogPostCard({ postData, index }) {
                 <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
               </Box>
             ))}
-          </StyledInfo>
+          </StyledInfo> */}
         </CardContent>
       </Card>
     </Grid>

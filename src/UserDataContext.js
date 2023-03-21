@@ -191,9 +191,6 @@ const startRunningTask = task => {
 const stopRunningTask = () => {
     const runningTask = getRunningTask();
     const checkIdData=users?.filter((item)=>timerStartData?.timerId===item.timerid)
-            console.log("userDAta",users)
-            console.log("timerStartData",timerStartData)
-            console.log("checkIdData",checkIdData)
     editTask({
         ...runningTask, 
         stop: moment().format(),
@@ -206,11 +203,9 @@ const stopRunningTask = () => {
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
    if(data){
-     console.log("data",data)
        const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
        const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
        const mergeObject={...data,...totalTimeDataAddObject}
-       console.log("mergeData",mergeObject)
        sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
         const getIdData=checkIdData?.map((item)=>{
           const employeeEditIdData=item?.id
@@ -218,34 +213,6 @@ const stopRunningTask = () => {
         })
      
    }
-  // const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
-  // getDatadaaa?.map((ele)=>{
-  //    ele.getEmployeeId
-  //    console.log("item",  ele.E_Id)
-  //    const filterdataaa=users?.filter((item)=>ele.E_Id=== item?.employeeId)
-  //    console.log("filterDAta",filterdataaa)
-  //    setFilterdataTotalTime(filterdataaa)
-  //   })
-  //     const liveDate = new Date().toLocaleDateString("es-DO");
-  //     const duplicateDate = liveDate;
-  //     console.log("duplicateDate",duplicateDate)
-  //     const dublicateValue = filterdataTotalTime.filter((obj) =>
-  //       duplicateDate.includes(obj?.date)
-  //     );
-  //     console.log("dublicateValue",dublicateValue)
-  //     const getTotalWorkTime=dublicateValue?.map((item)=>{
-  //         return item?.totalTimeWork
-  //       })
-  //       console.log("dublicateValueData",dublicateValue)
-  //       console.log("getTotalWorkTime",getTotalWorkTime)
-  //       const totalSecondsdata = sumToSeconds(getTotalWorkTime);
-  //   const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
-  //            ~~((totalSecondsdata / 60) % 60)}:${
-  //            ~~(totalSecondsdata % 60)}`
-  //            console.log("totalWork",getTotalWorkDataObject)
-  //            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
-  //            console.log("totalTimeobj",totalTimeobjData)
-  //                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
     }
  
   

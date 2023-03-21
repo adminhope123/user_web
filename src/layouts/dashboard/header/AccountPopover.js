@@ -41,7 +41,6 @@ export default function AccountPopover() {
   const logOutFunction=()=>{
     setOpen(null);
     location.reload()
-    console.log("loOut")
      const logOut=sessionStorage.removeItem("loginData")
       navigate('/login')
 

@@ -90,24 +90,19 @@ function TaskItem({ taskData, checked, onChange }) {
 
   const handleMarkComplete = () => {
     handleCloseMenu();
-    console.log('MARK COMPLETE', taskData.id);
   };
 
   const handleShare = () => {
     handleCloseMenu();
-    console.log('SHARE', taskData.id);
   };
 
   const handleEdit = () => {
     handleCloseMenu();
-    console.log('EDIT', taskData.id);
     const data=taskData?.read?JSON.parse(taskData?.read):null
-    console.log("Data",data)
   };
 
   const handleDelete = () => {
     handleCloseMenu();
-    console.log('DELETE', taskData.id);
     const employeeEditIdData=taskData?.id
     if(employeeEditIdData){
       dispatch(taskDeleteApi(employeeEditIdData))
@@ -115,30 +110,24 @@ function TaskItem({ taskData, checked, onChange }) {
   };
 const checkBoxTaskOnChange=(event)=>{
   setIsTrue(event.target.checked);
-  console.log(" ",event.target.checked)
   const data=event.target.checked
   taskTableData(data)
 }
 
 const taskTableData=(data)=>{
   const trueData=isTrue===true
-  console.log("trueData",trueData)
   if(trueData){
     const readData={"read":JSON.stringify(trueData)}
     const employeeEditIdData=taskData?.id
     const dataMergemerge={...taskData,...readData}
-    console.log("Data",dataMergemerge)
     dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
   }
- console.log("trueData",taskData?.read)
  const falseData=isTrue===false
  if(falseData,data){
    const readData={"read":JSON.stringify(data)}
    const employeeEditIdData=taskData?.id
    const dataMergemerge={...taskData,...readData}
-   console.log("Data",dataMergemerge)
    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
-  console.log("task",taskData?.read)
  }
  
 }

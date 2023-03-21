@@ -73,13 +73,11 @@ const handleSubmitData=(e)=>{
   const data=selectedCity?.name
   const countriesName=selectedCountry?.name
   const stateName=selectedState?.name
-  console.log("data",selectedCountry)
   const birthDateData=birthDate?.$d
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
   const emailDataGet={"email":userGetData?.email}
   const name={"email":userGetData?.userName}
-console.log("name",name)
 const imageObject={"image":userGetData?.image}
   const cityObject={"city":data}
   const fullnameObject={"fullname":userGetData?.userName}
@@ -91,17 +89,14 @@ const imageObject={"image":userGetData?.image}
   const gender={"gender":value}
   const employeeId={"E_Id":getEmployeeId}
   const mergeObject={...editFormData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
-  console.log("mergeObject",mergeObject)
    if(mergeObject){
     const checkData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
-    console.log("checkDAta",checkData)
 
     if(checkData.length){
       console.log("data add")
     }else{
       dispatch(profilePostApi(mergeObject))
     }
-    console.log("checkDatacheckData",checkData)
    
     // if(checkData===false){
     // }else{
@@ -114,24 +109,19 @@ const imageObject={"image":userGetData?.image}
      const employeeEditIdData=item?.id
      dispatch(profilePutApi(mergeObject,employeeEditIdData))
    })
-   console.log("getIf",getIdData)
     // dispatch(profilePutApi())
 }
 
 const getApiFunction=async()=>{
   await dispatch(profileGetApi())
-  console.log("yusers",users)
   const checkData=users?.map((item)=>{
     const dataCheck= item?.E_Id===userGetData?.E_Id
-     console.log("dataCghecjk",dataCheck)
      setOldUsersData(dataCheck)
     })
     if(users){
       const filterData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
-      console.log("userProfileData",filterData)
       setUserProfileData(filterData)
     }
-    console.log("dataCghecjk",checkData)
 }
 
 useEffect(() => {
@@ -139,15 +129,11 @@ useEffect(() => {
 }, []);
 
 const userProfileDataFunction=()=>{
-  console.log("userProfileData",userProfileData)
 
 }
   useEffect(() => {
-    console.log("",selectedCountry);
-    console.log(selectedCountry?.isoCode);
 
     userProfileDataFunction()
-    console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
   }, [selectedCountry]);
   
   return (
@@ -161,7 +147,7 @@ const userProfileDataFunction=()=>{
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         {
-          userGetData?<img    src={`http://127.0.0.1:8000/${userGetData&&userGetData?.image}`}/>:""
+          userGetData?<img    src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`}/>:""
         }
         
         <CardContent>

@@ -65,7 +65,6 @@ const handleWeekendsToggle = () => {
       <li key={event.id}>
         <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})} :</b>
         <h6>{event.title}</h6>
-        {console.log("event",event)}
       </li>
     )
   }

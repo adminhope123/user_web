@@ -4,6 +4,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventIcon from '@mui/icons-material/Event';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Groups2Icon from '@mui/icons-material/Groups2';
 import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 import TaskIcon from '@mui/icons-material/Task';
 // ----------------------------------------------------------------------
@@ -31,11 +32,11 @@ const navConfig = [
     path: '/dashboard/attendance-list',
     icon:<EventAvailableIcon/> ,
   },
-  {
-    title: 'Task',
-    path: '/dashboard/task',
-    icon: <TaskIcon/>,
-  },
+  // {
+  //   title: 'Task',
+  //   path: '/dashboard/task',
+  //   icon: <TaskIcon/>,
+  // },
   {
     title: 'Event',
     path: '/dashboard/event',
@@ -47,9 +48,9 @@ const navConfig = [
   //   icon: icon('ic_cart'),
   // },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
+    title: 'Staff Members',
+    path: '/dashboard/staffmembers',
+    icon: <Groups2Icon/>,
   },
   {
     title: 'Profile',

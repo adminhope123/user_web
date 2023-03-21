@@ -79,7 +79,6 @@ const [postCount,setPostCount]=useState()
       })
       const allUsersData=JSON.parse(sessionStorage.getItem("viewEmployee"))
       const postData=allUsersData?.map((item)=>{return item ?.role})
-      console.log("allUsers",postData)
       var mapdata = postData?.reduce(function(prev, cur) {
      prev[cur] = (prev[cur] || 0) + 1;
      const data=prev[cur]
@@ -90,7 +89,6 @@ const [postCount,setPostCount]=useState()
         // setPostCount(dataMergeObject)
         return dataMergeObject
       }, {});
-      console.log("postCount",mapdata)
     }
 
   useEffect(() => {
@@ -104,7 +102,6 @@ const [postCount,setPostCount]=useState()
       </Helmet>
    {
     users?.length ?   <Container maxWidth="xl">
-    <button onClick={()=>getUserData()}>Click</button>
     <Typography variant="h4" sx={{ mb: 5 }}>
       Hi, Welcome back
     </Typography>

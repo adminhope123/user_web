@@ -20,15 +20,11 @@ const dataGetGet=async()=>{
     const getUserData=async()=>{
         await   dispatch(getTimeDataApi())
       if(users){
-        console.log("users",users)
         const dataFilter=users?.filter(ele=>{return ele.state==="running"})
         const dataGet=JSON.parse(sessionStorage.getItem("viewEmployee"))
-        console.log("dataGet",dataGet)
         const getUserDataData=dataGet?.filter((item)=>dataFilter?.find((ele)=>ele.employeeId===item.E_Id))
-        console.log("data",getUserDataData)
         const addValue=getUserDataData?.map((item)=>{
       const {state,start}=dataFilter?.find((ele)=>ele.employeeId===item.E_Id)
-      console.log("state",state)
       return{...item,state,start}
       
     })
@@ -40,7 +36,6 @@ const dataGetGet=async()=>{
  const mergeDatadata=[...addValue,...filterData]
  const mergeDatadataAdd=mergeDatadata?.map((item)=>item)
  setEmployeeStatusData(mergeDatadataAdd)
- console.log("mergeData",mergeDatadataAdd)
       }
     }
 

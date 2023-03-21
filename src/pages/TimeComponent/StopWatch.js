@@ -28,8 +28,6 @@ function StopWatch(props) {
             start: moment().format()
         });
         const dataRunning=users?.filter((item)=>item?.state==="running")
-        console.log("dagtaa",users)
-        console.log("dataRunning",dataRunning)
           sessionStorage.setItem("online",JSON.stringify(dataRunning))
             const unloadCallback = (event) => {
               event.preventDefault();

@@ -26,7 +26,6 @@ export default function BlogPage() {
   
   const getUserData=async()=>{
         await dispatch(profileGetApi())
-        console.log("users",users)
   }
 
   useEffect(() => {

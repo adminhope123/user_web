@@ -19,6 +19,7 @@ import {
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 import { ColorMultiPicker } from '../../../components/color-utils';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export const SORT_BY_OPTIONS = [
   { value: 'priceAsc', label: 'Price: Low-High' },
 ];
 export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
+export const FILTER_CATEGORY_OPTIONS = ["CEO","HR","Node Js","Web Design","Web Devloper","Wordpress Devloper","Wordpress Designer","Laravel Devloper(PHP)","Android Devloper","React Js","Angular","UI/UX Design","Student" ,"Python","BDE","Designer"];
 export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 export const FILTER_PRICE_OPTIONS = [
   { value: 'below', label: 'Below $25' },
@@ -51,11 +52,15 @@ export const FILTER_COLOR_OPTIONS = [
 
 ShopFilterSidebar.propTypes = {
   openFilter: PropTypes.bool,
+  filterData:PropTypes.any,
+  setFilterDataData:PropTypes.any,
+  filterDataData:PropTypes.any,
   onOpenFilter: PropTypes.func,
   onCloseFilter: PropTypes.func,
 };
 
-export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFilter }) {
+export default function ShopFilterSidebar({ openFilter, onOpenFilter,filterData,filterDataData,setFilterDataData, onCloseFilter }) {
+  
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={onOpenFilter}>
@@ -85,83 +90,17 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
           <Stack spacing={3} sx={{ p: 3 }}>
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Gender
-              </Typography>
-              <FormGroup>
-                {FILTER_GENDER_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} control={<Checkbox />} label={item} />
-                ))}
-              </FormGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Category
+                Team Members
               </Typography>
               <RadioGroup>
-                {FILTER_CATEGORY_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Colors
-              </Typography>
-              <ColorMultiPicker
-                name="colors"
-                selected={[]}
-                colors={FILTER_COLOR_OPTIONS}
-                onChangeColor={(color) => [].includes(color)}
-                sx={{ maxWidth: 38 * 4 }}
-              />
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Price
-              </Typography>
-              <RadioGroup>
-                {FILTER_PRICE_OPTIONS.map((item) => (
-                  <FormControlLabel key={item.value} value={item.value} control={<Radio />} label={item.label} />
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Rating
-              </Typography>
-              <RadioGroup>
-                {FILTER_RATING_OPTIONS.map((item, index) => (
-                  <FormControlLabel
-                    key={item}
-                    value={item}
-                    control={
-                      <Radio
-                        disableRipple
-                        color="default"
-                        icon={<Rating readOnly value={4 - index} />}
-                        checkedIcon={<Rating readOnly value={4 - index} />}
-                        sx={{
-                          '&:hover': { bgcolor: 'transparent' },
-                        }}
-                      />
-                    }
-                    label="& Up"
-                    sx={{
-                      my: 0.5,
-                      borderRadius: 1,
-                      '&:hover': { opacity: 0.48 },
-                    }}
-                  />
+                {filterData.map((item) => (
+                  <FormControlLabel key={item} value={item} control={<Radio  onChange={(e)=>{setFilterDataData(e.target.value)}}  />} label={item} />
+                
                 ))}
               </RadioGroup>
             </div>
           </Stack>
         </Scrollbar>
-
         <Box sx={{ p: 3 }}>
           <Button
             fullWidth
@@ -170,8 +109,9 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
             color="inherit"
             variant="outlined"
             startIcon={<Iconify icon="ic:round-clear-all" />}
+            onClick={onCloseFilter}
           >
-            Clear All
+          Close Filter
           </Button>
         </Box>
       </Drawer>

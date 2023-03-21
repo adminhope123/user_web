@@ -31,8 +31,8 @@ export default function RouterComponent() {
         { path: 'profile', element: <Profile /> },
         { path: 'task', element: <TaskPage /> },
         { path: 'event', element: <EventPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        // { path: 'products', element: <ProductsPage /> },
+        { path: 'staffmembers', element: <BlogPage /> },
       ],
     },
     {

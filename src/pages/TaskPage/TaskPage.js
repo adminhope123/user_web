@@ -43,7 +43,6 @@ const dataFunction=()=>{
   const getUserData=JSON.parse(sessionStorage.getItem("userData"))
 if(getUserData,users){
   const dataFilter=users?.filter((item)=>getUserData?.find(el=>item?.E_Id===el?.E_Id))
-  console.log("DataFilter",dataFilter)
   if(dataFilter){
     setGetUserData(dataFilter)
   }
@@ -59,7 +58,6 @@ const handleOpen = () => setTaskModel(true);
   const handleClose = (e) => {
     setTaskModel(false)
     e.preventDefault()
-    console.log("taskAdd",taskAdd)
     const taskAddObject={"task":taskAdd}
     const getUserId=JSON.parse(sessionStorage.getItem("userData"))
     const getUserIdData=getUserId?.map((item)=>{return item?.E_Id})
@@ -67,7 +65,6 @@ const handleOpen = () => setTaskModel(true);
     const readData={"read":"false"}
     const dataMerge={...taskAddObject,...employeeId,...readData}
     dispatch(taskAddApi(dataMerge))
-    console.log("taskAddObject",dataMerge)
   };
 
   return (

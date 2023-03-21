@@ -68,9 +68,7 @@ export default function TimerClock(props) {
     const getUserDataGet=JSON.parse(sessionStorage.getItem("userData"))
     const getUserDataTime=getUserDataGet?.map((item)=>{
         const filterData=userFilter?.filter((ele)=>{return ele.employeeId===item.E_Id})
-        console.log("filterData",filterData)
         setDateData(filterData)
-        console.log("users",users)
     })
   }
   const handleTotalTimeModelClose = () => {
@@ -81,9 +79,7 @@ export default function TimerClock(props) {
     const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
     getDatadaaa?.map((ele)=>{
        ele?.getEmployeeId
-       console.log("item",  ele?.E_Id)
        const filterdataaa=users?.filter((item)=>ele?.E_Id=== item?.employeeId)
-       console.log("filterDAta",filterdataaa)
        if(filterdataaa){
          setFilterdataTotalTime(filterdataaa)
        }
@@ -107,18 +103,14 @@ export default function TimerClock(props) {
            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
                sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
 
-               console.log("filterdataTotalTime",filterdataTotalTime)
                const getTotalWorkTimeTime=filterdataTotalTime?.map((item)=>{
                  return item?.totalTimeWork
                })
-               console.log("getTotalWorkTimeTime",getTotalWorkTimeTime)
                const totalSecondsdataData = sumToSeconds(getTotalWorkTimeTime);
-               console.log("getTo",totalSecondsdataData)
                const getTotalWorkDataObjectData=`${~~(totalSecondsdataData / 60 / 60)}:${
                 ~~((totalSecondsdataData / 60) % 60)}:${
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
-                console.log("totalTimeobjDataData",totalTimeobjDataData)
                 localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
               };
  
@@ -153,8 +145,9 @@ export default function TimerClock(props) {
   return (
     <div className='timer-clock'> 
       <h6>Timer Clock</h6>
-       {
-        users?.length?   <div>
+       {/* {
+        !users.length ?    */}
+        <div>
                  {props.children}
                  <div className='clock-time'>
                  <Dialog
@@ -235,8 +228,9 @@ export default function TimerClock(props) {
                  </TableBody>
                  </Table>
                </div>
-        </div>:<LoaderComp/>
-       }
+        </div>
+        {/* :<LoaderComp/>
+       } */}
                 {/* <BorderLinearProgress variant="determinate" value={50} /> */}
     </div>
   )
