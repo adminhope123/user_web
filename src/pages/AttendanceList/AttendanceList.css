@@ -28,6 +28,33 @@
     padding: 2px;
     border-radius: 5px;
 }
+.totalWorkTimeData{
+    width: 174px;
+    margin-top: -5px;
+    margin-right: 18px;
+    height: 49px;
+    border: 1px solid #e0e4e8;
+    position: relative;
+    border-radius: 6px;
+}
+.totalWorkTimeData span{
+    color: #919EAB;
+    opacity: 1;
+    background-color: #f9fafb;
+    position: absolute;
+    top: -11px;
+    left: 7px;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.totalWorkTimeData h1{
+    margin-left: -8px;
+    color: #919EAB;
+    padding: 15px;
+    opacity: 1;
+    font-size: 1rem;
+    font-weight: 400;
+}
 .attendance-list table{
     position: relative;
 }

@@ -44,13 +44,15 @@ export default function Nav({ openNav, onCloseNav }) {
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
        setLiveTime(time)
+       const getData=JSON.parse(sessionStorage.getItem("userData"))
+       const mapData=getData?.map((item)=>{item})
     }
     
     useEffect(() => {
       UpdateTime()
       setInterval(UpdateTime,1000)
     }, [])
-    
+   
   const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -73,12 +75,11 @@ export default function Nav({ openNav, onCloseNav }) {
               </Typography>
 
       </Box>
-
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
             {
-              userGetData?<Avatar src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt="photoURL" />:""
+              userGetData?<Avatar src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt={userGetData?.userName} />:""
             }
             
 

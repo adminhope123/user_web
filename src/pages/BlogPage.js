@@ -8,7 +8,7 @@ import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashb
 import POSTS from '../_mock/blog';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { profileGetApi } from 'src/Redux/actions';
+import { getUserDataApi, profileGetApi } from 'src/Redux/actions';
 import AndroidIcon from './IconBlog/androidIcon.png'
 import BidderIcon from './IconBlog/Bidder.png'
 import CeoIcon from './IconBlog/CEO.png'
@@ -21,6 +21,7 @@ import UIUXDesignIcon from './IconBlog/UIUXDesignIcon.png'
 
 
 import { Box } from '@mui/system';
+import { ProductFilterSidebar } from './products';
 
 // ----------------------------------------------------------------------
 
@@ -36,20 +37,31 @@ const postData=[
   {id:"1",post:"CEO",icon:CeoIcon},
   {id:"2",post:"HR",icon:HrIcon},
   {id:"3",post:"Students",icon:StudentsIcon},
-  {id:"4",post:"Bidder",icon:BidderIcon},
-  {id:"5",post:"React Js",icon:ReactIconData},
-  {id:"6",post:"UI/UX Designer",icon:UIUXDesignIcon},
-  {id:"7",post:"Laravel",icon:LaravelIcon},
-  {id:"8",post:"Android",icon:AndroidIcon}
+  {id:"4",post:"Web Developer",icon:StudentsIcon},
+  {id:"5",post:"Wordpress Developer",icon:StudentsIcon},
+  {id:"6",post:"Laravel Developer(PHP)",icon:LaravelIcon},
+  {id:"7",post:"Bidder",icon:BidderIcon},
+  {id:"8",post:"React Js",icon:ReactIconData},
+  {id:"9",post:"UI/UX Design",icon:UIUXDesignIcon},
+  {id:"10",post:"Android",icon:AndroidIcon}
 ]
 export default function BlogPage() {
+  const [openFilter, setOpenFilter] = useState(false);
   const dispatch=useDispatch()
   const {users}=useSelector(res=>res.data)
   const [userEmployeeData,setUserEmployeeData]=useState()
   const [iconPost,setIconPost]=useState()
 
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
   const getUserData=async()=>{
-        await dispatch(profileGetApi())
+        await dispatch(getUserDataApi())
         console.log("users",users)
   }
 
@@ -70,39 +82,18 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Blog |  User Web </title>
+        <title> Dashboard: Staff |  User Web </title>
       </Helmet>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Blog
+            Staff
           </Typography>
         </Stack>
 
         {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
           <BlogPostsSearch posts={userEmployeeData} />
         </Stack> */}
-        <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom:"19px",
-        '& > *': {
-          m: 1,
-        },
-      }}
-    >
-      <ButtonGroup variant="outlined" aria-label="outlined button group">
-        {
-          postData?.map((item)=>{
-            return(
-        <Button  key={item?.id} onClick={()=>onChangePost(item)}>{item?.post}</Button>
-        )
-      })
-    }
-    </ButtonGroup>
-    </Box>
   {
     userEmployeeData?.length ?
   <Box sx={{display:"flex",justifyContent:"center",marginBottom:"20px"}}>
@@ -115,12 +106,11 @@ export default function BlogPage() {
   </Box>
 </Box>
   }
- 
-
+    
         <Grid container spacing={3}>
           {
           userEmployeeData?.length?
-          userEmployeeData?.map((postData, index) => (
+          users?.map((postData, index) => (
             <BlogPostCard key={postData?.E_Id} postData={postData} index={index} />
           ))
           : users?.map((postData, index) => (

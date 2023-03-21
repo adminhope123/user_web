@@ -40,7 +40,7 @@ export default function LoginForm() {
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
     const loginData=loginDataForm
-    let result=await fetch("https://hopeusers.hopeinfosys.com/userlogin",{
+    let result=await fetch("http://127.0.0.1:8000/api/userlogin",{
      method:"POST",
      headers:{
        "Content-Type":"application/json",
@@ -51,11 +51,11 @@ export default function LoginForm() {
     console.log("reslut",result)
     result= await result.json()
     sessionStorage.setItem("loginData",JSON.stringify(loginData))
-    // navigate('/dashb oard/app', { replace: true })
+    navigate('/dashboard/app', { replace: true })
     const getData=JSON.parse(sessionStorage.getItem("loginData"))
     if(getData?.length===0){
     }else{
-      // location.reload()
+      location.reload()
     }
     if(users){
       const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)

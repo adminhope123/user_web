@@ -11,6 +11,8 @@ import {
   Button,
   IconButton,
   Box,
+  FormControl,
+  TextField,
 } from "@mui/material";
 import { UserListHead } from "src/sections/@dashboard/user";
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -18,6 +20,7 @@ import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import {
   attendanceGetApi,
   attendancePostApi,
@@ -58,6 +61,7 @@ export default function AttendanceTable() {
    const [attendaceDataStore,setAttendaceDataStore]=useState()
    const [dateSort,setDateSort]=useState()
    const [presentData,setPresentData]=useState()
+   const [totalWorkTimeData,setTotalWorkTimeData]=useState()
  const {getEmployeeId,timeData,handleTotalTime}=useContext(UserDataContext)
 
   const attendancePostData = () => {
@@ -86,6 +90,10 @@ export default function AttendanceTable() {
 delete getTodayData?.color
 
  const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+ const totalWorkTimeData=addTime?.totalWorkTime
+ if(totalWorkTimeData){
+   setTotalWorkTimeData(totalWorkTimeData)
+ }
  console.log("getTodatyDataq",getTodayData)
  const absentData={"absent":false.toString()}
  console.log("absetData",absentData)
@@ -98,11 +106,13 @@ delete getTodayData?.color
    const userData=users?.map((item)=>{
     return item
    })
-   const lastValue=userData.slice(-1)[0]?.date
+   const liveDateDate=new Date().toLocaleDateString("es-DO");
+   const lastValue=liveDateDate
    const lastFirstValue=  userData.slice(-2)[0]?.date
    console.log("lastValue",lastValue)
    console.log("lastFirstValue",lastFirstValue)
    console.log("userData",getEmployeeId)
+   console.log("lastFirstValue",lastFirstValue)
    var InputData = {
     end_date:lastValue,
     start_date:lastFirstValue,
@@ -149,69 +159,116 @@ for(var i=1;i<Days+1;i++){
    
    OutputData.push(myObj);
 }
+console.log("OutputData",OutputData)
+ const getAbsentData=OutputData?.map((item)=>{
+    return item;  
+  })
+const dataRemoveFirst=getAbsentData?.shift();
+const dataRemoveLast=getAbsentData?.slice(0).pop();
+const filterData=getAbsentData?.filter(item=>item!==dataRemoveFirst&&item!==dataRemoveLast)
+console.log("filterDaa",filterData)
 
-const getAbsentData=OutputData?.map((item)=>{
-  return item;  
+const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+const getId=employeeIdGet?.map((item)=>{
+ return item?.E_Id
 })
-console.log("getAbsentData",getAbsentData)
-const absentFisrtValue=getAbsentData?.shift();
-const absentSecondValue=getAbsentData?.slice(0).pop();
-const filterData=getAbsentData?.filter(item=>item!==absentFisrtValue&&item!==absentSecondValue)
-console.log("filterData",filterData)
-console.log("addObjectData",addObjectData)
-const mergeData= [...filterData,addObjectData];
-const mergeArrayOfObject= [ ...users, ...mergeData ]
-
-
-const dublicateValue=mergeArrayOfObject.filter((v,i,a)=>a.findLastIndex(v2=>(v2.date === v.date))===i)
-console.log("dublicateValue",dublicateValue) 
-const dublicateValueDataRemove=dublicateValue.filter(({ date: id1 }) => !users.some(({ date: id2 }) => id2 === id1));
-console.log("dublicateValueDataRemove",dublicateValueDataRemove)
-const dataaa=dublicateValueDataRemove?.map((item)=>{
-  dispatch(attendancePostApi(item))
+const filterDAtaUsers=users?.filter((item)=>employeeIdGet?.find(ele=>ele.E_Id===item?.employeeId))
+console.log("filterDAtaUsers",filterDAtaUsers)
+const getUserCheck=filterDAtaUsers?.map((item)=>{
+    const dataadataa=filterData?.map((ele)=>{
+        console.log("dataadataa",item?.date,ele?.date)
+        return item?.date.includes(ele?.date)
+    })
+    return dataadataa.toString()
 })
+const chekValueGet=getUserCheck?.includes("true")
 
-
-const dataAdd=addObjectData
-console.log("dataAdd",dataAdd)
-const employeeId=getEmployeeId
-const dataCheck=dataAdd?.employeeId===employeeId
-console.log("dataCheck",dataCheck)
-if(dataCheck===true){
-  const getTotalTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
-  const totalWorkGet=getTotalTime?.totalWorkTime
-  const createObject={"totalWorkTime":totalWorkGet}
-  console.log("addDAtra",createObject)
-  const mergeObject={...dataAdd,...getTotalTime}
-  console.log("mergeObject",mergeObject)
-  console.log("users",users)
-  const livedate = new Date().toLocaleDateString("es-DO");
-  console.log("liveDate",livedate)
-  const getTodayDate=users?.filter((item)=>item.date===livedate&&employeeId&&item.id)
-  console.log("getTodayData",getTodayDate)
-  const employeeEditIdData=getTodayDate?.map((item)=>item.id)
-  console.log("employeeEditIdData",employeeEditIdData)
-  setTimeout(() => {
-    dispatch(attendanceApiPut(mergeObject,employeeEditIdData))
-  },2000 );
-  console.log("allEmployeeData",attendaceDataStore)
-  let presentData = attendaceDataStore.map(tab=>keyFilters(tab, ["present"]))
-  const daatta=[...presentData]
-  console.log("dataa",daatta)
-  const presentDataFilter =daatta.filter((item)=>item.present==="true")
-  const presentDataData=presentDataFilter.length
-  let absentData = attendaceDataStore.map(tab=>keyFilters(tab, ["absent"]))
-  const absentDataArrayOf=[...absentData]
-  console.log("dataa",absentDataArrayOf)
-  const absentDataFilter =absentDataArrayOf.filter((item)=>item.absent==="true")
-  const absentDataData=absentDataFilter.length
-  console.log("filters",absentDataData)
-  const presentDataDataData={"presentData":presentDataData}
-  const absentDataDataData={"absentData":absentDataData}
-  const mergeObjectdata=[presentDataDataData,absentDataDataData]
-  console.log("mergeObject",mergeObjectdata)
-  sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
+console.log("dataadataa",chekValueGet)
+if(chekValueGet===true){
+ console.log("dataAdd")
+}else{
+   const absetDataAdd=filterData?.map((item)=>{
+   return dispatch(attendancePostApi(item))
+  })
 }
+console.log("addObjectData",addObjectData)
+    const datadata=filterDAtaUsers?.map((item)=>{
+         return item?.date.includes(addObjectData?.date)
+    })
+    console.log("datadatadatadatadata",datadata)
+  const dataCheckData=datadata?.includes(true)
+  console.log("dataCheckData",dataCheckData)
+  if(dataCheckData===true){
+    console.log("dataAdd")
+   }else{
+       dispatch(attendancePostApi(addObjectData))
+   }
+
+
+
+
+// const getAbsentData=OutputData?.map((item)=>{
+//   return item;  
+// })
+// console.log("getAbsentData",OutputData)
+// const absentFisrtValue=getAbsentData?.shift();
+// const absentSecondValue=getAbsentData?.slice(0).pop();
+// const filterData=getAbsentData?.filter(item=>item!==absentFisrtValue&&item!==absentSecondValue)
+// console.log("filterData",filterData)
+// console.log("addObjectData",addObjectData)
+// const mergeData= [...filterData,addObjectData];
+// const mergeArrayOfObject= [ ...users, ...mergeData ]
+
+
+// const dublicateValue=mergeArrayOfObject.filter((v,i,a)=>a.findLastIndex(v2=>(v2.date === v.date))===i)
+// console.log("dublicateValue",dublicateValue) 
+// const dublicateValueDataRemove=dublicateValue.filter(({ date: id1 }) => !users.some(({ date: id2 }) => id2 === id1));
+// console.log("dublicateValueDataRemove",dublicateValueDataRemove)
+// const dataaa=dublicateValueDataRemove?.map((item)=>{
+  // dispatch(attendancePostApi(item))
+// })
+
+
+// const dataAdd=addObjectData
+// console.log("dataAdd",dataAdd)
+// const employeeId=getEmployeeId
+// const dataCheck=dataAdd?.employeeId===employeeId
+// console.log("dataCheck",dataCheck)
+// if(dataCheck===true){
+//   const getTotalTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+//   const totalWorkGet=getTotalTime?.totalWorkTime
+//   const createObject={"totalWorkTime":totalWorkGet}
+//   console.log("addDAtra",createObject)
+//   const mergeObject={...dataAdd,...getTotalTime}
+//   console.log("mergeObject",mergeObject)
+//   console.log("users",users)
+//   const livedate = new Date().toLocaleDateString("es-DO");
+//   console.log("liveDate",livedate)
+//   const getTodayDate=users?.filter((item)=>item.date===livedate&&employeeId&&item.id)
+//   console.log("getTodayData",getTodayDate)
+//   const employeeEditIdData=getTodayDate?.map((item)=>item.id)
+//   console.log("employeeEditIdData",employeeEditIdData)
+//   setTimeout(() => {
+//     dispatch(attendanceApiPut(mergeObject,employeeEditIdData))
+//   },2000 );
+//   console.log("allEmployeeData",attendaceDataStore)
+//   let presentData = attendaceDataStore.map(tab=>keyFilters(tab, ["present"]))
+//   const daatta=[...presentData]
+//   console.log("dataa",daatta)
+//   const presentDataFilter =daatta.filter((item)=>item.present==="true")
+//   const presentDataData=presentDataFilter.length
+//   let absentData = attendaceDataStore.map(tab=>keyFilters(tab, ["absent"]))
+//   const absentDataArrayOf=[...absentData]
+//   console.log("dataa",absentDataArrayOf)
+//   const absentDataFilter =absentDataArrayOf.filter((item)=>item.absent==="true")
+//   const absentDataData=absentDataFilter.length
+//   console.log("filters",absentDataData)
+//   const presentDataDataData={"presentData":presentDataData}
+//   const absentDataDataData={"absentData":absentDataData}
+//   const mergeObjectdata=[presentDataDataData,absentDataDataData]
+//   console.log("mergeObject",mergeObjectdata)
+//   sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
+// }
 // function sortByDate(a, b) {
 //   if (a.date < b.date) {
 //       return 1;
@@ -225,6 +282,28 @@ if(dataCheck===true){
 // const sorted = users?.sort(sortByDate);
 // setDateSort(sorted)
   };
+  const attendacePutData=()=>{
+    const liveDate=new Date().toLocaleDateString("es-DO");
+
+    const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+
+    const getEmployeeIdDAtaDAta=employeeIdGet?.map((item)=>{return item?.E_Id})
+   const getTodayDate=users?.filter((item)=>{return item.date===liveDate&&getEmployeeIdDAtaDAta&&item.id})
+console.log("getTodayData",getTodayDate)
+const getTotalWorkData=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+const getTime={"totalWorkTime":getTotalWorkData?.totalWorkTime}
+const getDataIdDataa=getTodayDate?.filter((item)=>employeeIdGet?.find(ele=>ele?.E_Id===item?.employeeId))
+const dataIdEmployeeGet=getDataIdDataa?.map((item)=>{return item?.id})
+console.log("getDataIdDataa",getDataIdDataa)
+const employeeEditIdData=dataIdEmployeeGet
+const dataAddEdit=getTodayDate?.map((item)=>{
+  console.log("employeeEditIdData",item)
+  const dataMerge={...item,...getTime}
+  console.log("dataMerge",dataMerge)
+return   dispatch(attendanceApiPut(dataMerge,employeeEditIdData))
+})
+ 
+  }
   let keyFilters = function(values, keys){
     let filteredKeys = {}
     Object.keys(values).map((key, index)=>{
@@ -371,6 +450,18 @@ console.log("dataaaa",dataaaa)
            <span> Data Refresh</span>
           <RefreshIcon sx={{marginLeft:"10px"}}/>
           </Button>
+          
+          <Box sx={{display:"flex",alignItems:"stretch",justifyContent:"flex-end"}} className="totalWorkTime-data">
+          <div className="totalWorkTimeData">
+            <span>Total Work</span>
+          <h1 >{totalWorkTimeData}</h1>
+          </div>
+     {console.log("totalEolll",totalWorkTimeData)}
+            <Button  variant="contained" onClick={() => attendacePutData()} sx={{marginBottom:"30px"}}>
+           <span>Add Time</span>
+          <QueryBuilderIcon sx={{marginLeft:"10px"}}/>
+          </Button>
+          </Box>
         {/* <Table>
           <UserListHead headLabel={TABLE_HEAD} />
           <TableBody>
