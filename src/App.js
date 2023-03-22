@@ -9,6 +9,7 @@ import ScrollToTop from './components/scroll-to-top';
 import { StyledChart } from './components/chart';
 import LoginPage from './pages/LoginPage';
 import { UserDataProvider } from './UserDataContext';
+import ForgotPassword from './sections/auth/login/ForgotPassword';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ useEffect(() => {
       {loginSuccess?<RouterComponent/>:
       <Routes>
           <Route  path="/login" element={<LoginPage/>}/>
+          <Route  path="/forgotpassword" element={<ForgotPassword/>}/>
       </Routes>
 }
     </ThemeProvider>

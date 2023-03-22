@@ -108,6 +108,9 @@ export default function LoginForm() {
     console.log("eror",error)
     return error;
   };
+  const handleClickOpenForgotPassword=()=>{
+    navigate('/forgotpassword', { replace: true })
+  }
 useEffect(() => {
 dispatch(getUserDataApi())
 }, [])
@@ -147,12 +150,11 @@ dispatch(getUserDataApi())
          <p className='login-error-text'>{errorForm.password}</p>
       </Stack>
 
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
-        <Link variant="subtitle2" underline="hover">
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2,cursor:"pointer" }}>
+        <Link variant="subtitle2" underline="hover" onClick={handleClickOpenForgotPassword}>
           Forgot password?
         </Link>
-      </Stack> */}
+      </Stack>
 
       <LoadingButton fullWidth sx={{marginTop:"20px"}} size="large" type="submit" variant="contained" >
         Login
