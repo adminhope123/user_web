@@ -13,6 +13,9 @@ import {
   Box,
   FormControl,
   TextField,
+  Stack,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { UserListHead } from "src/sections/@dashboard/user";
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -38,7 +41,7 @@ import {
 import users from "src/_mock/user";
 import { UserDataContext } from "src/UserDataContext";
 import moment from "moment";
-import { merge } from "lodash";
+import { merge, set } from "lodash";
 import LoaderComp from "src/loader/LoaderComp";
 
 const TABLE_HEAD = [
@@ -63,6 +66,8 @@ export default function AttendanceTable() {
    const [presentData,setPresentData]=useState()
    const [totalWorkTimeData,setTotalWorkTimeData]=useState()
  const {getEmployeeId,timeData,handleTotalTime}=useContext(UserDataContext)
+ const [startAlert, setStartAlert] = useState(false);
+ const [dataRefresh, setDataRefresh] = useState(false);
 
   const attendancePostData = () => {
     // handleTotalTime()
@@ -171,6 +176,7 @@ const chekValueGet=getUserCheck?.includes("true")
 
 if(chekValueGet===true){
 }else{
+  setDataRefresh(true)
    const absetDataAdd=filterData?.map((item)=>{
    return dispatch(attendancePostApi(item))
   })
@@ -181,11 +187,13 @@ if(chekValueGet===true){
   const dataCheckData=datadata?.includes(true)
   if(dataCheckData===true){
    }else{
+    setDataRefresh(true)
        dispatch(attendancePostApi(addObjectData))
    }
 
   };
   const attendacePutData=()=>{
+    setStartAlert(true)
     const liveDate=new Date().toLocaleDateString("es-DO");
     
     const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
@@ -197,6 +205,7 @@ const getTime={"totalWorkTime":getTotalWorkData?.totalWorkTime}
 const getDataIdDataa=getTodayDate?.filter((item)=>employeeIdGet?.find(ele=>ele?.E_Id===item?.employeeId))
 const dataIdEmployeeGet=getDataIdDataa?.map((item)=>{return item?.id})
 const employeeEditIdData=dataIdEmployeeGet
+
 const dataAddEdit=getTodayDate?.map((item)=>{
   const dataMerge={...item,...getTime}
   return   dispatch(attendanceApiPut(dataMerge,employeeEditIdData))
@@ -336,9 +345,41 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const allReadyDataAlertFunctionClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
+    setStartAlert(false);
+  };
+  const dataRefreshFunction = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setDataRefresh(false);
+  };
+ 
   return (
     <div>
+           <Box>
+    <Stack>
+            <Snackbar open={startAlert} autoHideDuration={6000}  onClose={allReadyDataAlertFunctionClose} className="time-add-alert" >
+              <Alert onClose={allReadyDataAlertFunctionClose}   variant="filled" severity="info">
+                  Time Add
+              </Alert>
+            </Snackbar>
+          </Stack>
+    </Box>
+    <Box>
+    <Stack>
+            <Snackbar open={dataRefresh} autoHideDuration={6000}  onClose={dataRefreshFunction} className="time-add-alert" >
+              <Alert onClose={dataRefreshFunction}    variant="filled" severity="warning">
+                  Data Refresh
+              </Alert>
+            </Snackbar>
+          </Stack>
+    </Box>
       <div className="attendance-table">
         <Button  variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
            <span> Data Refresh</span>

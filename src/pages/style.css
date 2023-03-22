@@ -9,7 +9,13 @@
     padding: 13px;
     width: 218px;
 }
-
+.alertLogin{
+    position: absolute !important;
+    top: 27px !important;
+    right: 18px !important;
+    bottom: unset !important;
+    left: unset !important;
+}
 .employee-new-user .add-employee {
     width: 252px !important;
     background-color: #162b4c;
@@ -62,7 +68,31 @@
 .logo-icon-login-form img {
     width: 112px;
 }
-
+.start-alert{
+    position: absolute !important;
+    top: -81px !important;
+    right: 18px !important;
+    bottom: unset !important;
+    left: unset !important;
+    width: 247px;
+}
+.stop-alert{
+    position: absolute !important;
+    top: -81px !important;
+    right: 18px !important;
+    bottom: unset !important;
+    left: unset !important;
+    width: 247px;
+}
+.stop-alert button{
+    margin-top: 0px !important;
+}
+.start-alert button{
+    margin-top: 0px !important;
+}
+.start-alert .MuiPaper-root {
+    background-color: #c5f7dd !important;
+}
 .timer-clock form {
     display: flex;
     flex-direction: column;

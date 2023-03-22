@@ -15,6 +15,13 @@
 .attendance-list .MuiPickersToolbar-root  .MuiButtonBase-root {
     display: none;
 }
+.time-add-alert{
+    position: absolute;
+    top: 93px !important;
+    right: 30px !important;
+    left: unset !important;
+    bottom: unset !important;
+}
 .attendance-list .check-icon .MuiSvgIcon-root {
     background-color: #4cb050;
     color: white;

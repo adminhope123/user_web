@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react';
 import { TaskHelper } from '../store/Settings';
 import '../TimeTracking.css'
 import { PlayArrow, Stop } from '@mui/icons-material';
-import { Fab, TableBody, TableRow } from '@mui/material';
+import { Alert, Box, Fab, Snackbar, Stack, TableBody, TableRow } from '@mui/material';
 import Moment from 'react-moment';
 import moment from 'moment';
 import Table from 'src/theme/overrides/Table';
 import { UserListHead } from 'src/sections/@dashboard/user';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { UserDataContext } from '../../UserDataContext';
 import { useSelector } from 'react-redux';
 
@@ -19,8 +20,26 @@ function StopWatch(props) {
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
     const {users}=useSelector(res=>res.data)
-    
+    const [startAlert, setStartAlert] = useState(false);
+    const [stopAlert, setStopAlert] = useState(false);
+
+      
+  const allReadyDataAlertFunctionClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setStartAlert(false);
+  };
+  const stopTrackerFunction = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setStopAlert(false);
+  };
     const startTimer = () => {
+        setStartAlert(true)
         startRunningTask({
             ...timer, 
             state: 'running', 
@@ -42,12 +61,30 @@ function StopWatch(props) {
     
       const stopTimer = mode => {
         stopRunningTask()
- 
+        setStopAlert(true)
     }
  
       
     return(
         <div className='stop-watch'>
+              <Box>
+    <Stack>
+            <Snackbar open={startAlert} autoHideDuration={6000}  onClose={allReadyDataAlertFunctionClose} className="start-alert" >
+              <Alert onClose={allReadyDataAlertFunctionClose}   variant="filled" severity="success">
+                  Tracker Start
+              </Alert>
+            </Snackbar>
+          </Stack>
+    </Box>
+    <Box>
+    <Stack>
+            <Snackbar open={stopAlert}  autoHideDuration={6000} onClose={stopTrackerFunction} className="stop-alert" >
+              <Alert onClose={stopTrackerFunction}   variant="filled" severity="error">
+                  Tracker Stop
+              </Alert>
+            </Snackbar>
+          </Stack>
+    </Box>
 <React.Fragment>
             <div className="timer-container">
                 <div className="timer-circle">

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormControl } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormControl, Alert, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import  '../../../../src/pages/style.css'
 import {getUserDataApi} from '../../../Redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
+import { Box } from '@mui/system';
 
 // ----------------------------------------------------------------------
 
@@ -18,11 +20,21 @@ export default function LoginForm() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {users}=useSelector(res=>res.data)
+  const [addEmployeeAlert, setAddEmployeeAlert] = useState(false);
   const [loginDataForm,setLoginDataForm]=useState({
     email:"",
     password:""
   })
+  const [errorData,setErrorData]=useState()
   
+  const allReadyDataAlertFunctionClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setAddEmployeeAlert(false);
+  };
+
   const hadnleLoginOnChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -30,25 +42,41 @@ export default function LoginForm() {
   };
 
    const handleLoginSubmit=async(e)=>{
+    allReadyDataAlertFunctionClose()
+   
+    setIsSubmit(true)
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
-    const loginData=loginDataForm
-    let result=await fetch("https://hopeusers.hopeinfosys.com/api/userlogin",{
-     method:"POST",
-     headers:{
-       "Content-Type":"application/json",
-       "Accept":"application/json"
-     },
-    body:JSON.stringify(loginData)
-    })
-    result= await result.json()
-    sessionStorage.setItem("loginData",JSON.stringify(loginData))
-    navigate('/dashboard/app', { replace: true })
-    const getData=JSON.parse(sessionStorage.getItem("loginData"))
-    if(getData?.length===0){
-    }else{
-      location.reload()
-    }
+ console.log("cvaa",errorForm)
+ if(Object.keys(errorForm).length === 0&& isSubmit){
+   const loginData=loginDataForm
+   let result=await fetch("https://hopeusers.hopeinfosys.com/api/userlogin",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Accept":"application/json"
+    },
+   body:JSON.stringify(loginData)
+   })
+   result= await result.json()
+   console.log("result",result)
+   const dataData=result?.message
+   if(dataData){
+     setErrorData(dataData)
+   }
+   if(result.message==="Login Successfully...."){
+     sessionStorage.setItem("loginData",JSON.stringify(loginData))
+     navigate('/dashboard/app', { replace: true })
+     const getData=JSON.parse(sessionStorage.getItem("loginData"))
+
+     if(getData?.length===0){
+     }else{
+       location.reload()
+     }
+   }
+   setAddEmployeeAlert(true)
+ }
+
     if(users){
       const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)
       const dataGet=JSON.parse(sessionStorage.getItem("userData"))
@@ -61,31 +89,40 @@ export default function LoginForm() {
     }
    }
 
-  const validate = (values) => {
+   const validate = (values) => {
     const error = {};
-    const emailRegex = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$';
-    if (!values.password) {
-      error.password = 'password is required';
-    } else if (values.password.length < 3) {
-      error.password = 'password  more than 3 characters';
-    }
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if (!values.email) {
-      error.email = 'Enter Email';
-    } else if (!emailRegex && emailRegex?.test(values.email)) {
-      error.email = 'This is not a valid email format!';
+      error.email = "Email is required!";
     }
+     else if (!regex.test(values.email)) {
+      error.email = "This is not a valid email format!";
+    }
+    if (!values.password) {
+      error.password = "Password is required";
+    } else if (values.password.length < 4) {
+      error.password = "Password must be more than 4 characters";
+    } else if (values.password.length > 10) {
+      error.password = "Password cannot exceed more than 10 characters";
+    }
+    console.log("eror",error)
     return error;
   };
 useEffect(() => {
 dispatch(getUserDataApi())
 }, [])
 
-  // const handleClick = () => {
-  //   navigate('/dashboard', { replace: true });
-  // };
-
   return (
     <>
+    <Box>
+    <Stack>
+            <Snackbar open={addEmployeeAlert} autoHideDuration={6000} onClose={allReadyDataAlertFunctionClose} className="alertLogin" >
+              <Alert onClose={allReadyDataAlertFunctionClose} variant="filled"  severity="error">
+              {errorData}
+              </Alert>
+            </Snackbar>
+          </Stack>
+    </Box>
       <form onSubmit={handleLoginSubmit}>
         <Stack spacing={3}>
         <TextField name="email" label="Email address" value={loginDataForm.email} onChange={hadnleLoginOnChange} error={errorForm.email}/>
