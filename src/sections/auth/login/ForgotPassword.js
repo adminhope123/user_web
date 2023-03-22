@@ -1,15 +1,38 @@
 import { FormControl, TextField } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserDataApi } from 'src/Redux/actions'
 import './ForgotPassword.css'
 import HopeIconLogo from './HopeIcon.png'
 
 export default function ForgotPassword() {
+    const [emailData,setEmailData]=useState()
+    const dispatch=useDispatch()
+    const {users}=useSelector(res=>res.data)
+
+    const hadnleDataSubmit=(e)=>{
+e.preventDefault()
+console.log("email",emailData)
+console.log("users",users)
+  const filterData=users?.filter((item)=>item.email===emailData)
+  console.log("filterData",filterData)
+    }
+
+    const getEmployeeData=()=>{
+        dispatch(getUserDataApi())
+    }
+
+    useEffect(() => {
+       getEmployeeData()
+    }, [])
+    
+    
   return (
     <div>
         <div class="mainDiv">
   <div class="cardStyle">
-    <form>
+    <form onSubmit={hadnleDataSubmit}>
       <div className='img-logo'>
       <img src={HopeIconLogo} />
       </div>
@@ -19,7 +42,7 @@ export default function ForgotPassword() {
       </h2>
       <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
       <FormControl sx={{width:"350px"}}>
-      <TextField id="outlined-basic" label="Email" variant="outlined" />
+      <TextField id="outlined-basic" label="Email" variant="outlined" type="email" onChange={(e)=>{setEmailData(e.target.value)}}/>
       </FormControl>
       </Box>
     <div class="buttonWrapper">
