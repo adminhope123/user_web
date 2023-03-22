@@ -2,19 +2,25 @@
 
 }
 .profile-card{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.profile-text .MuiPaper-root{
+    max-width: 72%;
 }
 .profile-content{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .profile-card img{
-    height: 121px;
+    height: 100%;
     object-fit: cover;
     width: 100%;
 
 }
 .profile-card .MuiPaper-root {
-    max-width: 210px;
+    max-width: 258px;
 }
 .address-input .MuiInputBase-root {
 }

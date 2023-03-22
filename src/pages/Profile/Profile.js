@@ -87,8 +87,11 @@ const imageObject={"image":userGetData?.image}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const gender={"gender":value}
-  const employeeId={"E_Id":getEmployeeId}
-  const mergeObject={...editFormData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject,...employeeId}
+  const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+ const getIdDataDataData=getEmployeeIdGet?.map((item)=>{return item?.E_Id})
+ const employeeIdDataString=getIdDataDataData.toString()
+  const employeeIdData={"E_Id":employeeIdDataString}
+  const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
    if(mergeObject){
     const checkData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
 
@@ -389,7 +392,7 @@ const userProfileDataFunction=()=>{
              <FormControl>
              <LocalizationProvider dateAdapter={AdapterDayjs}>
              <DesktopDatePicker
-          label="Date desktop"
+          label="Birth Date"
           inputFormat="MM/DD/YYYY"
           name="birthDate"
           value={birthDate}

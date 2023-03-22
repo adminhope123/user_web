@@ -14,7 +14,7 @@ import Iconify from '../../../components/iconify';
 
 const StyledCardMedia = styled('div')({
   position: 'relative',
-  paddingTop: 'calc(100% * 3 / 4)',
+  paddingTop:'320px',
 });
 
 const StyledTitle = styled(Link)({
@@ -72,7 +72,8 @@ export default function BlogPostCard({ postData, index }) {
 
   return (
     <Grid item xs={12} sm={ 6} md={ 3}>
-      <Card sx={{ position: 'relative' }}>
+  <Box>
+  <Card sx={{ position: 'relative' }}>
         <StyledCardMedia
         >
           <SvgColor
@@ -133,6 +134,7 @@ export default function BlogPostCard({ postData, index }) {
           </StyledInfo> */}
         </CardContent>
       </Card>
+  </Box>
     </Grid>
   );
 }
