@@ -50,7 +50,7 @@ export default function LoginForm() {
  console.log("cvaa",errorForm)
  if(Object.keys(errorForm).length === 0&& isSubmit){
    const loginData=loginDataForm
-   let result=await fetch("https://hopeusers.hopeinfosys.com/api/userlogin",{
+   let result=await fetch("http://127.0.0.1:8000/api/userlogin",{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
@@ -148,11 +148,11 @@ dispatch(getUserDataApi())
          <p className='login-error-text'>{errorForm.password}</p>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2,cursor:"pointer" }}>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2,cursor:"pointer" }}>
         <Link variant="subtitle2" underline="hover" onClick={handleClickOpenForgotPassword}>
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
 
       <LoadingButton fullWidth sx={{marginTop:"20px"}} size="large" type="submit" variant="contained" >
         Login

@@ -9,19 +9,21 @@ import Table from 'src/theme/overrides/Table';
 import { UserListHead } from 'src/sections/@dashboard/user';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { UserDataContext } from '../../UserDataContext';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDataApi, timeStopApi } from 'src/Redux/actions';
 
 function StopWatch(props) {
     const { 
         startRunningTask, 
         stopRunningTask, 
         getRunningTask, 
-        getModelTask,dublicateValueData,storedTasks,timerStartData,getEmployeeId } = useContext(UserDataContext);
+        getModelTask,dublicateValueData,storedTasks,timerStartData,getEmployeeId,dataTimerStop,stopTimerIdDataData } = useContext(UserDataContext);
     const { classes } = props;
     const timer = getRunningTask() || getModelTask();
     const {users}=useSelector(res=>res.data)
     const [startAlert, setStartAlert] = useState(false);
     const [stopAlert, setStopAlert] = useState(false);
+    const dispatch=useDispatch()
 
       
   const allReadyDataAlertFunctionClose = (event, reason) => {
@@ -60,8 +62,13 @@ function StopWatch(props) {
     }
     
       const stopTimer = mode => {
-        stopRunningTask()
-        setStopAlert(true)
+          setStopAlert(true)
+        stopTimerIdDataData?.map((item)=>{
+              const employeeEditIdData=item?.id
+              console.log("employeeEditIdData",employeeEditIdData)
+              dispatch(timeStopApi(dataTimerStop,employeeEditIdData))
+            })
+        stopRunningTask() 
     }
  
       

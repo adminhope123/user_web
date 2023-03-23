@@ -77,16 +77,11 @@ export default function TimerClock(props) {
   const handleTotalTime = () => {
     setTotalTimeModel(true)
     const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
-    getDatadaaa?.map((ele)=>{
-       ele?.getEmployeeId
-       const filterdataaa=users?.filter((item)=>ele?.E_Id=== item?.employeeId)
-       if(filterdataaa){
-         setFilterdataTotalTime(filterdataaa)
-       }
-      })
+    console.log("getDatadaaa",getDatadaaa)
+    const totalTimerFilterDataaaaaa=users?.filter((ele)=>getDatadaaa?.find(item=>item?.E_Id===ele?.employeeId))
     const liveDate = new Date().toLocaleDateString("es-DO");
     const duplicateDate = liveDate;
-    const dublicateValue = filterdataTotalTime?.filter((obj) =>
+    const dublicateValue = totalTimerFilterDataaaaaa?.filter((obj) =>
       duplicateDate?.includes(obj?.date)
     );
     const getTotalWorkTime=dublicateValue?.map((item)=>{
@@ -101,7 +96,9 @@ export default function TimerClock(props) {
            
            setTotalWorkTimeDataData(getTotalWorkDataObject)
            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
-               sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+           if(totalTimeobjData){
+             sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+           }
 
                const getTotalWorkTimeTime=filterdataTotalTime?.map((item)=>{
                  return item?.totalTimeWork
@@ -111,7 +108,9 @@ export default function TimerClock(props) {
                 ~~((totalSecondsdataData / 60) % 60)}:${
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
-                localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+                if(totalTimeobjDataData){
+                  localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+                }
               };
  
 
@@ -200,7 +199,7 @@ export default function TimerClock(props) {
                       <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
                       {
                         user.stop?
-                        <TableCell align="center">{user?.stop.slice(11,19)}</TableCell>: <TableCell align="center">{""}</TableCell>
+                        <TableCell align="center">{user?.stop.slice(16,24)}</TableCell>: <TableCell align="center">{""}</TableCell>
                        }
                        <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
                          {

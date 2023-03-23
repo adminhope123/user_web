@@ -35,7 +35,7 @@ useEffect(() => {
       {loginSuccess?<RouterComponent/>:
       <Routes>
           <Route  path="/login" element={<LoginPage/>}/>
-          <Route  path="/forgotpassword" element={<ForgotPassword/>}/>
+          {/* <Route  path="/forgotpassword" element={<ForgotPassword/>}/> */}
       </Routes>
 }
     </ThemeProvider>

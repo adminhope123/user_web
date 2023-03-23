@@ -68,8 +68,15 @@ export default function AttendanceTable() {
  const {getEmployeeId,timeData,handleTotalTime}=useContext(UserDataContext)
  const [startAlert, setStartAlert] = useState(false);
  const [dataRefresh, setDataRefresh] = useState(false);
+ const [buttonDisable,setButtonDisable]=useState(false)
 
+ const buttonData=()=>{
+  setButtonDisable(false)
+ }
   const attendancePostData = () => {
+    setTimeout(() => {
+      buttonData()
+    },2000 );
     // handleTotalTime()
     const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
@@ -177,6 +184,7 @@ const chekValueGet=getUserCheck?.includes("true")
 if(chekValueGet===true){
 }else{
   setDataRefresh(true)
+  setButtonDisable(true)
    const absetDataAdd=filterData?.map((item)=>{
    return dispatch(attendancePostApi(item))
   })
@@ -188,6 +196,7 @@ if(chekValueGet===true){
   if(dataCheckData===true){
    }else{
     setDataRefresh(true)
+    setButtonDisable(true)
        dispatch(attendancePostApi(addObjectData))
    }
 
@@ -332,7 +341,7 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
     return item?.shift();
   });
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -380,11 +389,20 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
             </Snackbar>
           </Stack>
     </Box>
+   
       <div className="attendance-table">
-        <Button  variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
-           <span> Data Refresh</span>
-          <RefreshIcon sx={{marginLeft:"10px"}}/>
-          </Button>
+        {console.log("buttonDisable",buttonDisable)}
+      {
+      buttonDisable===true?
+       <Button  disabled variant="contained"  sx={{marginBottom:"30px"}} >
+      <span> Data Refresh</span>
+     <RefreshIcon sx={{marginLeft:"10px"}}/>
+     </Button>: <Button   variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
+      <span> Data Refresh</span>
+     <RefreshIcon sx={{marginLeft:"10px"}}/>
+     </Button>
+    }
+       
           
           <Box sx={{display:"flex",alignItems:"stretch",justifyContent:"flex-end"}} className="totalWorkTime-data">
           <div className="totalWorkTimeData">
@@ -434,8 +452,9 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
                 })}
           </TableBody>
         </Table> */}
-      {
-        dataaa?.length? <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+      {/* {
+        dataaa?.length?  */}
+        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <UserListHead headLabel={TABLE_HEAD} />
         <TableBody>
           {(rowsPerPage > 0
@@ -522,8 +541,9 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
             ActionsComponent={TablePaginationActions}
           />
         </TableRow>
-      </Table>:<LoaderComp/>
-      }
+      </Table>
+       {/* :<LoaderComp/>
+      } */}
       </div>
     </div>
   );

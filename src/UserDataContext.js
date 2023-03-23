@@ -1,6 +1,6 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { attendancePostApi, timeStartApi, timeStopApi } from "./Redux/actions";
+import { attendancePostApi, getTimeDataApi, timeStartApi, timeStopApi } from "./Redux/actions";
 import {v4} from 'uuid';
 import { APP_TITLE, COLORS } from './pages/store/Settings';
 import moment from 'moment';
@@ -27,6 +27,8 @@ export const UserDataProvider = (props) => {
   const [totalWorkTimeDataData,setTotalWorkTimeDataData]=useState()
   const [totalTimeModel, setTotalTimeModel] = useState(false);
   const [timeData,setTimeData]=useState()
+  const [dataTimerStop,setDataTimerStop]=useState()
+  const [stopTimerIdDataData,setStopTimerIdDataData]=useState()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -202,23 +204,57 @@ const stopRunningTask = () => {
     const storedString = sessionStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
-   if(data){
-       const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
-       const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
-       const mergeObject={...data,...totalTimeDataAddObject}
-       sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
-        const getIdData=checkIdData?.map((item)=>{
-          const employeeEditIdData=item?.id
-          dispatch(timeStopApi(mergeObject,employeeEditIdData))
-        })
-     
+   if(checkIdData){
+    console.log("timerStartData",timerStartData)
+     const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
+         const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
+     const dataState=data
+     const stateDataDelete=delete dataState?.state
+     const dataaaaaaaa=delete dataState?.totalTimeWork
+     const stopTimeDelete=delete dataState?.stop
+     console.log("delete",stateDataDelete)
+     const mergeData={"state":"stopped"}
+ const dateGet=new Date()
+ const dataGetSting=dateGet?.toString()
+     const dataaDataaaa={"stop":dataGetSting}
+     console.log("merg",mergeData)
+     const mergeDAtaDAtaDAta={...mergeData,...dataState,...totalTimeDataAddObject,...dataaDataaaa}
+     console.log("mergeDAtaDAtaDAta",mergeDAtaDAtaDAta)
+     console.log("checkIdData",checkIdData)
+     const dataaaaaaaaaaaaaa=users?.filter((item)=>data?.timerId===item.timerid)
+     const getIdDatadata=dataaaaaaaaaaaaaa?.map((item)=>{return item?.id})
+     const dataIdString=getIdDatadata?.toString()
+        const employeeEditIdData=dataIdString
+        console.log("employeeEditIdData",employeeEditIdData)
+        console.log("merge",employeeEditIdData)
+            dispatch(timeStopApi(mergeDAtaDAtaDAta,employeeEditIdData))
    }
+
+  //  if(data){
+  //   const  getDateData=data
+  //   const deleteDAtaData=delete getDateData?.stop
+  //   const dataaDataaaa={"stop":deleteDAtaData}
+  //   const mergeDataData={...getDateData,...dataaDataaaa}
+  //   console.log("mergeDaat",mergeDataData)
+  //      const totalTimnDataAdd=mergeDataData?.hours+":"+mergeDataData?.mins+":"+mergeDataData?.secs
+  //      const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
+  //      console.log("data",mergeDataData)
+  //      const mergeObject={...mergeDataData,...totalTimeDataAddObject}
+  //      sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
+  //      const dataaaaaaaaaaaaaaaaa=users?.filter((item)=>mergeDataData?.timerId===item.timerid)
+  //       const getIdData=dataaaaaaaaaaaaaaaaa?.map((item)=>{
+  //         const employeeEditIdData=item?.id
+  //         dispatch(timeStopApi(mergeObject,employeeEditIdData))
+  //       })
+  //  }
     }
  
   
   const properties = {
     userGetData,
     tasks,
+    dataTimerStop,
+    setDataTimerStop,
     getTask,
     addTask,
     editTask,
@@ -230,6 +266,7 @@ const stopRunningTask = () => {
     timeData,
     getEmployeeId,
     stopRunningTask,
+    stopTimerIdDataData,
     totalTimeModel,
     setTotalTimeModel,
     deleteTask,
