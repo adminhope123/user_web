@@ -48,8 +48,13 @@ function StopWatch(props) {
             totalSeconds: 0,
             start: moment().format()
         });
+        const dataGetDataaa=JSON.parse(sessionStorage.getItem("userData"))
+        const getEmployeeData=dataGetDataaa?.map((item)=>{return item?.userName})
         const dataRunning=users?.filter((item)=>item?.state==="running")
           sessionStorage.setItem("online",JSON.stringify(dataRunning))
+          const notification = new Notification(getEmployeeData +" is Online", {
+            // body:getEmployeeData
+         })
             const unloadCallback = (event) => {
               event.preventDefault();
               event.returnValue = "";
@@ -65,7 +70,6 @@ function StopWatch(props) {
           setStopAlert(true)
         stopTimerIdDataData?.map((item)=>{
               const employeeEditIdData=item?.id
-              console.log("employeeEditIdData",employeeEditIdData)
               dispatch(timeStopApi(dataTimerStop,employeeEditIdData))
             })
         stopRunningTask() 

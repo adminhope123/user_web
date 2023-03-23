@@ -47,7 +47,6 @@ export default function LoginForm() {
     setIsSubmit(true)
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
- console.log("cvaa",errorForm)
  if(Object.keys(errorForm).length === 0&& isSubmit){
    const loginData=loginDataForm
    let result=await fetch("http://127.0.0.1:8000/api/userlogin",{
@@ -59,7 +58,6 @@ export default function LoginForm() {
    body:JSON.stringify(loginData)
    })
    result= await result.json()
-   console.log("result",result)
    const dataData=result?.message
    if(dataData){
      setErrorData(dataData)
@@ -103,7 +101,6 @@ export default function LoginForm() {
     } else if (values.password.length < 4) {
       error.password = "Password must be more than 4 characters";
     } 
-    console.log("eror",error)
     return error;
   };
   const handleClickOpenForgotPassword=()=>{

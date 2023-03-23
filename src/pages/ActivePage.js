@@ -18,6 +18,7 @@ const dataGetGet=async()=>{
     await   dispatch(getTimeDataApi())
 }
     const getUserData=async()=>{
+   
         await   dispatch(getTimeDataApi())
       if(users){
         const dataFilter=users?.filter(ele=>{return ele.state==="running"})
@@ -36,6 +37,14 @@ const dataGetGet=async()=>{
  const mergeDatadata=[...addValue,...filterData]
  const mergeDatadataAdd=mergeDatadata?.map((item)=>item)
  setEmployeeStatusData(mergeDatadataAdd)
+ 
+const data=addValue?.map((item)=>{return item.userName})
+ const notification = new Notification("New message incoming", {
+   body: data
+})
+notification.onclick = (e) => {
+   window.location.href = "https://google.com";
+};
       }
     }
 

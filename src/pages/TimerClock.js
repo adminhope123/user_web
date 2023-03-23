@@ -77,7 +77,6 @@ export default function TimerClock(props) {
   const handleTotalTime = () => {
     setTotalTimeModel(true)
     const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
-    console.log("getDatadaaa",getDatadaaa)
     const totalTimerFilterDataaaaaa=users?.filter((ele)=>getDatadaaa?.find(item=>item?.E_Id===ele?.employeeId))
     const liveDate = new Date().toLocaleDateString("es-DO");
     const duplicateDate = liveDate;

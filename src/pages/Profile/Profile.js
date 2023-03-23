@@ -116,7 +116,6 @@ const imageObject={"image":userGetData?.image}
 }
 
 const getApiFunction=async()=>{
-  await dispatch(profileGetApi())
   const checkData=users?.map((item)=>{
     const dataCheck= item?.E_Id===userGetData?.E_Id
      setOldUsersData(dataCheck)
@@ -132,7 +131,7 @@ useEffect(() => {
 }, []);
 
 const userProfileDataFunction=()=>{
-
+   dispatch(profileGetApi())
 }
   useEffect(() => {
 

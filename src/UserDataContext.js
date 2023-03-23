@@ -205,48 +205,23 @@ const stopRunningTask = () => {
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
    if(checkIdData){
-    console.log("timerStartData",timerStartData)
      const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
          const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
      const dataState=data
      const stateDataDelete=delete dataState?.state
      const dataaaaaaaa=delete dataState?.totalTimeWork
      const stopTimeDelete=delete dataState?.stop
-     console.log("delete",stateDataDelete)
      const mergeData={"state":"stopped"}
  const dateGet=new Date()
  const dataGetSting=dateGet?.toString()
      const dataaDataaaa={"stop":dataGetSting}
-     console.log("merg",mergeData)
      const mergeDAtaDAtaDAta={...mergeData,...dataState,...totalTimeDataAddObject,...dataaDataaaa}
-     console.log("mergeDAtaDAtaDAta",mergeDAtaDAtaDAta)
-     console.log("checkIdData",checkIdData)
      const dataaaaaaaaaaaaaa=users?.filter((item)=>data?.timerId===item.timerid)
      const getIdDatadata=dataaaaaaaaaaaaaa?.map((item)=>{return item?.id})
      const dataIdString=getIdDatadata?.toString()
         const employeeEditIdData=dataIdString
-        console.log("employeeEditIdData",employeeEditIdData)
-        console.log("merge",employeeEditIdData)
             dispatch(timeStopApi(mergeDAtaDAtaDAta,employeeEditIdData))
    }
-
-  //  if(data){
-  //   const  getDateData=data
-  //   const deleteDAtaData=delete getDateData?.stop
-  //   const dataaDataaaa={"stop":deleteDAtaData}
-  //   const mergeDataData={...getDateData,...dataaDataaaa}
-  //   console.log("mergeDaat",mergeDataData)
-  //      const totalTimnDataAdd=mergeDataData?.hours+":"+mergeDataData?.mins+":"+mergeDataData?.secs
-  //      const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
-  //      console.log("data",mergeDataData)
-  //      const mergeObject={...mergeDataData,...totalTimeDataAddObject}
-  //      sessionStorage.setItem("attendace",JSON.stringify(mergeObject))
-  //      const dataaaaaaaaaaaaaaaaa=users?.filter((item)=>mergeDataData?.timerId===item.timerid)
-  //       const getIdData=dataaaaaaaaaaaaaaaaa?.map((item)=>{
-  //         const employeeEditIdData=item?.id
-  //         dispatch(timeStopApi(mergeObject,employeeEditIdData))
-  //       })
-  //  }
     }
  
   

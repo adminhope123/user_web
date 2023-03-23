@@ -13,10 +13,7 @@ export default function ForgotPassword() {
 
     const hadnleDataSubmit=(e)=>{
 e.preventDefault()
-console.log("email",emailData)
-console.log("users",users)
   const filterData=users?.filter((item)=>item.email===emailData)
-  console.log("filterData",filterData)
     }
 
     const getEmployeeData=()=>{
