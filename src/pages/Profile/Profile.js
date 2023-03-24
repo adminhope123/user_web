@@ -49,6 +49,7 @@ export default function Profile() {
     address:"",
   })
   const [myimage, setMyImage] =useState(null);
+  const [imgShow,setImgShow]=useState()
   const [imageUpload,setImageUpload]=useState([])
 
   const {users}=useSelector(res=>res.data)
@@ -93,52 +94,73 @@ const imageObject={"image":getUserDataDataData?.image}
   const role={"post":getUserDataDataData?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
-  const dataBirthDate=sliceDate.toString()
-  console.log("gender",dataBirthDate)
+  const dataBirthDate=sliceDate
+  console.log("dataBirthDate",dataBirthDate)
   const gender={"gender":value}
   const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
  const getIdDataDataData=getEmployeeIdGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
   const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
-  
-  var formData=new FormData()
-  formData.append('image',imageUpload?.images)
-  formData.append('birthdate',dataBirthDate)
-  formData.append('email',getUserDataDataData?.email)
-  formData.append('city',data)
-  formData.append('fullname',getUserDataDataData?.userName)
-  formData.append('countries',countriesName)
-  formData.append('gender',value)
-  formData.append('post',getUserDataDataData?.role)
-  formData.append('mobile',getUserDataDataData?.mobileNumber)
-  formData.append('state',stateName)
-  formData.append('E_Id',employeeIdDataString)
-  formData.append('address',editFormData?.address)
-
-  if(formData){
+  console.log("imageUpload",imageUpload?.image)
+  var formEditData=new FormData()
+  formEditData.append('image',imageUpload?.image)
+  formEditData.append('birthDate',sliceDate)
+  formEditData.append('email',getUserDataDataData?.email)
+  formEditData.append('city',data)
+  formEditData.append('fullname',getUserDataDataData?.userName)
+  formEditData.append('countries',countriesName)
+  formEditData.append('gender',value)
+  formEditData.append('post',getUserDataDataData?.role)
+  formEditData.append('mobile',getUserDataDataData?.mobileNumber)
+  formEditData.append('state',stateName)
+  formEditData.append('E_Id',employeeIdDataString)
+  formEditData.append('address',editFormData?.address)
+// console.log("data",countriesName,getUserDataDataData?.userName,data,getUserDataDataData?.email,sliceDate,imageUpload?.image,editFormData?.address,employeeIdDataString,stateName,getUserDataDataData?.mobileNumber,getUserDataDataData?.role,value)
+  if(formEditData){
+ 
+   
     const checkData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
-
     if(checkData.length){
       console.log("data add")
     }else{
-      dispatch(profilePostApi(formData))
+      dispatch(profilePostApi(formEditData))
       setOpen(false)
     }
+    
    
     // if(checkData===false){
     // }else{
       // dispatch(profilePostApi(mergeObject))
 
     // }
+  
    }
    const getIdData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
-   const getIdDataData=getIdData?.map((item)=>{
-     const employeeEditIdData=item?.id
-    //  dispatch(profilePutApi(mergeObject,employeeEditIdData))
-     setOpen(false)
-
-   })
+   console.log("getIdData",getIdData)
+   var formData=new FormData()
+   formData.append('image',imageUpload?.image)
+  //  formData.append('birthDate',sliceDate)
+  //  formData.append('email',getUserDataDataData?.email)
+  //  formData.append('city',data)
+  //  formData.append('fullname',getUserDataDataData?.userName)
+  //  formData.append('countries',countriesName)
+  //  formData.append('gender',value)
+  //  formData.append('post',getUserDataDataData?.role)
+  //  formData.append('mobile',getUserDataDataData?.mobileNumber)
+  //  formData.append('state',stateName)
+  //  formData.append('E_Id',employeeIdDataString)
+  //  formData.append('address',editFormData?.address)
+   console.log("address",editFormData?.address)
+   const mergeObjectdaaa={...editFormData,...imageObject,...employeeIdData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
+ console.log("mergeObjectdaaa",mergeObjectdaaa)
+   if(mergeObjectdaaa){
+  const getIdDataData=getIdData?.map((item)=>{return item?.id})
+  const employeeEditIdData=getIdDataData
+  console.log("formDAta",mergeObjectdaaa)
+  dispatch(profilePutApi(mergeObjectdaaa,employeeEditIdData))
+  setOpen(false)
+ }
     // dispatch(profilePutApi())
 }
 
@@ -161,6 +183,9 @@ const getApiFunction=async()=>{
       setUserProfileData(filterData)
     }
     console.log("users",users)
+    const dataUserGetData=JSON.parse(sessionStorage.getItem("userData"))
+    const checkDataDataa=users?.some((item)=>dataUserGetData?.find(ele=>item?.E_Id===ele?.E_Id ))
+    setImgShow(checkDataDataa)
 }
 
 useEffect(() => {
@@ -407,23 +432,26 @@ const handleImgChange=(e)=>{
                   </FormControl>
              </div> */}
                  <div className='employee-img-upload'>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                 {
-                  imageUpload?.length===0?
-                  <div>
-                  <CardContent variant="contained" component="label" className='upload-img'>   <img src={uploadImgIcon} />
-                <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
-                 </CardContent>
-               </div>:<div>
-                    <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
-                          <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
-                        </CardContent> 
-                   </div>
-                 }
-                
-            
-                      
-                  </Stack>
+                  {
+                    imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
+                    {
+                     imageUpload?.length===0?
+                     <div>
+                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={uploadImgIcon} />
+                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                    </CardContent>
+                  </div>:<div>
+                       <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
+                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                           </CardContent> 
+                      </div>
+                    }
+                   
+               
+                         
+                     </Stack>
+                  }
+               {console.log("imgShow",imgShow)}  
                   </div>
          <div className='address-input'>
 
