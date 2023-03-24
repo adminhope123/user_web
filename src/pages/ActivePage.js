@@ -37,14 +37,6 @@ const dataGetGet=async()=>{
  const mergeDatadata=[...addValue,...filterData]
  const mergeDatadataAdd=mergeDatadata?.map((item)=>item)
  setEmployeeStatusData(mergeDatadataAdd)
- 
-const data=addValue?.map((item)=>{return item.userName})
- const notification = new Notification("New message incoming", {
-   body: data
-})
-notification.onclick = (e) => {
-   window.location.href = "https://google.com";
-};
       }
     }
 
@@ -75,7 +67,7 @@ notification.onclick = (e) => {
             id:item?.E_Id,
             title: item?.userName,
             description: item?.role,
-            image: `https://hopeusers.hopeinfosys.com/${item&&item?.image}`,
+            image: `https://hopebackend.hopeinfosys.com/${item&&item?.image}`,
             online:item?.state,
             start:item?.start,
             postedAt: faker.date.recent(),

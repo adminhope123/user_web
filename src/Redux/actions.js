@@ -79,7 +79,7 @@ const taskDelete = () => ({
   
 
 export const loginFormPostApi=(user)=>{
-    const url="http://127.0.0.1:8000/api/userlogin";
+    const url="https://hopebackend.hopeinfosys.com/api/userlogin";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -90,7 +90,7 @@ export const loginFormPostApi=(user)=>{
 }
 
 export const timeStartApi=(user)=>{
-    const url="http://127.0.0.1:8000/api/usertimer";
+    const url="https://hopebackend.hopeinfosys.com/api/usertimer";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -101,7 +101,7 @@ export const timeStartApi=(user)=>{
     }
 }
 export const timeStopApi=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/usertimerupdatesave/${employeeEditIdData}`;
+    const url=`https://hopebackend.hopeinfosys.com/api/usertimerupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
@@ -113,7 +113,7 @@ export const timeStopApi=(user,employeeEditIdData)=>{
 }
 
 export const getTimeDataApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewtimer";
+    const url="https://hopebackend.hopeinfosys.com/api/viewtimer";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -124,7 +124,7 @@ export const getTimeDataApi=()=>{
 }
 
 export const attendancePostApi=(user)=>{
-    const url="http://127.0.0.1:8000/api/Uattendence";
+    const url="https://hopebackend.hopeinfosys.com/api/Uattendence";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -135,7 +135,7 @@ export const attendancePostApi=(user)=>{
     }
 }
 export const attendanceGetApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewUattendence";
+    const url="https://hopebackend.hopeinfosys.com/api/viewUattendence";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -145,7 +145,7 @@ export const attendanceGetApi=()=>{
     };
 }
 export const attendanceApiPut=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/Uattendenceupdatesave/${employeeEditIdData}`;
+    const url=`https://hopebackend.hopeinfosys.com/api/Uattendenceupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
@@ -156,7 +156,7 @@ export const attendanceApiPut=(user,employeeEditIdData)=>{
     }
 }
 export const profilePostApi=(user)=>{
-    const url="http://127.0.0.1:8000/api/userprofile";
+    const url="https://hopebackend.hopeinfosys.com/api/userprofile";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -167,7 +167,7 @@ export const profilePostApi=(user)=>{
     }
 }
 export const profilePutApi=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/userprofileupdatesave/${employeeEditIdData}`;
+    const url=`https://hopebackend.hopeinfosys.com/api/userprofileupdatesave/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
@@ -179,7 +179,7 @@ export const profilePutApi=(user,employeeEditIdData)=>{
 }
 
 export const profileGetApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewuserprofile";
+    const url="https://hopebackend.hopeinfosys.com/api/viewuserprofile";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -189,7 +189,7 @@ export const profileGetApi=()=>{
     };
 }
 export const getUserDataApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewemployee";
+    const url="https://hopebackend.hopeinfosys.com/api/viewemployee";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -200,7 +200,7 @@ export const getUserDataApi=()=>{
 }
 
 export const taskAddApi=(user)=>{
-    const url="http://127.0.0.1:8000/api/task";
+    const url="https://hopebackend.hopeinfosys.com/api/task";
     return function (dispatch){
             axios.post(url,user)
             .then((resp)=>{
@@ -211,7 +211,7 @@ export const taskAddApi=(user)=>{
     }
 }
 export const taskEditApi=(user,employeeEditIdData)=>{
-    const url=`http://127.0.0.1:8000/api/updatesavetask/${employeeEditIdData}`;
+    const url=`https://hopebackend.hopeinfosys.com/api/updatesavetask/${employeeEditIdData}`;
     return function (dispatch){
             axios.put(url,user)
             .then((resp)=>{
@@ -223,7 +223,7 @@ export const taskEditApi=(user,employeeEditIdData)=>{
 }
 
 export const taskgetApi=()=>{
-    const url="http://127.0.0.1:8000/api/viewtask";
+    const url="https://hopebackend.hopeinfosys.com/api/viewtask";
     return function (dispatch){
             axios.get(url)
             .then((resp)=>{
@@ -233,7 +233,7 @@ export const taskgetApi=()=>{
     };
 }
 export const taskDeleteApi = (employeeEditIdData) => {
-    const dataaa = `http://127.0.0.1:8000/api/deletetask/${employeeEditIdData}`;
+    const dataaa = `https://hopebackend.hopeinfosys.com/api/deletetask/${employeeEditIdData}`;
     return function (dispatch) {
       axios
         .delete(dataaa)

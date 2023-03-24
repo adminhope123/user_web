@@ -149,12 +149,14 @@ const getPaddedTime = totalSeconds => {
 } 
 const intervalCallback = () => {
     const running = getRunningTask()
-    const seconds = running.totalSeconds +=1;
-    editTask({ 
-        ...running,
-        totalSeconds: seconds,
-        ...getPaddedTime(seconds),
-    });
+    if(running){
+      const seconds = running.totalSeconds +=1;
+      editTask({ 
+          ...running,
+          totalSeconds: seconds,
+          ...getPaddedTime(seconds),
+      });
+    }
 }
 
 useEffect(() => {
@@ -169,8 +171,25 @@ const findDateFunction = () => {
  
   };
 
-  
+ const activeData=()=>{
+  const dataFilter=users?.filter(ele=>{return ele.state==="running"})
+  const dataDataData=JSON.parse(sessionStorage.getItem("viewEmployee"))
+  const getUserDAtaDAtaa=JSON.parse(sessionStorage?.getItem("userData"))
+  const getEmployeeDAtaData=getUserDAtaDAtaa?.map((item)=>{return item?.userName})
+  const dataFilterDAta=dataDataData?.filter((item)=>dataFilter?.find(ele=>ele?.employeeId===item?.E_Id))
+  if(dataFilterDAta?.length===0){
+    const notification = new Notification(getEmployeeDAtaData + " is Online", {
+    })
+  }else{
+    dataFilterDAta?.map((item)=>{
+      const notification = new Notification(item?.userName + " is Online", {
+      })
+   })
+  }
+
+ } 
 const startRunningTask = task => {
+  activeData()
     const running = getRunningTask();
     if (!running) {
         getTask(task.timerId) 
@@ -185,6 +204,7 @@ const startRunningTask = task => {
             dispatch(timeStartApi(task))
             setTimerStartData(task)
             sessionStorage.setItem("timerData",JSON.stringify(users))
+            sessionStorage.setItem("attendace",JSON.stringify(task))
         interval = setInterval(() => { intervalRef.current() },1000)
    
     }

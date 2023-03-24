@@ -199,7 +199,22 @@ if(chekValueGet===true){
     setButtonDisable(true)
        dispatch(attendancePostApi(addObjectData))
    }
-
+   var presentData = attendaceDataStore.map(tab=>keyFilters(tab, ["present"]))
+     const daatta=[...presentData]
+     console.log("dataa",daatta)
+     const presentDataFilter =daatta.filter((item)=>item.present==="true")
+     const presentDataDataDataDAta=presentDataFilter.length
+     var absentDataDataDataDAta = attendaceDataStore.map(tab=>keyFilters(tab, ["absent"]))
+     const absentDataArrayOf=[...absentDataDataDataDAta]
+     console.log("dataa",absentDataArrayOf)
+     const absentDataFilter =absentDataArrayOf.filter((item)=>item.absent==="true")
+     const absentDataData=absentDataFilter.length
+     console.log("filters",absentDataData)
+     const presentDataDataData={"presentData":presentDataDataDataDAta}
+     const absentDataDataData={"absentData":absentDataData}
+     const mergeObjectdata=[presentDataDataData,absentDataDataData]
+     console.log("mergeObject",mergeObjectdata)
+     sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
   };
   const attendacePutData=()=>{
     setStartAlert(true)

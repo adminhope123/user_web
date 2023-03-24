@@ -17,6 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileGetApi, profilePostApi, profilePutApi } from 'src/Redux/actions';
 import { TextFields } from '@mui/icons-material';
+import { Helmet } from 'react-helmet-async';
 
 const style = {
   position: 'absolute',
@@ -99,6 +100,7 @@ const imageObject={"image":userGetData?.image}
       console.log("data add")
     }else{
       dispatch(profilePostApi(mergeObject))
+      setOpen(false)
     }
    
     // if(checkData===false){
@@ -111,6 +113,8 @@ const imageObject={"image":userGetData?.image}
    const getIdDataData=getIdData?.map((item)=>{
      const employeeEditIdData=item?.id
      dispatch(profilePutApi(mergeObject,employeeEditIdData))
+     setOpen(false)
+
    })
     // dispatch(profilePutApi())
 }
@@ -118,12 +122,18 @@ const imageObject={"image":userGetData?.image}
 const getApiFunction=async()=>{
   const checkData=users?.map((item)=>{
     const dataCheck= item?.E_Id===userGetData?.E_Id
-     setOldUsersData(dataCheck)
+    console.log("dataCheck",dataCheck)
+    return  dataCheck
     })
+    console.log("olda",checkData)
+    const trueDataCheckData=checkData?.includes(true)
+    console.log("ture",trueDataCheckData)
+    setOldUsersData(trueDataCheckData)
     if(users){
       const filterData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
       setUserProfileData(filterData)
     }
+    console.log("users",users)
 }
 
 useEffect(() => {
@@ -140,6 +150,9 @@ const userProfileDataFunction=()=>{
   
   return (
     <div className='profile-page'>
+         <Helmet>
+        <title> Dashboard: Employee Profile |  User Web </title>
+      </Helmet>
         <Button  variant="contained" onClick={() => getApiFunction()} sx={{marginBottom:"30px"}}>
            <span> Data Refresh</span>
           <RefreshIcon sx={{marginLeft:"10px"}}/>
@@ -149,7 +162,7 @@ const userProfileDataFunction=()=>{
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         {
-          userGetData?<img    src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`}/>:""
+          userGetData?<img    src={`https://hopebackend.hopeinfosys.com/${userGetData&&userGetData?.image}`}/>:""
         }
         
         <CardContent>

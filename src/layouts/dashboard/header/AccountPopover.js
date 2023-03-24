@@ -64,7 +64,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        {userGetData?  <Avatar  src={`https://hopeusers.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt={userGetData?.userName} />:""}
+        {userGetData?  <Avatar  src={`https://hopebackend.hopeinfosys.com/${userGetData&&userGetData?.image}`} alt={userGetData?.userName} />:""}
       
       </IconButton>
 

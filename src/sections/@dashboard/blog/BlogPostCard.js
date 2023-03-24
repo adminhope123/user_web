@@ -92,7 +92,7 @@ export default function BlogPostCard({ postData, index }) {
                 <StyledAvatar>
                   <Typography sx={{fontSize:"13px"}}>{postData?.E_Id}</Typography>
                 </StyledAvatar>
-          <StyledCover alt={fullname} src={`https://hopeusers.hopeinfosys.com/${image}`} />
+          <StyledCover alt={fullname} src={`https://hopebackend.hopeinfosys.com/${image}`} />
         </StyledCardMedia>
 
         <CardContent
