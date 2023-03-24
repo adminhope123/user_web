@@ -6,6 +6,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 import account from '../../../_mock/account';
 import { UserDataContext } from 'src/UserDataContext';
 import users from 'src/_mock/user';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -13,29 +14,34 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'eva:home-fill',
+    link:'/dashboard/app'
   },
   {
     label: 'Profile',
     icon: 'eva:person-fill',
+    link:'/dashboard/profile'
   },
   {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
+    label: 'TimerClock',
+    icon: 'eva:person-fill',
+    link:'/dashboard/timerClock'
+  }
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const navigate=useNavigate()
   const {userGetData}=useContext(UserDataContext)
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (option) => {
     setOpen(null);
+    navigate(option?.link)
   };
  
   const logOutFunction=()=>{
@@ -100,7 +106,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem key={option.label} onClick={()=>handleClose(option)}>
               {option.label}
             </MenuItem>
           ))}
