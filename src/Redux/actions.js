@@ -77,6 +77,12 @@ const taskDelete = () => ({
   });
 
   
+export const totalTimeData=(value)=>{
+    return{
+        type:ActionType.ADD_TO_CART,
+        payload:value
+    }
+}
 
 export const loginFormPostApi=(user)=>{
     const url="https://hopebackend.hopeinfosys.com/api/userlogin";

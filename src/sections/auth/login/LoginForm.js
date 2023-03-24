@@ -43,50 +43,47 @@ export default function LoginForm() {
 
    const handleLoginSubmit=async(e)=>{
     allReadyDataAlertFunctionClose()
-   
     setIsSubmit(true)
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
- if(Object.keys(errorForm).length === 0&& isSubmit){
-   const loginData=loginDataForm
-   let result=await fetch("https://hopebackend.hopeinfosys.com/api/userlogin",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Accept":"application/json"
-    },
-   body:JSON.stringify(loginData)
-   })
-   result= await result.json()
-   const dataData=result?.message
-   if(dataData){
-     setErrorData(dataData)
+    if(Object.keys(errorForm).length === 0&& isSubmit){
+      const loginData=loginDataForm
+      let result=await fetch("https://hopebackend.hopeinfosys.com/api/userlogin",{
+       method:"POST",
+       headers:{
+         "Content-Type":"application/json",
+         "Accept":"application/json"
+       },
+      body:JSON.stringify(loginData)
+      })
+      result=await  result.json()
+      const dataData=result?.message
+      if(dataData){
+        setErrorData(dataData)
+      }
+      if(result.message==="Login Successfully...."){
+        sessionStorage.setItem("loginData",JSON.stringify(loginData))
+        navigate('/dashboard/app', { replace: true })
+        const getData=JSON.parse(sessionStorage.getItem("loginData"))
+   
+        if(getData?.length===0){
+        }else{
+          location.reload()
+        }
+      }
+      setAddEmployeeAlert(true)
    }
-   if(result.message==="Login Successfully...."){
-     sessionStorage.setItem("loginData",JSON.stringify(loginData))
-     navigate('/dashboard/app', { replace: true })
-     const getData=JSON.parse(sessionStorage.getItem("loginData"))
-
-     if(getData?.length===0){
-     }else{
-       location.reload()
+     if(users){
+       const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)
+       const dataGet=JSON.parse(sessionStorage.getItem("userData"))
+       if(dataGet?.length===0){
+       }
+       sessionStorage.setItem("viewEmployee",JSON.stringify(users))
+       if(filterData){
+         sessionStorage.setItem("userData",JSON.stringify(filterData))
+       }
      }
-   }
-   setAddEmployeeAlert(true)
- }
-
-    if(users){
-      const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)
-      const dataGet=JSON.parse(sessionStorage.getItem("userData"))
-      if(dataGet?.length===0){
-      }
-      sessionStorage.setItem("viewEmployee",JSON.stringify(users))
-      if(filterData){
-        sessionStorage.setItem("userData",JSON.stringify(filterData))
-      }
-    }
-   }
-
+}
    const validate = (values) => {
     const error = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -152,7 +149,7 @@ dispatch(getUserDataApi())
         </Link>
       </Stack> */}
 
-      <LoadingButton fullWidth sx={{marginTop:"20px"}} size="large" type="submit" variant="contained" >
+      <LoadingButton fullWidth sx={{marginTop:"20px"}} size="large" type="submit" variant="contained">
         Login
       </LoadingButton>
       </form>

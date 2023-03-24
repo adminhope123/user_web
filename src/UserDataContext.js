@@ -4,6 +4,7 @@ import { attendancePostApi, getTimeDataApi, timeStartApi, timeStopApi } from "./
 import {v4} from 'uuid';
 import { APP_TITLE, COLORS } from './pages/store/Settings';
 import moment from 'moment';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const storedString = sessionStorage.getItem('tasks')
 const storedTasks = storedString ? JSON.parse(storedString) : [];
@@ -29,6 +30,7 @@ export const UserDataProvider = (props) => {
   const [timeData,setTimeData]=useState()
   const [dataTimerStop,setDataTimerStop]=useState()
   const [stopTimerIdDataData,setStopTimerIdDataData]=useState()
+  const navigate=useNavigate()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
     if(getData){
@@ -41,7 +43,6 @@ export const UserDataProvider = (props) => {
     const getId=getData?.employeeId
     setGetEmployeeId(getId)
   };
-
   useEffect(() => {
     userGetDataFunction()
     employeeGetIdFucntion()
@@ -242,6 +243,30 @@ const stopRunningTask = () => {
         const employeeEditIdData=dataIdString
             dispatch(timeStopApi(mergeDAtaDAtaDAta,employeeEditIdData))
    }
+
+
+    
+
+//    console.log("getTotalWorkDataObject",totalTimerFilterDataaaaaa)
+//    const liveDate = new Date().toLocaleDateString("es-DO");
+//    const duplicateDate = liveDate;
+//    const dublicateValue = totalTimerFilterDataaaaaa?.filter((obj) =>
+//      duplicateDate?.includes(obj?.date)
+//    );
+//    const getTotalWorkTime=dublicateValue?.map((item)=>{
+//        return item?.totalTimeWork
+//      })
+   
+//      const totalSecondsdata = sumToSeconds(getTotalWorkTime);
+     
+//  const getTotalWorkDataObject=`${~~(totalSecondsdata / 60 / 60)}:${
+//           ~~((totalSecondsdata / 60) % 60)}:${
+//           ~~(totalSecondsdata % 60)}`
+//           console.log("getTotalWorkDataObject",getTotalWorkDataObject)
+//           const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+//           if(totalTimeobjData){
+//             sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+//           }
     }
  
   

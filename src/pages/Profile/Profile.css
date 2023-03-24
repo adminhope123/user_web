@@ -19,6 +19,42 @@
     width: 100%;
 
 }
+.employee-img-upload .preview-img img{
+    width: 156px;
+    border-radius: 15px;
+}
+.employee-img-upload h6{
+    margin: 0px;
+    margin-bottom: 10px;
+    margin-left: 11px;
+    margin-top: -7px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.employee-img-upload button {
+ background-color:  unset  !important;
+ box-shadow: none !important;
+ border: none;
+}
+.employee-img-upload{
+    display: flex;
+    justify-content: center;
+}
+.employee-img-upload label{
+    padding: 0px !important;
+}
+.employee-img-upload label img{
+    border: 1px solid;
+    border-radius: 15px;
+    padding: 14px !important;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 28px;
+}
+.employee-img-upload .employee-new-user form div{
+    display: flex;
+    flex-direction: column;
+}
 .profile-card .MuiPaper-root {
     max-width: 258px;
 }

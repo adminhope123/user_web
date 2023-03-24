@@ -5,7 +5,7 @@ import { Country, State, City } from "country-state-city";
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Select from "react-select";
-import { Button, CardActionArea, CardActions,FormLabel, Fade, FormControl, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
+import { Button, CardActionArea, CardActions,FormLabel, Fade, FormControl, FormControlLabel, Modal, Radio, RadioGroup, TextField, Stack } from '@mui/material';
 import profileImg from './avatar_default.jpg'
 import './Profile.css'
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -17,6 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileGetApi, profilePostApi, profilePutApi } from 'src/Redux/actions';
 import { TextFields } from '@mui/icons-material';
+import uploadImgIcon from './uploadImg.png'
 import { Helmet } from 'react-helmet-async';
 
 const style = {
@@ -47,6 +48,8 @@ export default function Profile() {
   const [editFormData,setEditFormData]=useState({
     address:"",
   })
+  const [myimage, setMyImage] =useState(null);
+  const [imageUpload,setImageUpload]=useState([])
 
   const {users}=useSelector(res=>res.data)
 
@@ -82,7 +85,6 @@ const handleSubmitData=(e)=>{
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
   const emailDataGet={"email":getUserDataDataData?.email}
-  const name={"email":getUserDataDataData?.userName}
 const imageObject={"image":getUserDataDataData?.image}
   const cityObject={"city":data}
   const fullnameObject={"fullname":getUserDataDataData?.userName}
@@ -91,19 +93,36 @@ const imageObject={"image":getUserDataDataData?.image}
   const role={"post":getUserDataDataData?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
+  const dataBirthDate=sliceDate.toString()
+  console.log("gender",dataBirthDate)
   const gender={"gender":value}
   const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
  const getIdDataDataData=getEmployeeIdGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
   const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
-   if(mergeObject){
+  
+  var formData=new FormData()
+  formData.append('image',imageUpload?.images)
+  formData.append('birthdate',dataBirthDate)
+  formData.append('email',getUserDataDataData?.email)
+  formData.append('city',data)
+  formData.append('fullname',getUserDataDataData?.userName)
+  formData.append('countries',countriesName)
+  formData.append('gender',value)
+  formData.append('post',getUserDataDataData?.role)
+  formData.append('mobile',getUserDataDataData?.mobileNumber)
+  formData.append('state',stateName)
+  formData.append('E_Id',employeeIdDataString)
+  formData.append('address',editFormData?.address)
+
+  if(formData){
     const checkData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
 
     if(checkData.length){
       console.log("data add")
     }else{
-      dispatch(profilePostApi(mergeObject))
+      dispatch(profilePostApi(formData))
       setOpen(false)
     }
    
@@ -116,7 +135,7 @@ const imageObject={"image":getUserDataDataData?.image}
    const getIdData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
    const getIdDataData=getIdData?.map((item)=>{
      const employeeEditIdData=item?.id
-     dispatch(profilePutApi(mergeObject,employeeEditIdData))
+    //  dispatch(profilePutApi(mergeObject,employeeEditIdData))
      setOpen(false)
 
    })
@@ -151,6 +170,10 @@ useEffect(() => {
 const userProfileDataFunction=()=>{
    dispatch(profileGetApi())
  
+}
+const handleImgChange=(e)=>{
+  setImageUpload({image:e.target.files[0]})
+  setMyImage(URL.createObjectURL(e.target.files[0]));
 }
   useEffect(() => {
 
@@ -383,6 +406,25 @@ const userProfileDataFunction=()=>{
                     <p className="employee-error-text"></p>
                   </FormControl>
              </div> */}
+                 <div className='employee-img-upload'>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                 {
+                  imageUpload?.length===0?
+                  <div>
+                  <CardContent variant="contained" component="label" className='upload-img'>   <img src={uploadImgIcon} />
+                <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                 </CardContent>
+               </div>:<div>
+                    <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
+                          <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                        </CardContent> 
+                   </div>
+                 }
+                
+            
+                      
+                  </Stack>
+                  </div>
          <div className='address-input'>
 
          <TextField

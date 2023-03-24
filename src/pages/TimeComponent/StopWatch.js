@@ -65,15 +65,28 @@ function StopWatch(props) {
         
     }
     
-      const stopTimer = mode => {
+      const stopTimer = mode =>{
           setStopAlert(true)
         stopTimerIdDataData?.map((item)=>{
               const employeeEditIdData=item?.id
               dispatch(timeStopApi(dataTimerStop,employeeEditIdData))
             })
         stopRunningTask() 
+          const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
+          const totalTimerFilterDataaaaaa=users?.filter((ele)=>getDatadaaa?.find(item=>item?.E_Id===ele?.employeeId))
+          console.log("totalTimerFilterDataaaaaa",totalTimerFilterDataaaaaa)
     }
- 
+    const sumToSeconds = times => {
+      return times?.reduce((a, e) => {
+        const parts = e?.trim().split(":").map(Number);
+        parts?.forEach((e, i) => {
+          if (i < parts.length - 1) {
+            parts[i+1] += e * 60;
+          }
+        });
+        return parts?.pop() + a;
+      }, 0);
+    };
       
     return(
         <div className='stop-watch'>

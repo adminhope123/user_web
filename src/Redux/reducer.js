@@ -4,10 +4,15 @@ const initialState = {
   users: [],
   user: {},
   total: [],
+  TotalTimeWork:0,
   loading: true,
 };
 const usersReducers = (state = initialState, action) => {
   switch (action.type) {
+    case type.TOTAL_TIME:{
+      console.log("fenuuu",payload);
+        return{...state,TotalTimeWork:payload}
+    }
     case type.LOGIN_USER:
       return {
         ...state,
