@@ -35,8 +35,7 @@ const style = {
 
 export default function Profile() {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
@@ -44,10 +43,11 @@ export default function Profile() {
   const [birthDate, setBirthDate] =useState("");
   const [userProfileData,setUserProfileData]=useState()
   const [oldUserData,setOldUsersData]=useState()
+  const [getUserDataDataData,setGetUserDataDataData]=useState()
   const [editFormData,setEditFormData]=useState({
     address:"",
   })
-  const {userGetData,getEmployeeId}=useContext(UserDataContext)
+
   const {users}=useSelector(res=>res.data)
 
   const dispatch=useDispatch()
@@ -68,6 +68,10 @@ const hadnleOnChange=(e)=>{
 }
 
 
+const handleOpen = () => {
+  setOpen(true)
+};
+const handleClose = () => setOpen(false);
 
 const handleSubmitData=(e)=>{
   e.preventDefault();
@@ -77,14 +81,14 @@ const handleSubmitData=(e)=>{
   const birthDateData=birthDate?.$d
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
-  const emailDataGet={"email":userGetData?.email}
-  const name={"email":userGetData?.userName}
-const imageObject={"image":userGetData?.image}
+  const emailDataGet={"email":getUserDataDataData?.email}
+  const name={"email":getUserDataDataData?.userName}
+const imageObject={"image":getUserDataDataData?.image}
   const cityObject={"city":data}
-  const fullnameObject={"fullname":userGetData?.userName}
+  const fullnameObject={"fullname":getUserDataDataData?.userName}
   const CountruesObject={"countries":countriesName}
-  const mobileObject={"mobile":userGetData?.mobileNumber}
-  const role={"post":userGetData?.role}
+  const mobileObject={"mobile":getUserDataDataData?.mobileNumber}
+  const role={"post":getUserDataDataData?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const gender={"gender":value}
@@ -94,7 +98,7 @@ const imageObject={"image":userGetData?.image}
   const employeeIdData={"E_Id":employeeIdDataString}
   const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
    if(mergeObject){
-    const checkData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
+    const checkData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
 
     if(checkData.length){
       console.log("data add")
@@ -109,7 +113,7 @@ const imageObject={"image":userGetData?.image}
 
     // }
    }
-   const getIdData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
+   const getIdData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
    const getIdDataData=getIdData?.map((item)=>{
      const employeeEditIdData=item?.id
      dispatch(profilePutApi(mergeObject,employeeEditIdData))
@@ -120,8 +124,12 @@ const imageObject={"image":userGetData?.image}
 }
 
 const getApiFunction=async()=>{
+  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+  const dataGEtGEtGEt=dataUserGet?.map((item)=>{return setGetUserDataDataData(item)})
+  console.log("dataGEtGEtGEt",getUserDataDataData)
+  // setGetUserDataDataData(dataGEtGEtGEt)
   const checkData=users?.map((item)=>{
-    const dataCheck= item?.E_Id===userGetData?.E_Id
+    const dataCheck= item?.E_Id===getUserDataDataData?.E_Id
     console.log("dataCheck",dataCheck)
     return  dataCheck
     })
@@ -130,7 +138,7 @@ const getApiFunction=async()=>{
     console.log("ture",trueDataCheckData)
     setOldUsersData(trueDataCheckData)
     if(users){
-      const filterData=users?.filter((item)=>{return item?.E_Id===userGetData?.E_Id})
+      const filterData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
       setUserProfileData(filterData)
     }
     console.log("users",users)
@@ -142,6 +150,7 @@ useEffect(() => {
 
 const userProfileDataFunction=()=>{
    dispatch(profileGetApi())
+ 
 }
   useEffect(() => {
 
@@ -162,15 +171,15 @@ const userProfileDataFunction=()=>{
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         {
-          userGetData?<img    src={`https://hopebackend.hopeinfosys.com/${userGetData&&userGetData?.image}`}/>:""
+          getUserDataDataData?<img    src={`https://hopebackend.hopeinfosys.com/${getUserDataDataData&&getUserDataDataData?.image}`}/>:""
         }
         
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-           {userGetData?.userName}
+           {getUserDataDataData?.userName}
           </Typography>
           <Typography gutterBottom  component="div" sx={{fontWeight: 'normal',fontSize:"20px"}}>
-            {userGetData?.role}
+            {getUserDataDataData?.role}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -186,7 +195,7 @@ const userProfileDataFunction=()=>{
           Employee Id
         </Typography>
         <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-          {userGetData?.E_Id}
+          {getUserDataDataData?.E_Id}
         </Typography>
         </div>
         <div className='profile-lable'>
@@ -194,7 +203,7 @@ const userProfileDataFunction=()=>{
           Full Name 
         </Typography>
         <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-        {userGetData?.userName}
+        {getUserDataDataData?.userName}
         </Typography>
         </div>
         <div className='profile-lable'>
@@ -202,7 +211,7 @@ const userProfileDataFunction=()=>{
           Post
         </Typography>
         <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-          {userGetData?.role}
+          {getUserDataDataData?.role}
         </Typography>
         </div>
         <div className='profile-lable'>
@@ -210,7 +219,7 @@ const userProfileDataFunction=()=>{
         Email
         </Typography>
         <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-         {userGetData?.email}
+         {getUserDataDataData?.email}
         </Typography>
         </div>
         <div className='profile-lable'>
@@ -218,7 +227,7 @@ const userProfileDataFunction=()=>{
         Mobile
         </Typography>
         <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-          {userGetData?.mobileNumber}
+          {getUserDataDataData?.mobileNumber}
         </Typography>
         </div>
       </CardContent>
@@ -239,7 +248,7 @@ const userProfileDataFunction=()=>{
         Employee Id
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-        {userGetData?.E_Id}
+        {getUserDataDataData?.E_Id}
       </Typography>
       </div>
       <div className='profile-lable'>
@@ -247,7 +256,7 @@ const userProfileDataFunction=()=>{
         Full Name 
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-      {userGetData?.userName}
+      {getUserDataDataData?.userName}
       </Typography>
       </div>
       <div className='profile-lable'>
@@ -271,7 +280,7 @@ const userProfileDataFunction=()=>{
         Post
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-        {userGetData?.role}
+        {getUserDataDataData?.role}
       </Typography>
       </div>
       <div className='profile-lable'>
@@ -279,7 +288,7 @@ const userProfileDataFunction=()=>{
       Email
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575"}}>
-       {userGetData?.email}
+       {getUserDataDataData?.email}
       </Typography>
       </div>
       <div className='profile-lable'>
@@ -287,7 +296,7 @@ const userProfileDataFunction=()=>{
       Mobile
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-        {userGetData?.mobileNumber}
+        {getUserDataDataData?.mobileNumber}
       </Typography>
       </div>
       <div className='profile-lable'>
@@ -319,7 +328,7 @@ const userProfileDataFunction=()=>{
       Password
       </Typography>
       <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-       {userGetData?.password}
+       {getUserDataDataData?.password}
       </Typography>
       </div> */}
     </CardContent>
@@ -345,20 +354,20 @@ const userProfileDataFunction=()=>{
         onClose={handleClose}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} >
           <div className='model-edit-form'>
           <Typography 
            variant='h3'
            sx={{color:"#465767",marginBottom:"10px",marginTop:"-16px",fontSize:"17px"}}
            >Edit Employee Profile</Typography>
-          <form onSubmit={handleSubmitData}>
+          <form onSubmit={handleSubmitData} key={getUserDataDataData}>
              {/* <div className='input-data'>
              <FormControl>
                     <TextField
                       label="Full Name"
                       name="fullname"
                       type="text"
-                      defaultValue={userGetData?.userName}
+                      defaultValue={getUserDataDataData?.userName}
                       onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
@@ -368,7 +377,7 @@ const userProfileDataFunction=()=>{
                       label="Post"
                       name="post"
                       type="text"
-                      defaultValue={userGetData?.role}
+                      defaultValue={getUserDataDataData?.role}
                       onChange={hadnleOnChange}
                     />
                     <p className="employee-error-text"></p>
@@ -380,25 +389,13 @@ const userProfileDataFunction=()=>{
                       label="Address"
                       name="address"
                       type="text"
-                      defaultValue={userGetData?.address}
+                      defaultValue={getUserDataDataData?.address}
                       onChange={hadnleOnChange}
                       sx={{paddingBottom:"10px",width:"100%"}}
                     />
                     <p className="employee-error-text"></p>
                   <div className='input-data'>
          </div>
-{/*                  
-                  <FormControl>
-                    <TextField
-                      label="Mobile No."
-                      name="mobile"
-                      type="text"
-                      defaultValue={userGetData?.mobileNumber}
-                      onChange={hadnleOnChange}
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl> */}
-
                   </div>
               <div className='input-data'>
              <FormControl>
