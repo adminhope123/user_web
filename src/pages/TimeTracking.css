@@ -16,6 +16,54 @@
 .timer-clock .MuiGrid-root {
     justify-content: flex-end;
 }
+.radial-graph {
+    display: block;
+    margin: auto;
+    max-height: 500px;
+  }
+  
+  .radial-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 1.5;
+  }
+  .MuiDialog-container .MuiPaper-root {
+    width: 289px !important;
+  }
+  .radial {
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    animation: progress 3s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+  }
+  
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+      stroke: #FD453A;
+    }
+    30% {
+      stroke: #FD453A;
+    }
+    50% {
+      stroke: #FD9E3A;
+    }
+    80% {
+      stroke: #3A69FD;
+    }
+    100% {
+      stroke: #1AD852;
+    }
+  }
+  
+  .percent {
+    fill: #555;
+    font-size: .4rem;
+    font-family: Inter;
+    font-weight: bold;
+    text-anchor: middle;
+  }
+  
 .stop-watch .timer-secs{
     color: #76768a;
     font-size: 44px;

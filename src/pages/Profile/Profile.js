@@ -45,14 +45,17 @@ export default function Profile() {
   const [userProfileData,setUserProfileData]=useState()
   const [oldUserData,setOldUsersData]=useState()
   const [getUserDataDataData,setGetUserDataDataData]=useState()
+  const [dataProfile,setDataProfile]=useState()
   const [editFormData,setEditFormData]=useState({
     address:"",
   })
   const [myimage, setMyImage] =useState(null);
   const [imgShow,setImgShow]=useState()
   const [imageUpload,setImageUpload]=useState([])
+  const [errorForm, setErrorForm] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
-  const {users}=useSelector(res=>res.data)
+  const {profiles}=useSelector(res=>res.data)
 
   const dispatch=useDispatch()
 
@@ -62,6 +65,47 @@ const handleDateChange=(newValue)=>{
   const handleChange = (event) => {
     setValue(event.target.value);
    
+  };
+const validate = (values) => {
+    console.log('welcome to validation');
+    const error = {};
+    const emailRegex = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$';
+    if (!values.address) {
+      error.address = 'user Name is required';
+    } else if (values.address.length < 3) {
+      error.address = 'user Name  more than 3 characters';
+    } else if (values.address.length > 10) {
+      error.address = 'user Name cannot exceed more than 10 characters';
+    } 
+    if (!values.birthDate) {
+      error.birthDate = 'password is required';
+    } else if (values.birthDate.length < 3) {
+      error.birthDate = 'password  more than 3 characters';
+    }
+    if (values.value?.length >10) {
+      error.gender = 'user Name cannot exceed more than 10 characters';
+    }
+    if (!values.selectedCountry) {
+      error.selectedCountry = 'role is required';
+    } else if (values.selectedCountry.length < 3) {
+      error.role = 'role  more than 3 characters';
+    } else if (values.selectedCountry.length >10) {
+      error.role = 'role cannot exceed more than 10 characters';
+    }
+    if (!values.selectedState) {
+      error.selectedState = 'role is required';
+    } else if (values.selectedState.length < 3) {
+      error.role = 'role  more than 3 characters';
+    } else if (values.selectedState.length >10) {
+      error.role = 'role cannot exceed more than 10 characters';
+    }
+    if (!values.selectedCity) {
+      error.selectedCity = 'role is required';
+    } else if (values.selectedCity.length < 3) {
+      error.role = 'role  more than 3 characters';
+    } else if (values.selectedCity.length >10) {
+      error.role = 'role cannot exceed more than 10 characters';
+    }
   };
 
 const hadnleOnChange=(e)=>{
@@ -85,13 +129,13 @@ const handleSubmitData=(e)=>{
   const birthDateData=birthDate?.$d
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
-  const emailDataGet={"email":getUserDataDataData?.email}
-const imageObject={"image":getUserDataDataData?.image}
+  const emailDataGet={"email":dataProfile?.email}
+const imageObject={"image":dataProfile?.image}
   const cityObject={"city":data}
-  const fullnameObject={"fullname":getUserDataDataData?.userName}
+  const fullnameObject={"fullname":dataProfile?.userName}
   const CountruesObject={"countries":countriesName}
-  const mobileObject={"mobile":getUserDataDataData?.mobileNumber}
-  const role={"post":getUserDataDataData?.role}
+  const mobileObject={"mobile":dataProfile?.mobileNumber}
+  const role={"post":dataProfile?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const dataBirthDate=sliceDate
@@ -106,13 +150,13 @@ const imageObject={"image":getUserDataDataData?.image}
   var formEditData=new FormData()
   formEditData.append('image',imageUpload?.image)
   formEditData.append('birthDate',sliceDate)
-  formEditData.append('email',getUserDataDataData?.email)
+  formEditData.append('email',dataProfile?.email)
   formEditData.append('city',data)
-  formEditData.append('fullname',getUserDataDataData?.userName)
+  formEditData.append('fullname',dataProfile?.userName)
   formEditData.append('countries',countriesName)
   formEditData.append('gender',value)
-  formEditData.append('post',getUserDataDataData?.role)
-  formEditData.append('mobile',getUserDataDataData?.mobileNumber)
+  formEditData.append('post',dataProfile?.role)
+  formEditData.append('mobile',dataProfile?.mobileNumber)
   formEditData.append('state',stateName)
   formEditData.append('E_Id',employeeIdDataString)
   formEditData.append('address',editFormData?.address)
@@ -120,7 +164,7 @@ const imageObject={"image":getUserDataDataData?.image}
   if(formEditData){
  
    
-    const checkData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+    const checkData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
     if(checkData.length){
       console.log("data add")
     }else{
@@ -136,7 +180,7 @@ const imageObject={"image":getUserDataDataData?.image}
     // }
   
    }
-   const getIdData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
    console.log("getIdData",getIdData)
    var formData=new FormData()
    formData.append('image',imageUpload?.image)
@@ -167,9 +211,12 @@ const imageObject={"image":getUserDataDataData?.image}
 const getApiFunction=async()=>{
   const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
   const dataGEtGEtGEt=dataUserGet?.map((item)=>{return setGetUserDataDataData(item)})
+  const getUserDeflutData=profiles?.filter((item)=>dataUserGet?.find(ele=>ele?.E_Id===item?.E_Id))
+  const dataProfileget=getUserDeflutData?.map((item)=>{return setDataProfile(item)})
+  
   console.log("dataGEtGEtGEt",getUserDataDataData)
   // setGetUserDataDataData(dataGEtGEtGEt)
-  const checkData=users?.map((item)=>{
+  const checkData=profiles?.map((item)=>{
     const dataCheck= item?.E_Id===getUserDataDataData?.E_Id
     console.log("dataCheck",dataCheck)
     return  dataCheck
@@ -178,13 +225,13 @@ const getApiFunction=async()=>{
     const trueDataCheckData=checkData?.includes(true)
     console.log("ture",trueDataCheckData)
     setOldUsersData(trueDataCheckData)
-    if(users){
-      const filterData=users?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+    if(profiles){
+      const filterData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
       setUserProfileData(filterData)
     }
-    console.log("users",users)
+    console.log("profiles",profiles)
     const dataUserGetData=JSON.parse(sessionStorage.getItem("userData"))
-    const checkDataDataa=users?.some((item)=>dataUserGetData?.find(ele=>item?.E_Id===ele?.E_Id ))
+    const checkDataDataa=profiles?.some((item)=>dataUserGetData?.find(ele=>item?.E_Id===ele?.E_Id ))
     setImgShow(checkDataDataa)
 }
 
@@ -459,7 +506,7 @@ const handleImgChange=(e)=>{
                       label="Address"
                       name="address"
                       type="text"
-                      defaultValue={getUserDataDataData?.address}
+                      defaultValue={dataProfile?.address}
                       onChange={hadnleOnChange}
                       sx={{paddingBottom:"10px",width:"100%"}}
                     />
@@ -474,7 +521,7 @@ const handleImgChange=(e)=>{
           label="Birth Date"
           inputFormat="MM/DD/YYYY"
           name="birthDate"
-          value={birthDate}
+          defaultValue={dataProfile?.birthDate}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -487,7 +534,7 @@ const handleImgChange=(e)=>{
   <RadioGroup
     aria-labelledby="demo-controlled-radio-buttons-group"
     name="controlled-radio-buttons-group"
-    value={value}
+    defaultValue={dataProfile?.gender}
     onChange={handleChange}
   >
     <FormControlLabel value="female" control={<Radio />} label="Female" name='female' />
@@ -499,6 +546,7 @@ const handleImgChange=(e)=>{
         <div className='react-select-city'>
         <Select
         name='countries'
+        defaultInputValue={dataProfile?.countries}
         options={Country.getAllCountries()}
         getOptionLabel={(options) => {
           return options["name"];
@@ -515,6 +563,7 @@ const handleImgChange=(e)=>{
       <div className='react-select-city'>
       <Select
          name='state'
+         defaultInputValue={dataProfile?.state}
         options={State?.getStatesOfCountry(selectedCountry?.isoCode)}
         getOptionLabel={(options) => {
           return options["name"];
@@ -531,6 +580,7 @@ const handleImgChange=(e)=>{
     <div className='react-select-city'>
     <Select
           name='city'
+          defaultInputValue={dataProfile?.city}
         options={City.getCitiesOfState(
           selectedState?.countryCode,
           selectedState?.isoCode

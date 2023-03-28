@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { AppTasks } from 'src/sections/@dashboard/app';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import AddIcon from '@mui/icons-material/Add';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask, taskAddApi, taskgetApi } from 'src/Redux/actions';
 
@@ -29,7 +30,7 @@ const [taskAdd,setTaskAdd]=useState({
 })
 const [getUserData,setGetUserData]=useState()
 const dispatch=useDispatch()
-const {users}=useSelector(res=>res.data)
+const {tasks}=useSelector(res=>res.data)
 
 const handleOnChage=(e)=>{
     const value = e.target.value;
@@ -40,9 +41,9 @@ await  dispatch(taskgetApi())
 }
 
 const dataFunction=()=>{
-  const getUserData=JSON.parse(sessionStorage.getItem("userData"))
-if(getUserData,users){
-  const dataFilter=users?.filter((item)=>getUserData?.find(el=>item?.E_Id===el?.E_Id))
+  const getUserDataData=JSON.parse(sessionStorage.getItem("userData"))
+if(getUserDataData,tasks){
+  const dataFilter=tasks?.filter((item)=>getUserDataData?.find(el=>item?.E_Id===el?.E_Id))
   if(dataFilter){
     setGetUserData(dataFilter)
   }
@@ -70,6 +71,10 @@ const handleOpen = () => setTaskModel(true);
   return (
     <div>
            <Box sx={{display:"flex",justifyContent:"flex-end",marginBottom:"10px"}}>
+           <Button  variant="contained" onClick={() => dataFunction()} sx={{marginRight:"20px"}}>
+           <span> Data Refresh</span>
+          <RefreshIcon sx={{marginLeft:"10px"}}/>
+          </Button>
          <Button onClick={handleOpen}> <span> Add Task</span><AddTaskIcon sx={{marginLeft:"5px"}}/></Button>
          </Box>
             <Modal
@@ -79,7 +84,6 @@ const handleOpen = () => setTaskModel(true);
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-     
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{marginTop:"-22px",fontWeight:"600",marginBottom:"20px"}}> 
             Add Task
           </Typography>

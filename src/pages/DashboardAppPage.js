@@ -45,7 +45,7 @@ const style = {
 export default function DashboardAppPage() {
   const theme = useTheme();
   const dispatch=useDispatch()
-  const {users}=useSelector(res=>res.data)
+  const {employees}=useSelector(res=>res.data)
   const [userData,setUserData]=useState()
   const [allEmployeeData,setAllEmployeeData]=useState()
   const [totalAllTimeWork,setTotalAllTimeWork]=useState()
@@ -60,13 +60,13 @@ const [postCount,setPostCount]=useState()
     const getUserData=async()=>{
       await dispatch(getUserDataApi())
       const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
-      if(users){
+      if(employees){
       
       }
-      const getTotalWorkTime=JSON.parse(localStorage.getItem("totalAllTimeWork"))
+      const getTotalWorkTime=JSON.parse(sessionStorage.getItem("totalAllTimeWork"))
       const dataTotalTimeEork=getTotalWorkTime?.totalWorkTime
       setTotalAllTimeWork(dataTotalTimeEork)
-      const allEmployee=users?.length
+      const allEmployee=employees?.length
       setAllEmployeeData(allEmployee)
       const attendaceDataGet=JSON.parse(sessionStorage.getItem("attendaceData"))
       const attendaceDataGetData=attendaceDataGet&&attendaceDataGet?.map((item)=>{
@@ -101,7 +101,7 @@ const [postCount,setPostCount]=useState()
         <title> Dashboard |  User Web </title>
       </Helmet>
    {
-    users?.length ?   <Container maxWidth="xl">
+    employees?.length ?   <Container maxWidth="xl">
     <Typography variant="h4" sx={{ mb: 5 }}>
       Hi, Welcome back
     </Typography>

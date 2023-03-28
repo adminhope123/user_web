@@ -22,21 +22,21 @@ const timeStopPost=(users)=>({
     type:type.TIME_STOP_PUT,
 })
 
-const attendancePost=(users)=>({
+const attendancePost=(attendances)=>({
     type:type.ATTENDANCE_POST_API,
-    payload:users
+    payload:attendances
 })
 
-const attendanceGet=(users)=>({
+const attendanceGet=(attendances)=>({
     type:type.ATTENDANCE_GET_API,
-    payload:users
+    payload:attendances
 })
 
-const getUserData=(users)=>({
+const getUserData=(employees)=>({
     type:type.GET_USER_DATA,
-    payload:users
+    payload:employees
 })
-const attendancePut=(users)=>({
+const attendancePut=(attendances)=>({
     type:type.ATTENDANCE_PUT_API,
 })
 export const timetotal=(users)=>({
@@ -44,45 +44,37 @@ export const timetotal=(users)=>({
     payload:users
 })
 
-const profilePost=(users)=>({
+const profilePost=(profiles)=>({
     type:type.PROFILE_POST_DATA,
 })
 
-const profilePut=(users)=>({
+const profilePut=(profiles)=>({
     type:type.PROFILE_PUT_API,
 })
 
 
-const getProfileData=(users)=>({
+const getProfileData=(profiles)=>({
     type:type.PRFILE_GET_API,
-    payload:users
+    payload:profiles
 })
 
-const taskAdd=(users)=>({
+const taskAdd=(tasks)=>({
     type:type.TASK_ADD,
-    payload:users
+    payload:tasks
 })
 
-const taskPut=(users)=>({
+const taskPut=(tasks)=>({
     type:type.TASK_EDIT,
 })
 
-const taskGet=(users)=>({
+const taskGet=(tasks)=>({
     type:type.TASK_GET,
-    payload:users
+    payload:tasks
 })
 
 const taskDelete = () => ({
     type: type.TASK_DELETE,
   });
-
-  
-export const totalTimeData=(value)=>{
-    return{
-        type:ActionType.ADD_TO_CART,
-        payload:value
-    }
-}
 
 export const loginFormPostApi=(user)=>{
     const url="https://hopebackend.hopeinfosys.com/api/userlogin";
@@ -129,10 +121,10 @@ export const getTimeDataApi=()=>{
     };
 }
 
-export const attendancePostApi=(user)=>{
+export const attendancePostApi=(attendace)=>{
     const url="https://hopebackend.hopeinfosys.com/api/Uattendence";
     return function (dispatch){
-            axios.post(url,user)
+            axios.post(url,attendace)
             .then((resp)=>{
             dispatch(attendancePost(resp.data))
             dispatch(attendanceGetApi())
@@ -150,10 +142,10 @@ export const attendanceGetApi=()=>{
         .catch((error)=>console.log("error",error));
     };
 }
-export const attendanceApiPut=(user,employeeEditIdData)=>{
+export const attendanceApiPut=(attendace,employeeEditIdData)=>{
     const url=`https://hopebackend.hopeinfosys.com/api/Uattendenceupdatesave/${employeeEditIdData}`;
     return function (dispatch){
-            axios.put(url,user)
+            axios.put(url,attendace)
             .then((resp)=>{
             dispatch(attendancePut(resp.data))
             dispatch(attendanceGetApi())
@@ -161,7 +153,7 @@ export const attendanceApiPut=(user,employeeEditIdData)=>{
         .catch((error)=>console.log("error",error))
     }
 }
-export const profilePostApi=(user)=>{
+export const profilePostApi=(profile)=>{
     const url="https://hopebackend.hopeinfosys.com/api/userprofile";
     return function (dispatch){
             axios.post(url,user)
@@ -172,10 +164,10 @@ export const profilePostApi=(user)=>{
         .catch((error)=>console.log("error",error))
     }
 }
-export const profilePutApi=(user,employeeEditIdData)=>{
+export const profilePutApi=(profile,employeeEditIdData)=>{
     const url=`https://hopebackend.hopeinfosys.com/api/userprofileupdatesave/${employeeEditIdData}`;
     return function (dispatch){
-            axios.put(url,user)
+            axios.put(url,profile)
             .then((resp)=>{
             dispatch(profilePut(resp.data))
             dispatch(profileGetApi())
@@ -205,10 +197,10 @@ export const getUserDataApi=()=>{
     };
 }
 
-export const taskAddApi=(user)=>{
+export const taskAddApi=(task)=>{
     const url="https://hopebackend.hopeinfosys.com/api/task";
     return function (dispatch){
-            axios.post(url,user)
+            axios.post(url,task)
             .then((resp)=>{
             dispatch(taskAdd(resp.data))
             dispatch(taskgetApi())
@@ -216,10 +208,10 @@ export const taskAddApi=(user)=>{
         .catch((error)=>console.log("error",error))
     }
 }
-export const taskEditApi=(user,employeeEditIdData)=>{
+export const taskEditApi=(task,employeeEditIdData)=>{
     const url=`https://hopebackend.hopeinfosys.com/api/updatesavetask/${employeeEditIdData}`;
     return function (dispatch){
-            axios.put(url,user)
+            axios.put(url,task)
             .then((resp)=>{
             dispatch(taskPut(resp.data))
             dispatch(taskgetApi())

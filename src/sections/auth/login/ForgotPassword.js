@@ -9,11 +9,11 @@ import HopeIconLogo from './HopeIcon.png'
 export default function ForgotPassword() {
     const [emailData,setEmailData]=useState()
     const dispatch=useDispatch()
-    const {users}=useSelector(res=>res.data)
+    const {employees}=useSelector(res=>res.data)
 
     const hadnleDataSubmit=(e)=>{
 e.preventDefault()
-  const filterData=users?.filter((item)=>item.email===emailData)
+  const filterData=employees?.filter((item)=>item.email===emailData)
     }
 
     const getEmployeeData=()=>{

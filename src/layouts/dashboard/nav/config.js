@@ -32,11 +32,11 @@ const navConfig = [
     path: '/dashboard/attendance-list',
     icon:<EventAvailableIcon/> ,
   },
-  // {
-  //   title: 'Task',
-  //   path: '/dashboard/task',
-  //   icon: <TaskIcon/>,
-  // },
+  {
+    title: 'Task',
+    path: '/dashboard/task',
+    icon: <TaskIcon/>,
+  },
   {
     title: 'Event',
     path: '/dashboard/event',

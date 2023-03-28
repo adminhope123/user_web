@@ -13,6 +13,7 @@ import Dashboard from './TimeComponent/Dashboard';
 import { UserDataContext } from 'src/UserDataContext';
 import { setHours } from 'date-fns';
 import LoaderComp from 'src/loader/LoaderComp';
+import moment from 'moment';
 
 const TABLE_HEAD = [
   { id: 'date', label: 'Date', alignRight: false },
@@ -41,6 +42,7 @@ export default function TimerClock(props) {
   const [totalMinite,setTotalMinite]=useState()
   const [totalSecound,setTotalSecound]=useState()
   const [filterdataTotalTime,setFilterdataTotalTime]=useState()
+   const [totalWorkRange,setTotalWorkRange]=useState()
   const [totalWorkTimeDataData,setTotalWorkTimeDataData]=useState()
   const {users}=useSelector(state=>state?.data)
   const {totalWorkTimeData,findDateFunction,getEmployeeId,totalTimeModel,setTotalTimeModel}=useContext(UserDataContext)
@@ -95,11 +97,35 @@ export default function TimerClock(props) {
            
            setTotalWorkTimeDataData(getTotalWorkDataObject)
            const totalTimeobjData={"totalWorkTime":getTotalWorkDataObject}
+           const totalSecondsDataDataData={"totalSecoundData":totalSecondsdata}
+           const mergeDAta={...totalTimeobjData,...totalSecondsDataDataData}
            if(totalTimeobjData){
-             sessionStorage.setItem("totalWorkTime",JSON.stringify(totalTimeobjData))
+             sessionStorage.setItem("totalWorkTime",JSON.stringify(mergeDAta))
            }
+           
+           const timeDAtaF=getTotalWorkDataObject
+           const secs = totalSecondsdata;
+           
+           const formatted = moment.utc(secs*1000).format('HH:mm:ss');
+           console.log("filterdataTotalTime",formatted)
 
-               const getTotalWorkTimeTime=filterdataTotalTime?.map((item)=>{
+           const timeone = formatted;
+           const timetwo = "08:00:00"; // total time 
+
+           var pct = (100 * totalSeconds(timeone) / totalSeconds(timetwo)).toFixed(2);
+
+           function totalSeconds(time){
+            var parts = time.split(':');
+            return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        }
+        const dataPerTage=pct
+        console.log("data",dataPerTage)
+        setTotalWorkRange(pct)
+console.log("pct ",pct )
+
+           const getUserIdDAtaData=JSON.parse(sessionStorage.getItem("userData"))
+           const usersFilter=users?.filter((item)=>getUserIdDAtaData?.find(ele=>ele?.E_Id===item?.employeeId))
+               const getTotalWorkTimeTime=usersFilter?.map((item)=>{
                  return item?.totalTimeWork
                })
                const totalSecondsdataData = sumToSeconds(getTotalWorkTimeTime);
@@ -108,7 +134,7 @@ export default function TimerClock(props) {
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
                 if(totalTimeobjDataData){
-                  localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+                  sessionStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
                 }
               };
  
@@ -155,6 +181,24 @@ export default function TimerClock(props) {
      >
        <DialogTitle>{"Today Work"}</DialogTitle>
        <DialogContent>
+       <>
+          
+    <svg viewBox="0 0 36 36" class="radial-graph">
+      <path class="radial-bg"
+        d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <path class="radial"
+        stroke-dasharray={(`${totalWorkRange},100`)}
+        d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <text x="18" y="20.35" class="percent">{totalWorkRange+" %"}</text>
+    </svg>
+    
+       </>
          <DialogContentText id="alert-dialog-slide-description">
          <FormControl>
          <TextField
@@ -178,54 +222,54 @@ export default function TimerClock(props) {
                  <span>{totalWorkTime}</span>
                    </div> */}
                  </div>
-               <div className="employee-table">
-                 <Table id="table-1">
-                 <UserListHead
-                    order={order}
-                    headLabel={TABLE_HEAD}
-                    rowCount={USERLIST?.length}
-                  />
-                  <TableBody >
-                {
-                   dateData&&dateData === undefined?"":
-                   dateData&&dateData?.map((user)=>{
-                    return(
-                     
-                   <TableRow  key={user?.id}>
-                   
-                      <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
-                         <TableCell align="center">{user?.day}</TableCell>
-                      <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
+             <div className="employee-table">
+              <Table id="table-1">
+              <UserListHead
+                 order={order}
+                 headLabel={TABLE_HEAD}
+                 rowCount={USERLIST?.length}
+               />
+               <TableBody >
+             {
+                dateData&&dateData === undefined?"":
+                dateData&&dateData?.map((user)=>{
+                 return(
+                  
+                <TableRow  key={user?.id}>
+                
+                   <TableCell align="center">  <div id="Table1" className='bg-employee-table' style={{backgroundColor:`${user?.color}`}}>s</div>{user?.date}</TableCell>
+                      <TableCell align="center">{user?.day}</TableCell>
+                   <TableCell align="center">{user.start?.slice(11, 19)}</TableCell>
+                   {
+                     user.stop?
+                     <TableCell align="center">{user?.stop.slice(16,24)}</TableCell>: <TableCell align="center">{""}</TableCell>
+                    }
+                    <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
                       {
-                        user.stop?
-                        <TableCell align="center">{user?.stop.slice(16,24)}</TableCell>: <TableCell align="center">{""}</TableCell>
-                       }
-                       <TableCell align="center" className={user.state==="stopped"?"stopped-bg":"running-bg"}>
-                         {
-                           user.state==='running'?
-                           <div class="online-indicator">
-                             <span class="blink"></span>
-                             <table id="header-fixed"></table>
-                             
-                           </div>
-                       :""
-                         }
-                         {
-                           user.state==='stopped'?
-                           <div class="online-indicator-stopped">
-                           <span class="blink-stopped"></span>
-                         </div>
-                         :""
-                         }
-                       </TableCell>
-                        <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.secs}</TableCell>
-                   </TableRow>
-                    )
-                   })
-                 }
-                 </TableBody>
-                 </Table>
-               </div>
+                        user.state==='running'?
+                        <div class="online-indicator">
+                          <span class="blink"></span>
+                          <table id="header-fixed"></table>
+                          
+                        </div>
+                    :""
+                      }
+                      {
+                        user.state==='stopped'?
+                        <div class="online-indicator-stopped">
+                        <span class="blink-stopped"></span>
+                      </div>
+                      :""
+                      }
+                    </TableCell>
+                     <TableCell align="center">{user?.hours+":"+user.mins+":"+user?.secs}</TableCell>
+                </TableRow>
+                 )
+                })
+              }
+              </TableBody>
+              </Table>
+            </div>
         </div>
         {/* :<LoaderComp/>
        } */}

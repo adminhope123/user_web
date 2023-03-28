@@ -52,7 +52,7 @@ export const FILTER_CATEGORY_OPTIONS = ["All Staff","CEO","HR","Student" ,"BDE",
 export default function BlogPage() {
   const [openFilter, setOpenFilter] = useState(false);
   const dispatch=useDispatch()
-  const {users}=useSelector(res=>res.data)
+  const {employees}=useSelector(res=>res.data)
   const [userEmployeeData,setUserEmployeeData]=useState()
   const [iconPost,setIconPost]=useState()
   const [filterDataData,setFilterDataData]=useState()
@@ -67,7 +67,7 @@ export default function BlogPage() {
     setOpenFilter(false);
   };
   const handleDataFilter=(item)=>{
-   const userFilter=users?.filter(elee=>elee?.role===item)
+   const userFilter=employees?.filter(elee=>elee?.role===item)
    if(userFilter){
      setFilterDataData(userFilter)
    }
@@ -85,7 +85,7 @@ export default function BlogPage() {
   const onChangePost=(item)=>{
     const dataIcon=item?.icon
     setIconPost(dataIcon)
-    const filterData=users?.filter(data=>data?.post===item?.post)
+    const filterData=employees?.filter(data=>data?.post===item?.post)
     setUserEmployeeData(filterData)
   }
 
@@ -121,7 +121,7 @@ export default function BlogPage() {
 </Box>
   } */}
   {
-    users?.length ?
+    employees?.length ?
     <div>
     <Box sx={{display:"flex",justifyContent:"flex-end",marginBottom:"10px"}}>  
      <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={handleOpenFilter}>
@@ -133,7 +133,7 @@ export default function BlogPage() {
           <div>
           <Grid container spacing={3}>
          {
-           users?.map((postData, index) => (
+           employees?.map((postData, index) => (
              <BlogPostCard key={postData?.E_Id} postData={postData} index={index} />
            ))
          }
@@ -152,7 +152,7 @@ export default function BlogPage() {
               <div>
                  <Grid container spacing={3}>
          {
-           users?.map((postData, index) => (
+           employees?.map((postData, index) => (
              <BlogPostCard key={postData?.E_Id} postData={postData} index={index} />
            ))
          }
@@ -177,10 +177,10 @@ export default function BlogPage() {
      
         {/* {
         userEmployeeData?.length?
-        users?.map((postData, index) => (
+        employees?.map((postData, index) => (
           <BlogPostCard key={postData?.E_Id} postData={postData} index={index} />
         ))
-        : users?.map((postData, index) => (
+        : employees?.map((postData, index) => (
           <BlogPostCard key={postData?.E_Id} postData={postData} index={index} />
         ))
       } */}

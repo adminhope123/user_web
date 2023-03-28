@@ -38,26 +38,27 @@ import {
   KeyboardArrowRight,
   Update,
 } from "@mui/icons-material";
-import users from "src/_mock/user";
 import { UserDataContext } from "src/UserDataContext";
 import moment from "moment";
 import { merge, set } from "lodash";
 import LoaderComp from "src/loader/LoaderComp";
+import ProgressBar from "./ProgressBar";
 
 const TABLE_HEAD = [
   { id: "date", label: "Date", alignRight: false },
   { id: "day", label: "Day", alignRight: false },
   { id: "totalWork", label: "Total Work", alignRight: false },
+  { id: "timingRange", label: "Timing Range", alignRight: false },
   { id: "present", label: "Present", alignRight: false },
   { id: "absent", label: "Absent", alignRight: false },
 ];
 
 export default function AttendanceTable() {
   const dispatch = useDispatch();
-  const { users } = useSelector((res) => res.data);
+  const { attendances } = useSelector((res) => res.data);
   const [between, setBetween] = useState([]);
   const [updated, setUpdated] = useState([]);
-  const [attendanceGetData, setAttendanceGetData] = useState(users);
+  const [attendanceGetData, setAttendanceGetData] = useState(attendances);
   const [getData, setGetData] = useState();
   const [filterdataTotalTime,setFilterdataTotalTime]=useState()
    const [allObjectData,setAllObjectData]=useState()
@@ -69,6 +70,7 @@ export default function AttendanceTable() {
  const [startAlert, setStartAlert] = useState(false);
  const [dataRefresh, setDataRefresh] = useState(false);
  const [buttonDisable,setButtonDisable]=useState(false)
+ const [totalWorkRange,setTotalWorkRange]=useState()
 
  const buttonData=()=>{
   setButtonDisable(false)
@@ -78,13 +80,34 @@ export default function AttendanceTable() {
       buttonData()
     },2000 );
     // handleTotalTime()
+    
     const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
     setGetData(dataGetGet);
+       
+    const secs = dataGet?.totalSecoundData;
+    
+    const formatted = moment.utc(secs*1000).format('HH:mm:ss');
+    console.log("filterdataTotalTime",formatted)
+
+    const timeone = formatted;
+    const timetwo = "08:00:00"; // total time 
+
+    var pct = (100 * totalSeconds(timeone) / totalSeconds(timetwo)).toFixed(2).concat("%");
+
+    function totalSeconds(time){
+     var parts = time.split(':');
+     return parts[0] * 3600 + parts[1] * 60 + parts[2];
+ }
+ const dataPerTage=pct.concat("%")
+ console.log("data",dataPerTage)
+ setTotalWorkRange(pct)
+console.log("pct ",pct )
+
     getUserDataFunction()
     const livedate = new Date().toLocaleDateString("es-DO");
-    const dateFilter = users?.slice(-2)[0]?.date;
-   const firstDate=users?.map((item)=>item.date)
+    const dateFilter = attendances?.slice(-2)[0]?.date;
+   const firstDate=attendances?.map((item)=>item.date)
 
  const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
  delete getTodayData?.timerId
@@ -107,21 +130,26 @@ delete getTodayData?.color
  }
  const absentData={"absent":false.toString()}
  const presentDataData={"present":true.toString()}
- const objectmergePresentAbsent={...absentData,...presentDataData,...getTodayData}
+ const totalHorusWork={"totalworkrange":pct}
+ const objectmergePresentAbsent={...absentData,...presentDataData,...getTodayData,...totalHorusWork}
  const addObjectData={...objectmergePresentAbsent,...addTime}
-   const userData=users?.map((item)=>{
+   const userData=attendances?.map((item)=>{
     return item
    })
+   const getIdDataLocalStorage=JSON.parse(sessionStorage.getItem("userData"))
+   const getIdDataLocalStorageId=getIdDataLocalStorage?.map((item)=>{return item?.E_Id})
    const liveDateDate=new Date().toLocaleDateString("es-DO");
    const lastValue=liveDateDate
    const lastFirstValue=  userData.slice(-2)[0]?.date
+   console.log("lastFirstValue",userData)
    var InputData = {
     end_date:lastValue,
     start_date:lastFirstValue,
     date:"",
     day:"",
     month:"",
-    employeeId:getEmployeeId,
+    totalworkrange:"0",
+    employeeId:getIdDataLocalStorageId,
     totalWorkTime:"0:00:00",
     present:"false",
     absent:"true"
@@ -133,10 +161,11 @@ var Days=EndDate.diff(StartDate, 'days')
 var OutputData=[];
 
 var firstObj={
-  employeeId: getEmployeeId,
+  employeeId: getIdDataLocalStorageId,
     date: moment(StartDate).format("DD-MM-YYYY"),
     totalWorkTime:InputData.totalWorkTime,
     present:InputData.present,
+    totalworkrange:InputData.totalWorkTime,
     absent:InputData.absent,
     month:moment(StartDate).format("MMMM"),
     day:moment(StartDate).format("dddd"),
@@ -153,6 +182,7 @@ for(var i=1;i<Days+1;i++){
     date: mydate,
     present:InputData.present,
     absent:InputData.absent,
+    totalworkrange:InputData.totalWorkTime,
     totalWorkTime:InputData.totalWorkTime,
     day:InputData.day,
     month:mydateMonth,
@@ -161,6 +191,7 @@ for(var i=1;i<Days+1;i++){
    
    OutputData.push(myObj);
 }
+console.log("OutputData",OutputData)
  const getAbsentData=OutputData?.map((item)=>{
     return item;  
   })
@@ -172,24 +203,27 @@ const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
 const getId=employeeIdGet?.map((item)=>{
  return item?.E_Id
 })
-const filterDAtaUsers=users?.filter((item)=>employeeIdGet?.find(ele=>ele.E_Id===item?.employeeId))
-const getUserCheck=filterDAtaUsers?.map((item)=>{
+const filterDAtaattendances=attendances?.filter((item)=>employeeIdGet?.find(ele=>ele.E_Id===item?.employeeId))
+const getUserCheck=filterDAtaattendances?.map((item)=>{
     const dataadataa=filterData?.map((ele)=>{
         return item?.date.includes(ele?.date)
     })
     return dataadataa.toString()
 })
 const chekValueGet=getUserCheck?.includes("true")
-
+console.log("filtertDAta",filterData)
 if(chekValueGet===true){
 }else{
   setDataRefresh(true)
   setButtonDisable(true)
-   const absetDataAdd=filterData?.map((item)=>{
+  const absetDataAdd=filterData?.map((item)=>{
    return dispatch(attendancePostApi(item))
   })
+  
 }
-    const datadata=filterDAtaUsers?.map((item)=>{
+console.log("attendances",attendances)
+
+    const datadata=filterDAtaattendances?.map((item)=>{
          return item?.date.includes(addObjectData?.date)
     })
   const dataCheckData=datadata?.includes(true)
@@ -217,21 +251,58 @@ if(chekValueGet===true){
      sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
   };
   const attendacePutData=()=>{
+    stroke:' #FD453A'
+    //         }
+    //         30% {
+    //           stroke: '#FD453A'
+    //         }
+    //         50% {
+    //           stroke: '#FD9E3A'
+    //         }
+    //         80% {
+    //           stroke: '#3A69FD'
+    //         }
+    //         100% {
+    //           stroke: "#1AD852"
+    //         }
+
+
+
     setStartAlert(true)
     const liveDate=new Date().toLocaleDateString("es-DO");
     
     const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
     
     const getEmployeeIdDAtaDAta=employeeIdGet?.map((item)=>{return item?.E_Id})
-    const getTodayDate=users?.filter((item)=>{return item.date===liveDate&&getEmployeeIdDAtaDAta&&item.id})
+    const getTodayDate=attendances?.filter((item)=>{return item.date===liveDate&&getEmployeeIdDAtaDAta&&item.id})
 const getTotalWorkData=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+
 const getTime={"totalWorkTime":getTotalWorkData?.totalWorkTime}
+const secs = getTotalWorkData?.totalSecoundData;
+    
+const formatted = moment.utc(secs*1000).format('HH:mm:ss');
+console.log("filterdataTotalTime",formatted)
+
+const timeone = formatted;
+const timetwo = "08:00:00"; // total time 
+
+var pct = (100 * totalSeconds(timeone) / totalSeconds(timetwo)).toFixed(2).concat("%");
+
+function totalSeconds(time){
+ var parts = time.split(':');
+ return parts[0] * 3600 + parts[1] * 60 + parts[2];
+}
+const dataPerTage=pct.concat("%")
+console.log("data",dataPerTage)
+setTotalWorkRange(pct)
+console.log("pct ",pct )
+const totalHorusWork={"totalworkrange":pct}
 const getDataIdDataa=getTodayDate?.filter((item)=>employeeIdGet?.find(ele=>ele?.E_Id===item?.employeeId))
 const dataIdEmployeeGet=getDataIdDataa?.map((item)=>{return item?.id})
 const employeeEditIdData=dataIdEmployeeGet
 
 const dataAddEdit=getTodayDate?.map((item)=>{
-  const dataMerge={...item,...getTime}
+  const dataMerge={...item,...getTime,...totalHorusWork}
   return   dispatch(attendanceApiPut(dataMerge,employeeEditIdData))
 })
 
@@ -324,13 +395,13 @@ useEffect(() => {
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
   };
-  function createData(date, day, present, totalWorkTime, totalSeconds, absent) {
-    return { date, day, present, absent, totalWorkTime, totalSeconds };
+  function createData(date, day, present, totalWorkTime, totalSeconds, absent,totalworkrange) {
+    return { date, day, present, absent, totalWorkTime, totalSeconds,totalworkrange };
   }
 const getUserDataFunction=()=>{
   const getEmployeeIdGetData=JSON.parse(sessionStorage.getItem("userData"))
   const getEmployeeIdData=getEmployeeIdGetData?.map((item)=>{
-    const employeeGetData=users?.filter((ele)=>ele.employeeId===item.E_Id)
+    const employeeGetData=attendances?.filter((ele)=>{return ele.employeeId===item.E_Id})
     setAttendaceDataStore(employeeGetData)
   })
 }
@@ -338,9 +409,21 @@ useEffect(() => {
   getUserDataFunction()
 }, [])
 var isDescending = true;
-
 const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).getTime() - new Date(a.date).getTime() : new Date(a.date).getTime() - new Date(b.date).getTime());
-  const rows =dataaaa?.map((item) => {
+console.log("attendaceDataStore",dataaaa)
+const dateFormat=attendaceDataStore?.sort(sortByDate);
+function sortByDate(a, b) {
+  if (a.date < b.date) {
+      return 1;
+  }
+  if (a.date > b.date) {
+      return -1;
+  }
+  return 0;
+}
+
+console.log("dateFormat",dateFormat)
+const rows =dateFormat?.map((item) => {
     return [
       createData(
         item?.date,
@@ -348,7 +431,8 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
         item?.present,
         item?.totalWorkTime,
         item?.totalSeconds,
-        item?.absent
+        item?.absent,
+        item?.totalworkrange
       ),
     ]?.sort((a, b) => (a?.day < b?.day ? -1 : 1));
   });
@@ -408,14 +492,15 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
       <div className="attendance-table">
       {
       buttonDisable===true?
-       <Button  disabled variant="contained"  sx={{marginBottom:"30px"}} >
+       <Button disabled  variant="contained"  sx={{marginBottom:"30px"}} >
       <span> Data Refresh</span>
      <RefreshIcon sx={{marginLeft:"10px"}}/>
-     </Button>: <Button   variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
+     </Button>: 
+     <Button   variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
       <span> Data Refresh</span>
      <RefreshIcon sx={{marginLeft:"10px"}}/>
      </Button>
-    }
+    } 
        
           
           <Box sx={{display:"flex",alignItems:"stretch",justifyContent:"flex-end"}} className="totalWorkTime-data">
@@ -433,8 +518,8 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
           <TableBody>
           
               ? ""
-              : users &&
-                users?.map((user) => {
+              : attendances &&
+                attendances?.map((user) => {
                   return (
                     <TableRow key={user?.id}>
                       <TableCell align="center">{user?.date}</TableCell>
@@ -478,7 +563,7 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
               )
             : dataaa
           )?.map((row, index) => (
-         <TableRow key={row?.index}>
+<TableRow key={row?.index}>
           <TableCell style={{ width: 160 }} align="center" scope="row">
             {row?.date}
           </TableCell>
@@ -487,6 +572,9 @@ const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).
           </TableCell>
           <TableCell style={{ width: 160 }} align="center">
             {row?.totalWorkTime}
+          </TableCell>
+          <TableCell style={{ width: 160 }} align="center">
+                  <ProgressBar width={row?.totalworkrange?.slice(0,2)} />
           </TableCell>
           <TableCell style={{ width: 160 }} align="center">
               {row?.present === "true" ? (

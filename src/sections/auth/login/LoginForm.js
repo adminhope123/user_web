@@ -19,7 +19,7 @@ export default function LoginForm() {
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const {users}=useSelector(res=>res.data)
+  const {employees}=useSelector(res=>res.data)
   const [addEmployeeAlert, setAddEmployeeAlert] = useState(false);
   const [loginDataForm,setLoginDataForm]=useState({
     email:"",
@@ -73,12 +73,12 @@ export default function LoginForm() {
       }
       setAddEmployeeAlert(true)
    }
-     if(users){
-       const filterData=users?.filter((item)=>item?.email===loginDataForm?.email)
+     if(employees){
+       const filterData=employees?.filter((item)=>item?.email===loginDataForm?.email)
        const dataGet=JSON.parse(sessionStorage.getItem("userData"))
        if(dataGet?.length===0){
        }
-       sessionStorage.setItem("viewEmployee",JSON.stringify(users))
+       sessionStorage.setItem("viewEmployee",JSON.stringify(employees))
        if(filterData){
          sessionStorage.setItem("userData",JSON.stringify(filterData))
        }

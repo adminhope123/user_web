@@ -48,6 +48,7 @@ function StopWatch(props) {
             totalSeconds: 0,
             start: moment().format()
         });
+        activeData()
         const dataGetDataaa=JSON.parse(sessionStorage.getItem("userData"))
         const getEmployeeData=dataGetDataaa?.map((item)=>{return item?.userName})
         const dataRunning=users?.filter((item)=>item?.state==="running")
@@ -64,17 +65,53 @@ function StopWatch(props) {
             return () => window.removeEventListener("beforeunload", unloadCallback);
         
     }
+    const activeData=()=>{
+      const dataFilter=users?.filter(ele=>{return ele.state==="running"})
+      const dataDataData=JSON.parse(sessionStorage.getItem("viewEmployee"))
+      const getUserDAtaDAtaa=JSON.parse(sessionStorage?.getItem("userData"))
+      const getEmployeeDAtaData=getUserDAtaDAtaa?.map((item)=>{return item?.userName})
+      const dataFilterDAta=dataDataData?.filter((item)=>dataFilter?.find(ele=>ele?.employeeId===item?.E_Id))
+      if(dataFilterDAta?.length===0){
+        const notification = new Notification(getEmployeeDAtaData + " is Online", {
+        })
+      }else{
+        dataFilterDAta?.map((item)=>{
+          const notification = new Notification(item?.userName + " is Online", {
+          })
+       })
+      }
     
+     } 
       const stopTimer = mode =>{
           setStopAlert(true)
-        stopTimerIdDataData?.map((item)=>{
-              const employeeEditIdData=item?.id
-              dispatch(timeStopApi(dataTimerStop,employeeEditIdData))
-            })
-        stopRunningTask() 
-          const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
-          const totalTimerFilterDataaaaaa=users?.filter((ele)=>getDatadaaa?.find(item=>item?.E_Id===ele?.employeeId))
-          console.log("totalTimerFilterDataaaaaa",totalTimerFilterDataaaaaa)
+          stopTimerIdDataData?.map((item)=>{
+            const employeeEditIdData=item?.id
+            dispatch(timeStopApi(dataTimerStop,employeeEditIdData))
+          })
+          stopRunningTask() 
+          const checkIdData=users?.filter((item)=>timerStartData?.timerId===item.timerid)
+        const storedString = sessionStorage.getItem('tasks')
+        const storedTasks = storedString ? JSON.parse(storedString) : [];
+        const data=storedTasks?.slice(-1).pop()
+        if(checkIdData){
+          const totalTimnDataAdd=data?.hours+":"+data?.mins+":"+data?.secs
+              const totalTimeDataAddObject={"totalTimeWork":totalTimnDataAdd}
+          const dataState=data
+          const stateDataDelete=delete dataState?.state
+          const dataaaaaaaa=delete dataState?.totalTimeWork
+          const stopTimeDelete=delete dataState?.stop
+          const mergeData={"state":"stopped"}
+      const dateGet=new Date()
+      const dataGetSting=dateGet?.toString()
+          const dataaDataaaa={"stop":dataGetSting}
+          const mergeDAtaDAtaDAta={...mergeData,...dataState,...totalTimeDataAddObject,...dataaDataaaa}
+          const dataaaaaaaaaaaaaa=users?.filter((item)=>data?.timerId===item.timerid)
+          const getIdDatadata=dataaaaaaaaaaaaaa?.map((item)=>{return item?.id})
+          const dataIdString=getIdDatadata?.toString()
+             const employeeEditIdData=dataIdString
+                 dispatch(timeStopApi(mergeDAtaDAtaDAta,employeeEditIdData))
+        }
+
     }
     const sumToSeconds = times => {
       return times?.reduce((a, e) => {

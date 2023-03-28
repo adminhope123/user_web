@@ -19,7 +19,6 @@ import {
 import Iconify from '../../../components/iconify';
 import { taskDeleteApi, taskEditApi } from 'src/Redux/actions';
 import { useDispatch } from 'react-redux';
-import users from 'src/_mock/user';
 
 // ----------------------------------------------------------------------
 
@@ -115,21 +114,42 @@ const checkBoxTaskOnChange=(event)=>{
 }
 
 const taskTableData=(data)=>{
-  const trueData=isTrue===true
-  if(trueData){
-    const readData={"read":JSON.stringify(trueData)}
+//   if(trueData){
+    // const readData={"read":"false"}
+    // const employeeEditIdData=taskData?.id
+    // const dataMergemerge={...taskData,...readData}
+    // console.log("true",dataMergemerge)
+    // dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+//   }
+//  const falseData=isTrue===true
+//  console.log("falseData",falseData)
+//  if(falseData,data){
+//    const readData={"read":"true"}
+//    const employeeEditIdData=taskData?.id
+//    const dataMergemerge={...taskData,...readData}
+//    console.log("false",dataMergemerge)
+//    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+//  }
+  //  const readData={"read":"true"}
+  //   const employeeEditIdData=taskData?.id
+  //   const dataMergemerge={...taskData,...readData}
+  //   console.log("daataaa",dataMergemerge)
+  console.log("taskData",isTrue)
+  if(isTrue===false){
+    const readData={"read":"true"}
     const employeeEditIdData=taskData?.id
     const dataMergemerge={...taskData,...readData}
+    console.log("true",dataMergemerge)
     dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
   }
- const falseData=isTrue===false
- if(falseData,data){
-   const readData={"read":JSON.stringify(data)}
-   const employeeEditIdData=taskData?.id
-   const dataMergemerge={...taskData,...readData}
-   dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
- }
- 
+  if(isTrue===true){
+    const readData={"read":"false"}
+    const employeeEditIdData=taskData?.id
+    const dataMergemerge={...taskData,...readData}
+    console.log("true",dataMergemerge)
+    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
+  }
+  
 }
   return (
     <Stack
@@ -144,10 +164,10 @@ const taskTableData=(data)=>{
         }),
       }}
     >
-
+{/* <button onClick={taskTableData}>taskTableData</button> */}
       <FormControlLabel
         control={ <Checkbox
-          checked={taskData?.read ?JSON.parse(taskData?.read):null}
+          // checked={isTrue}
           // value={JSON.parse(taskData?.read)}
           defaultChecked={taskData?.read ?JSON.parse(taskData?.read):null}
           onChange={checkBoxTaskOnChange}
