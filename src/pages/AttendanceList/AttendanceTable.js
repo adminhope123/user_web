@@ -574,7 +574,9 @@ const rows =dateFormat?.map((item) => {
             {row?.totalWorkTime}
           </TableCell>
           <TableCell style={{ width: 160 }} align="center">
-                  <ProgressBar widthData={row?.totalworkrange?.slice(0,2)} />
+              {
+                row?.totalworkrange==="0" ? <span>Not Work</span> :<ProgressBar widthData={row?.totalworkrange?.slice(0,2)} />
+              }    
           </TableCell>
           <TableCell style={{ width: 160 }} align="center">
               {row?.present === "true" ? (
