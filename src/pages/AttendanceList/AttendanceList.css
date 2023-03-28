@@ -97,7 +97,7 @@ h2{
   border-radius: 25px;
   transition: width 100ms ease-out;
 }
-
+/* 
 .pbar {
   background-color: #121625;
   border-radius: 4px;
@@ -120,4 +120,4 @@ h2{
   to {
      clip-path: polygon(0 0, calc(var(--value) * 1%) 0, calc(var(--value) * 1%) 100%, 0 100%);
   }
-}
+} */
