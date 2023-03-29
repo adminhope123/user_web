@@ -41,8 +41,8 @@ const dataGetGet=async()=>{
     }
 
     useEffect(() => {
-      getUserData()
       dataGetGet()
+      getUserData()
     }, [])
     
   return (

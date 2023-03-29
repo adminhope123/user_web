@@ -52,6 +52,7 @@ export default function Profile() {
   const [myimage, setMyImage] =useState(null);
   const [imgShow,setImgShow]=useState()
   const [imageUpload,setImageUpload]=useState([])
+  const [getDataUserData,setGetDataUserData]=useState()
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -123,40 +124,43 @@ const handleClose = () => setOpen(false);
 
 const handleSubmitData=(e)=>{
   e.preventDefault();
+  
+  console.log("getDataUser",getDataUserData)
   const data=selectedCity?.name
   const countriesName=selectedCountry?.name
   const stateName=selectedState?.name
   const birthDateData=birthDate?.$d
   const dataaaa={"birthdate":`${birthDateData}`}
   const sliceDate=dataaaa?.birthdate?.slice(4,15)
-  const emailDataGet={"email":dataProfile?.email}
-const imageObject={"image":dataProfile?.image}
+  const emailDataGet={"email":getDataUserData?.email}
+const imageObject={"image":getDataUserData?.image}
   const cityObject={"city":data}
-  const fullnameObject={"fullname":dataProfile?.userName}
+  const fullnameObject={"fullname":getDataUserData?.userName}
   const CountruesObject={"countries":countriesName}
-  const mobileObject={"mobile":dataProfile?.mobileNumber}
-  const role={"post":dataProfile?.role}
+  const mobileObject={"mobile":getDataUserData?.mobileNumber}
+  const role={"post":getDataUserData?.role}
   const stateObject={"state":stateName}
   const birthDateDataData={"birthDate":sliceDate}
   const dataBirthDate=sliceDate
   console.log("dataBirthDate",dataBirthDate)
   const gender={"gender":value}
-  const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
- const getIdDataDataData=getEmployeeIdGet?.map((item)=>{return item?.E_Id})
+  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+ const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
   const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
   console.log("imageUpload",imageUpload?.image)
+  console.log("getDataUserData?.mobileNumbergetDataUserData?.mobileNumber",getDataUserData?.mobileNumber)
   var formEditData=new FormData()
   formEditData.append('image',imageUpload?.image)
   formEditData.append('birthDate',sliceDate)
-  formEditData.append('email',dataProfile?.email)
+  formEditData.append('email',getDataUserData?.email)
   formEditData.append('city',data)
-  formEditData.append('fullname',dataProfile?.userName)
+  formEditData.append('fullname',getDataUserData?.userName)
   formEditData.append('countries',countriesName)
   formEditData.append('gender',value)
-  formEditData.append('post',dataProfile?.role)
-  formEditData.append('mobile',dataProfile?.mobileNumber)
+  formEditData.append('post',getDataUserData?.role)
+  formEditData.append('mobile',getDataUserData?.mobileNumber)
   formEditData.append('state',stateName)
   formEditData.append('E_Id',employeeIdDataString)
   formEditData.append('address',editFormData?.address)
@@ -181,30 +185,28 @@ const imageObject={"image":dataProfile?.image}
   
    }
    const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
-   console.log("getIdData",getIdData)
-   var formData=new FormData()
-   formData.append('image',imageUpload?.image)
-  //  formData.append('birthDate',sliceDate)
-  //  formData.append('email',getUserDataDataData?.email)
-  //  formData.append('city',data)
-  //  formData.append('fullname',getUserDataDataData?.userName)
-  //  formData.append('countries',countriesName)
-  //  formData.append('gender',value)
-  //  formData.append('post',getUserDataDataData?.role)
-  //  formData.append('mobile',getUserDataDataData?.mobileNumber)
-  //  formData.append('state',stateName)
-  //  formData.append('E_Id',employeeIdDataString)
-  //  formData.append('address',editFormData?.address)
-   console.log("address",editFormData?.address)
-   const mergeObjectdaaa={...editFormData,...imageObject,...employeeIdData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
- console.log("mergeObjectdaaa",mergeObjectdaaa)
-   if(mergeObjectdaaa){
-  const getIdDataData=getIdData?.map((item)=>{return item?.id})
-  const employeeEditIdData=getIdDataData
-  console.log("formDAta",mergeObjectdaaa)
-  dispatch(profilePutApi(mergeObjectdaaa,employeeEditIdData))
-  setOpen(false)
- }
+   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
+     var formData=new FormData()
+     formData.append('image',imageUpload?.image)
+  formData.append('birthDate',sliceDate)
+  formData.append('email',getDataUserData?.email)
+  formData.append('city',data)
+  formData.append('fullname',getDataUserData?.userName)
+  formData.append('countries',countriesName)
+  formData.append('gender',value)
+  formData.append('post',getDataUserData?.role)
+  formData.append('mobile',getDataUserData?.mobileNumber)
+  formData.append('state',stateName)
+  formData.append('E_Id',employeeIdDataString)
+  formData.append('address',editFormData?.address)
+   if(imgShow===true){ 
+     if(formData){
+        const getIdDataData=getIdData?.map((item)=>{return item?.id})
+        const employeeEditIdData=getIdDataData
+        dispatch(profilePutApi(formData,employeeEditIdData))
+        setOpen(false)
+      }
+    }
     // dispatch(profilePutApi())
 }
 
@@ -214,7 +216,7 @@ const getApiFunction=async()=>{
   const getUserDeflutData=profiles?.filter((item)=>dataUserGet?.find(ele=>ele?.E_Id===item?.E_Id))
   const dataProfileget=getUserDeflutData?.map((item)=>{return setDataProfile(item)})
   
-  console.log("dataGEtGEtGEt",getUserDataDataData)
+  console.log("dataGEtGEtGEt",dataProfileget)
   // setGetUserDataDataData(dataGEtGEtGEt)
   const checkData=profiles?.map((item)=>{
     const dataCheck= item?.E_Id===getUserDataDataData?.E_Id
@@ -241,7 +243,8 @@ useEffect(() => {
 
 const userProfileDataFunction=()=>{
    dispatch(profileGetApi())
- 
+   const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+  const getDataUser=getEmployeeIdGet?.map((item)=>{return setGetDataUserData(item)})
 }
 const handleImgChange=(e)=>{
   setImageUpload({image:e.target.files[0]})
@@ -262,7 +265,7 @@ const handleImgChange=(e)=>{
           <RefreshIcon sx={{marginLeft:"10px"}}/>
           </Button>
         <div className='profile-content'>
-<div className='profile-card'>
+<div className='profile-card'>  
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         {
@@ -437,7 +440,7 @@ const handleImgChange=(e)=>{
       
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
-          Edit
+           {imgShow===false? "Add":"Edit"}
         </Button>
       </CardActions>
     </Card>
@@ -454,30 +457,9 @@ const handleImgChange=(e)=>{
           <Typography 
            variant='h3'
            sx={{color:"#465767",marginBottom:"10px",marginTop:"-16px",fontSize:"17px"}}
-           >Edit Employee Profile</Typography>
+           >{imgShow===false? " Add Employee Profile":" Edit Employee Profile"}
+           </Typography>
           <form onSubmit={handleSubmitData} key={getUserDataDataData}>
-             {/* <div className='input-data'>
-             <FormControl>
-                    <TextField
-                      label="Full Name"
-                      name="fullname"
-                      type="text"
-                      defaultValue={getUserDataDataData?.userName}
-                      onChange={hadnleOnChange}
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl>
-                  <FormControl>
-                    <TextField
-                      label="Post"
-                      name="post"
-                      type="text"
-                      defaultValue={getUserDataDataData?.role}
-                      onChange={hadnleOnChange}
-                    />
-                    <p className="employee-error-text"></p>
-                  </FormControl>
-             </div> */}
                  <div className='employee-img-upload'>
                   {
                     imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
@@ -506,7 +488,7 @@ const handleImgChange=(e)=>{
                       label="Address"
                       name="address"
                       type="text"
-                      defaultValue={dataProfile?.address}
+                      value={editFormData?.address}
                       onChange={hadnleOnChange}
                       sx={{paddingBottom:"10px",width:"100%"}}
                     />
@@ -521,7 +503,7 @@ const handleImgChange=(e)=>{
           label="Birth Date"
           inputFormat="MM/DD/YYYY"
           name="birthDate"
-          defaultValue={dataProfile?.birthDate}
+          value={birthDate}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -534,7 +516,7 @@ const handleImgChange=(e)=>{
   <RadioGroup
     aria-labelledby="demo-controlled-radio-buttons-group"
     name="controlled-radio-buttons-group"
-    defaultValue={dataProfile?.gender}
+    value={value}
     onChange={handleChange}
   >
     <FormControlLabel value="female" control={<Radio />} label="Female" name='female' />
@@ -546,7 +528,6 @@ const handleImgChange=(e)=>{
         <div className='react-select-city'>
         <Select
         name='countries'
-        defaultInputValue={dataProfile?.countries}
         options={Country.getAllCountries()}
         getOptionLabel={(options) => {
           return options["name"];
@@ -563,7 +544,6 @@ const handleImgChange=(e)=>{
       <div className='react-select-city'>
       <Select
          name='state'
-         defaultInputValue={dataProfile?.state}
         options={State?.getStatesOfCountry(selectedCountry?.isoCode)}
         getOptionLabel={(options) => {
           return options["name"];
@@ -580,7 +560,6 @@ const handleImgChange=(e)=>{
     <div className='react-select-city'>
     <Select
           name='city'
-          defaultInputValue={dataProfile?.city}
         options={City.getCitiesOfState(
           selectedState?.countryCode,
           selectedState?.isoCode
@@ -604,7 +583,8 @@ const handleImgChange=(e)=>{
                     type="submit"
                     className="add-employee"
                   >
-                    Edit Profile Details
+                    {  imgShow===false?"Add Profile Details":"Edit Profile Details" }
+                    
                   </Button>
                     </div>
              </form>

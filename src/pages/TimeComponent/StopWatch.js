@@ -80,7 +80,6 @@ function StopWatch(props) {
           })
        })
       }
-    
      } 
       const stopTimer = mode =>{
           setStopAlert(true)

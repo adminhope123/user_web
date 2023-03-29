@@ -156,7 +156,7 @@ export const attendanceApiPut=(attendace,employeeEditIdData)=>{
 export const profilePostApi=(profile)=>{
     const url="https://hopebackend.hopeinfosys.com/api/userprofile";
     return function (dispatch){
-            axios.post(url,user)
+            axios.post(url,profile)
             .then((resp)=>{
             dispatch(profilePost(resp.data))
             dispatch(profileGetApi())
