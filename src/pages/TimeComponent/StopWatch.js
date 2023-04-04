@@ -95,11 +95,12 @@ function StopWatch(props) {
     const data = storedTasks?.slice(-1).pop()
     if (checkIdData) {
       const getStartData = data?.start?.slice(11, 19)
-      const getStopData = new Date().toLocaleTimeString()?.slice(0, 8)
-      console.log("aaa", getStartData)
+      const getStopData = new Date()
+      const dateGEtDAta=getStopData?.toString()?.slice(16,24)
       console.log("aaa", getStopData)
+      console.log("aaa", dateGEtDAta)
 
-      var a = getStopData;
+      var a = dateGEtDAta;
       var b = getStartData;
 
       const dataTotal = secondsToHMS(hmsToSeconds(a) - hmsToSeconds(b)) // -10:39:18
@@ -108,7 +109,7 @@ function StopWatch(props) {
       const totalTimeDataAddObject = { "totalTimeWork": dataTotal }
 
     
-      console.log("totrl", totalTimeDataAddObject)
+      console.log("totrl", dataTotal)
 
       const dataState = data
       const stateDataDelete = delete dataState?.state

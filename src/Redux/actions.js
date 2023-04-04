@@ -77,7 +77,7 @@ const taskDelete = () => ({
   });
 
   const eventGet=(events)=>({
-    type:type.TASK_GET,
+    type:type.EVENT_GET,
     payload:events
 })
 

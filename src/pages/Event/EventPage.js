@@ -40,6 +40,7 @@ export default function EventPage() {
   const getFunction = () => {
     dispatch(eventGetApi())
     console.log("events",events)
+
     if(events?.length===0){
       ""
     }else{

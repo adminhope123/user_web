@@ -48,7 +48,7 @@ const TABLE_HEAD = [
   { id: "date", label: "Date", alignRight: false },
   { id: "day", label: "Day", alignRight: false },
   { id: "totalWork", label: "Total Work", alignRight: false },
-  { id: "timingRange", label: "Timing Range", alignRight: false },
+  // { id: "timingRange", label: "Timing Range", alignRight: false },
   { id: "present", label: "Present", alignRight: false },
   { id: "absent", label: "Absent", alignRight: false },
 ];
@@ -573,11 +573,11 @@ const rows =dateFormat?.map((item) => {
           <TableCell style={{ width: 160 }} align="center">
             {row?.totalWorkTime}
           </TableCell>
-          <TableCell style={{ width: 160 }} align="center">
+          {/* <TableCell style={{ width: 160 }} align="center">
               {
                 row?.totalworkrange==="0" ? <span>Not Work</span> :<ProgressBar widthData={row?.totalworkrange?.slice(0,2)} />
               }    
-          </TableCell>
+          </TableCell> */}
           <TableCell style={{ width: 160 }} align="center">
               {row?.present === "true" ? (
                 <div className="check-icon ">

@@ -190,38 +190,53 @@ const imageObject={"image":getDataUserData?.image}
 }
 
 const putApiDAta=()=>{
-  const birthDateData=birthDate?.$d
-  const dataaaa={"birthdate":`${birthDateData}`}
-  const sliceDate=dataaaa?.birthdate?.slice(4,15)
   const data=selectedCity?.name
   const countriesName=selectedCountry?.name
   const stateName=selectedState?.name
+  const birthDateData=birthDate?.$d
+  const dataaaa={"birthdate":`${birthDateData}`}
+  const sliceDate=dataaaa?.birthdate?.slice(4,15)
+  const emailDataGet={"email":getDataUserData?.email}
+const imageObject={"image":getDataUserData?.image}
+  const cityObject={"city":data}
+  const fullnameObject={"fullname":getDataUserData?.userName}
+  const CountruesObject={"countries":countriesName}
+  const mobileObject={"mobile":getDataUserData?.mobileNumber}
+  const role={"post":getDataUserData?.role}
+  const stateObject={"state":stateName}
+  const birthDateDataData={"birthDate":sliceDate}
+  const dataBirthDate=sliceDate
+  console.log("dataBirthDate",dataBirthDate)
+  const gender={"gender":value}
   const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
-  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
-  const employeeIdDataString=getIdDataDataData.toString()
+ const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
+ const employeeIdDataString=getIdDataDataData.toString()
+  const employeeIdData={"E_Id":employeeIdDataString}
+  const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
+
 
   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
 if(sliceDate,data,countriesName,stateName){
-   formDataData=new FormData()
-  formDataData.append('image',imageUpload?.image)
-formDataData.append('birthDate',sliceDate)
-formDataData.append('email',getDataUserData?.email)
-formDataData.append('city',data)
-formDataData.append('fullname',getDataUserData?.userName)
-formDataData.append('countries',countriesName)
-formDataData.append('gender',value)
-formDataData.append('post',getDataUserData?.role)
-formDataData.append('mobile',getDataUserData?.mobileNumber)
-formDataData.append('state',stateName)
-console.log("editFormData?.address",editFormData?.address)
-formDataData.append('E_Id',employeeIdDataString)
-formDataData.append('address',editFormData?.address.toString())
+ var  formDataData=new FormData()
+//   formDataData.append('image',imageUpload?.image)
+// formDataData.append('birthDate',sliceDate)
+// formDataData.append('email',getDataUserData?.email)
+// formDataData.append('city',data)
+// formDataData.append('fullname',getDataUserData?.userName)
+// formDataData.append('countries',countriesName)
+// formDataData.append('gender',value)
+// formDataData.append('post',getDataUserData?.role)
+// formDataData.append('mobile',getDataUserData?.mobileNumber)
+// formDataData.append('state',stateName)
+// console.log("editFormData?.address",editFormData?.address)
+// formDataData.append('E_Id',employeeIdDataString)
+// formDataData.append('address',editFormData?.address.toString())
 if(imgShow===true){ 
   if(formDataData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(formDataData,employeeEditIdData))
+     dispatch(profilePutApi(mergeObject,employeeEditIdData))
      setOpen(false)
    
    }
@@ -244,6 +259,7 @@ const getApiFunction=async()=>{
     console.log("olda",checkData)
     const trueDataCheckData=checkData?.includes(true)
     console.log("ture",trueDataCheckData)
+    setOldUsersData(trueDataCheckData)
     if(profiles){
       const filterData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
       setUserProfileData(filterData)
@@ -309,7 +325,7 @@ const handleImgChange=(e)=>{
 <div>
   <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
-    {/* {  oldUserData===false &&((
+   {  oldUserData===false &&((
 <CardContent>
       <div className='profile-lable'>
         <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
@@ -354,9 +370,9 @@ const handleImgChange=(e)=>{
       </CardContent>
       ))
       
-    } */}
-    {/* {
-      oldUserData===true&&(( */}
+    } 
+     {
+      oldUserData===true&&(( 
         <div>
         {
          userProfileData&&userProfileData?.map((item)=>{
@@ -458,8 +474,8 @@ const handleImgChange=(e)=>{
          })
         }
         </div>
-      {/* ))
-    } */}
+       ))
+    } 
       
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
@@ -483,7 +499,7 @@ const handleImgChange=(e)=>{
            >{imgShow===false? " Add Employee Profile":" Edit Employee Profile"}
            </Typography>
           <form onSubmit={handleSubmitData} key={getUserDataDataData}>
-                 <div className='employee-img-upload'>
+                 {/* <div className='employee-img-upload'>
                   {
                     imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
                     {
@@ -504,7 +520,7 @@ const handleImgChange=(e)=>{
                      </Stack>
                   }
                {console.log("imgShow",imgShow)}  
-                  </div>
+                  </div> */}
          <div className='address-input'>
 
          <TextField
