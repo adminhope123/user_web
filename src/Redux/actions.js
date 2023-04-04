@@ -76,6 +76,12 @@ const taskDelete = () => ({
     type: type.TASK_DELETE,
   });
 
+  const eventGet=(events)=>({
+    type:type.TASK_GET,
+    payload:events
+})
+
+
 export const loginFormPostApi=(user)=>{
     const url="https://hopebackend.hopeinfosys.com/api/userlogin";
     return function (dispatch){
@@ -242,3 +248,14 @@ export const taskDeleteApi = (employeeEditIdData) => {
         .catch((error) => console.log('error', error));
     };
   };
+
+  export const eventGetApi=()=>{
+    const url="https://hopebackend.hopeinfosys.com/api/viewcalendar";
+    return function (dispatch){
+            axios.get(url)
+            .then((resp)=>{
+            dispatch(eventGet(resp.data))
+        })
+        .catch((error)=>console.log("error",error));
+    };
+}

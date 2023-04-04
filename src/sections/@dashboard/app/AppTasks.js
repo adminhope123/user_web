@@ -81,6 +81,7 @@ function TaskItem({ taskData, checked, onChange }) {
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
+    console.log("taskData",taskData)
   };
 
   const handleCloseMenu = () => {
@@ -135,21 +136,6 @@ const taskTableData=(data)=>{
   //   const dataMergemerge={...taskData,...readData}
   //   console.log("daataaa",dataMergemerge)
   console.log("taskData",isTrue)
-  if(isTrue===false){
-    const readData={"read":"true"}
-    const employeeEditIdData=taskData?.id
-    const dataMergemerge={...taskData,...readData}
-    console.log("true",dataMergemerge)
-    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
-  }
-  if(isTrue===true){
-    const readData={"read":"false"}
-    const employeeEditIdData=taskData?.id
-    const dataMergemerge={...taskData,...readData}
-    console.log("true",dataMergemerge)
-    dispatch(taskEditApi(dataMergemerge,employeeEditIdData))
-  }
-  
 }
   return (
     <Stack
@@ -165,61 +151,62 @@ const taskTableData=(data)=>{
       }}
     >
 {/* <button onClick={taskTableData}>taskTableData</button> */}
-      <FormControlLabel
-        control={ <Checkbox
-          // checked={isTrue}
-          // value={JSON.parse(taskData?.read)}
-          defaultChecked={taskData?.read ?JSON.parse(taskData?.read):null}
-          onChange={checkBoxTaskOnChange}
-          inputProps={{ 'aria-label': 'controlled' }}
-       />}
-        label={taskData?.task}
-        sx={{ flexGrow: 1, m: 0 }}
-      />
- 
-      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpenMenu}>
-        <Iconify icon={'eva:more-vertical-fill'} />
-      </IconButton>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        {/* <MenuItem onClick={handleMarkComplete}>
-          <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ mr: 2 }} />
-          Mark Complete
-        </MenuItem>
-
-        <MenuItem onClick={handleEdit}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem onClick={handleShare}>
-          <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
-          Share
-        </MenuItem> */}
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+          {/* <FormControlLabel
+            control={ <Checkbox
+              // checked={isTrue}
+              // value={JSON.parse(taskData?.read)}
+              defaultChecked={taskData?.read ?JSON.parse(taskData?.read):null}
+              onChange={checkBoxTaskOnChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+           />}
+            label={taskData?.task}
+            sx={{ flexGrow: 1, m: 0 }}
+          />
+      */}
+             <h1>{taskData?.task}</h1>
+          <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpenMenu}>
+            <Iconify icon={'eva:more-vertical-fill'} />
+          </IconButton>
+    
+          <Popover
+            open={Boolean(open)}
+            anchorEl={open}
+            onClose={handleCloseMenu}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            PaperProps={{
+              sx: {
+                p: 1,
+                '& .MuiMenuItem-root': {
+                  px: 1,
+                  typography: 'body2',
+                  borderRadius: 0.75,
+                },
+              },
+            }}
+          >
+            {/* <MenuItem onClick={handleMarkComplete}>
+              <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ mr: 2 }} />
+              Mark Complete
+            </MenuItem>
+    
+            <MenuItem onClick={handleEdit}>
+              <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+              Edit
+            </MenuItem>
+    
+            <MenuItem onClick={handleShare}>
+              <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
+              Share
+            </MenuItem> */}
+    
+            <Divider sx={{ borderStyle: 'dashed' }} />
+    
+            <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+              <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+              Delete
+            </MenuItem>
+          </Popover>
     </Stack>
   );
 }

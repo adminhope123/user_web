@@ -14,6 +14,8 @@ const initialState = {
   employee: {},
   tasks: [],
   task: {},
+  events: [],
+  event: {},
   loading: true,
 };
 const usersReducers = (state = initialState, action) => {
@@ -40,6 +42,12 @@ const usersReducers = (state = initialState, action) => {
         ...state,
         loading: false,
       };
+      case type.EVENT_GET:
+        return {
+          ...state,
+          events: action.payload,
+          loading: false,
+        };
     case type.ATTENDANCE_GET_API:
       return {
         ...state,

@@ -184,33 +184,49 @@ const imageObject={"image":getDataUserData?.image}
     // }
   
    }
-   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
-   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
-     var formData=new FormData()
-     formData.append('image',imageUpload?.image)
-  formData.append('birthDate',sliceDate)
-  formData.append('email',getDataUserData?.email)
-  formData.append('city',data)
-  formData.append('fullname',getDataUserData?.userName)
-  formData.append('countries',countriesName)
-  formData.append('gender',value)
-  formData.append('post',getDataUserData?.role)
-  formData.append('mobile',getDataUserData?.mobileNumber)
-  formData.append('state',stateName)
-  formData.append('E_Id',employeeIdDataString)
-  formData.append('address',editFormData?.address)
-   if(imgShow===true){ 
-     if(formData){
-      const mergeDataObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
-        const getIdDataData=getIdData?.map((item)=>{return item?.id})
-        const employeeEditIdData=getIdDataData
-        dispatch(profilePutApi(mergeDataObject,employeeEditIdData))
-        setOpen(false)
-      }
-    }
+   putApiDAta()
     // dispatch(profilePutApi())
 }
 
+const putApiDAta=()=>{
+  const birthDateData=birthDate?.$d
+  const dataaaa={"birthdate":`${birthDateData}`}
+  const sliceDate=dataaaa?.birthdate?.slice(4,15)
+  const data=selectedCity?.name
+  const countriesName=selectedCountry?.name
+  const stateName=selectedState?.name
+  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
+  const employeeIdDataString=getIdDataDataData.toString()
+
+  const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+  console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
+if(sliceDate,data,countriesName,stateName){
+   formDataData=new FormData()
+  formDataData.append('image',imageUpload?.image)
+formDataData.append('birthDate',sliceDate)
+formDataData.append('email',getDataUserData?.email)
+formDataData.append('city',data)
+formDataData.append('fullname',getDataUserData?.userName)
+formDataData.append('countries',countriesName)
+formDataData.append('gender',value)
+formDataData.append('post',getDataUserData?.role)
+formDataData.append('mobile',getDataUserData?.mobileNumber)
+formDataData.append('state',stateName)
+console.log("editFormData?.address",editFormData?.address)
+formDataData.append('E_Id',employeeIdDataString)
+formDataData.append('address',editFormData?.address.toString())
+if(imgShow===true){ 
+  if(formDataData){
+      const getIdDataData=getIdData?.map((item)=>{return item?.id})
+     const employeeEditIdData=getIdDataData
+     dispatch(profilePutApi(formDataData,employeeEditIdData))
+     setOpen(false)
+   
+   }
+ }
+}
+}
 const getApiFunction=async()=>{
   const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
   const dataGEtGEtGEt=dataUserGet?.map((item)=>{return setGetUserDataDataData(item)})

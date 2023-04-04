@@ -1,11 +1,12 @@
-import { Box, Button, FormControl,Typography, Modal, TextField } from '@mui/material';
+import { Box, Button, FormControl,Typography, Modal, TextField, Stack, IconButton, Popover, Divider, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { AppTasks } from 'src/sections/@dashboard/app';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTask, taskAddApi, taskgetApi } from 'src/Redux/actions';
+import { addTask, taskAddApi, taskDeleteApi, taskgetApi } from 'src/Redux/actions';
+import Iconify from 'src/components/iconify/Iconify';
 
 const style = {
     position: 'absolute',
@@ -28,16 +29,28 @@ const [taskAdd,setTaskAdd]=useState({
     read:""
 
 })
+const [open, setOpen] = useState(null);
 const [getUserData,setGetUserData]=useState()
+const [deletDataTask,setDeletDataTask]=useState()
+
 const dispatch=useDispatch()
 const {tasks}=useSelector(res=>res.data)
 
+const handleOpenMenu = (item) => {
+  console.log("handleOpenMenu",item)
+  setDeletDataTask(item)
+  // setOpen(event?.currentTarget);
+  // console.log(event)
+};
+const handleCloseMenu = () => {
+  setOpen(null);
+};
 const handleOnChage=(e)=>{
     const value = e.target.value;
     setTaskAdd(value); 
 }
-const getTaskApiData=async()=>{
-await  dispatch(taskgetApi())
+const getTaskApiData=()=>{
+  dispatch(taskgetApi())
 }
 
 const dataFunction=()=>{
@@ -49,11 +62,21 @@ if(getUserDataData,tasks){
   }
 }
 }
+
 useEffect (() => {
   getTaskApiData()
   dataFunction()
 }, [])
 
+const handleDelete = (item) => {
+  console.log("deletDataTask",item)
+  console.log("deletDataTask",deletDataTask)
+  handleCloseMenu();
+  const employeeEditIdData=deletDataTask?.id
+  if(employeeEditIdData){
+    dispatch(taskDeleteApi(employeeEditIdData))
+  }
+};
 
 const handleOpen = () => setTaskModel(true);
   const handleClose = (e) => {
@@ -99,7 +122,85 @@ const handleOpen = () => setTaskModel(true);
           </form>
         </Box>
       </Modal>
-      <AppTasks
+      <Stack
+      direction="row"
+      className='task-data'
+    >
+{/* <button onClick={taskTableData}>taskTableData</button> */}
+          {/* <FormControlLabel
+            control={ <Checkbox
+              // checked={isTrue}
+              // value={JSON.parse(taskData?.read)}
+              defaultChecked={taskData?.read ?JSON.parse(taskData?.read):null}
+              onChange={checkBoxTaskOnChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+           />}
+            label={taskData?.task}
+            sx={{ flexGrow: 1, m: 0 }}
+          />
+      */}
+      <div className='task-task'>
+
+      {
+        getUserData?.map((item)=>{
+          return(
+            <div className='task-box'>
+              <div className='task-label'>
+ <h1>{item?.task}</h1>
+ <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={(e)=>setOpen(e.currentTarget)}>
+            <Iconify icon={'eva:more-vertical-fill'} onClick={()=>handleOpenMenu(item)}/>
+          </IconButton>
+              </div>
+              <Popover
+            open={Boolean(open)}
+            anchorEl={open}
+            onClose={handleCloseMenu}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            PaperProps={{
+              sx: {
+                p: 1,
+                '& .MuiMenuItem-root': {
+                  px: 1,
+                  typography: 'body2',
+                  borderRadius: 0.75,
+                },
+              },
+            }}
+          >
+            {/* <MenuItem onClick={handleMarkComplete}>
+              <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ mr: 2 }} />
+              Mark Complete
+            </MenuItem>
+    
+            <MenuItem onClick={handleEdit}>
+              <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+              Edit
+            </MenuItem>
+    
+            <MenuItem onClick={handleShare}>
+              <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
+              Share
+            </MenuItem> */}
+    
+            <Divider sx={{ borderStyle: 'dashed' }} />
+    
+            <MenuItem onClick={()=>{handleDelete(item?.id)}} sx={{ color: 'error.main' }}>
+              <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+              Delete
+            </MenuItem>
+          </Popover>
+            </div>
+          )
+        })
+      }
+      </div>
+            
+         
+    
+       
+    </Stack>
+      {/* <AppTasks
               title="Tasks"
              list={getUserData}
               // list={[
@@ -109,7 +210,7 @@ const handleOpen = () => setTaskModel(true);
               //   { id: '4', label: 'Scoping & Estimations' },
               //   { id: '5', label: 'Sprint Showcase' },
               // ]}
-            />
+            /> */}
     </div>
   )
 }
