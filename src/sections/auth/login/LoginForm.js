@@ -46,6 +46,7 @@ export default function LoginForm() {
     setIsSubmit(true)
     e.preventDefault();
     setErrorForm(validate(loginDataForm));
+<<<<<<< Updated upstream
     if(Object.keys(errorForm).length === 0&& isSubmit){
       const loginData=loginDataForm
       let result=await fetch("https://hopebackend.hopeinfosys.com/api/userlogin",{
@@ -72,6 +73,24 @@ export default function LoginForm() {
         }
       }
       setAddEmployeeAlert(true)
+=======
+ console.log("cvaa",errorForm)
+ if(Object.keys(errorForm).length === 0&& isSubmit){
+   const loginData=loginDataForm
+   let result=await fetch("http://127.0.0.1:8000/api/userlogin",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Accept":"application/json"
+    },
+   body:JSON.stringify(loginData)
+   })
+   result= await result.json()
+   console.log("result",result)
+   const dataData=result?.message
+   if(dataData){
+     setErrorData(dataData)
+>>>>>>> Stashed changes
    }
      if(employees){
        const filterData=employees?.filter((item)=>item?.email===loginDataForm?.email)

@@ -490,17 +490,17 @@ const rows =dateFormat?.map((item) => {
     </Box>
    
       <div className="attendance-table">
+        {console.log("buttonDisable",buttonDisable)}
       {
       buttonDisable===true?
-       <Button disabled  variant="contained"  sx={{marginBottom:"30px"}} >
+       <Button  disabled variant="contained"  sx={{marginBottom:"30px"}} >
       <span> Data Refresh</span>
      <RefreshIcon sx={{marginLeft:"10px"}}/>
-     </Button>: 
-     <Button   variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
+     </Button>: <Button   variant="contained" onClick={() => attendancePostData()} sx={{marginBottom:"30px"}}>
       <span> Data Refresh</span>
      <RefreshIcon sx={{marginLeft:"10px"}}/>
      </Button>
-    } 
+    }
        
           
           <Box sx={{display:"flex",alignItems:"stretch",justifyContent:"flex-end"}} className="totalWorkTime-data">

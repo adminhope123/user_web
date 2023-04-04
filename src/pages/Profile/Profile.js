@@ -55,6 +55,7 @@ export default function Profile() {
   const [getDataUserData,setGetDataUserData]=useState()
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [showData,setShowData]=useState()
 
   const {profiles}=useSelector(res=>res.data)
 
@@ -243,7 +244,6 @@ const getApiFunction=async()=>{
     console.log("olda",checkData)
     const trueDataCheckData=checkData?.includes(true)
     console.log("ture",trueDataCheckData)
-    setOldUsersData(trueDataCheckData)
     if(profiles){
       const filterData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
       setUserProfileData(filterData)
@@ -257,6 +257,12 @@ const getApiFunction=async()=>{
 useEffect(() => {
   getApiFunction()
 }, []);
+useEffect(() => {
+  const dataUserGetData=JSON.parse(sessionStorage.getItem("userData"))
+  const filterData=profiles?.filter((item)=>{return item?.E_Id===dataUserGetData?.find(ele=>ele?.E_Id===item?.E_Id)})
+  console.log("filterData",filterData)
+  setShowData(filterData)
+}, [])
 
 const userProfileDataFunction=()=>{
    dispatch(profileGetApi())
@@ -303,7 +309,7 @@ const handleImgChange=(e)=>{
 <div>
   <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
-    {  oldUserData===false &&((
+    {/* {  oldUserData===false &&((
 <CardContent>
       <div className='profile-lable'>
         <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
@@ -348,9 +354,9 @@ const handleImgChange=(e)=>{
       </CardContent>
       ))
       
-    }
-    {
-      oldUserData===true&&((
+    } */}
+    {/* {
+      oldUserData===true&&(( */}
         <div>
         {
          userProfileData&&userProfileData?.map((item)=>{
@@ -452,8 +458,8 @@ const handleImgChange=(e)=>{
          })
         }
         </div>
-      ))
-    }
+      {/* ))
+    } */}
       
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
@@ -483,7 +489,7 @@ const handleImgChange=(e)=>{
                     {
                      imageUpload?.length===0?
                      <div>
-                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={uploadImgIcon} />
+                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={`https://hopebackend.hopeinfosys.com/${getDataUserData?.image&&getDataUserData?.image}`} />
                    <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
                     </CardContent>
                   </div>:<div>
