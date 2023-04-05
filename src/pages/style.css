@@ -35,6 +35,10 @@
 .MuiTableHead-root th {
     text-align: center;
 }
+.demo-app-sidebar-section h4{
+    color: #4a4343;
+    font-size: 18px;
+}
 .task-box{
     display: flex;
     align-items: center;

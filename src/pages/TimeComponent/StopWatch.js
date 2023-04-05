@@ -83,51 +83,51 @@ function StopWatch(props) {
   }
   const stopTimer = mode => {
     setStopAlert(true)
-    stopTimerIdDataData?.map((item) => {
-      const employeeEditIdData = item?.id
-      dispatch(timeStopApi(dataTimerStop, employeeEditIdData))
-    })
-    console.log("dataTimerStop", stopTimerIdDataData)
+    // stopTimerIdDataData?.map((item) => {
+    //   const employeeEditIdData = item?.id
+    //   dispatch(timeStopApi(dataTimerStop, employeeEditIdData))
+    // })
+    // console.log("dataTimerStop", stopTimerIdDataData)
     stopRunningTask()
-    const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
-    const storedString = sessionStorage.getItem('tasks')
-    const storedTasks = storedString ? JSON.parse(storedString) : [];
-    const data = storedTasks?.slice(-1).pop()
-    if (checkIdData) {
-      const getStartData = data?.start?.slice(11, 19)
-      const getStopData = new Date()
-      const dateGEtDAta=getStopData?.toString()?.slice(16,24)
-      console.log("aaa", getStopData)
-      console.log("aaa", dateGEtDAta)
 
-      var a = dateGEtDAta;
-      var b = getStartData;
+    // const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
+    // const storedString = sessionStorage.getItem('tasks')
+    // const storedTasks = storedString ? JSON.parse(storedString) : [];
+    // const data = storedTasks?.slice(-1).pop()
+    // if (checkIdData) {
+    //   const getStartData = data?.start?.slice(11, 19)
+    //   const getStopData = new Date()
+    //   const dateGEtDAta=getStopData?.toString()?.slice(16,24)
+    //   console.log("aaa", getStopData)
+    //   console.log("aaa", dateGEtDAta)
 
-      const dataTotal = secondsToHMS(hmsToSeconds(a) - hmsToSeconds(b)) // -10:39:18
-      console.log("aaa", dataTotal)
-      const totalTimnDataAdd = data?.hours + ":" + data?.mins + ":" + data?.secs
-      const totalTimeDataAddObject = { "totalTimeWork": dataTotal }
+    //   var a = dateGEtDAta;
+    //   var b = getStartData;
+
+    //   const dataTotal = secondsToHMS(hmsToSeconds(a) - hmsToSeconds(b)) // -10:39:18
+    //   console.log("aaa", dataTotal)
+    //   const totalTimnDataAdd = data?.hours + ":" + data?.mins + ":" + data?.secs
+    //   const totalTimeDataAddObject = { "totalTimeWork": dataTotal }
 
     
-      console.log("totrl", dataTotal)
+    //   console.log("totrl", dataTotal)
 
-      const dataState = data
-      const stateDataDelete = delete dataState?.state
-      const dataaaaaaaa = delete dataState?.totalTimeWork
-      const stopTimeDelete = delete dataState?.stop
-      const mergeData = { "state": "stopped" }
-      const dateGet = new Date()
-      const dataGetSting = dateGet?.toString()
-      const dataaDataaaa = { "stop": dataGetSting }
-      const mergeDAtaDAtaDAta = { ...mergeData, ...dataState, ...totalTimeDataAddObject, ...dataaDataaaa }
-      console.log("mergeDAtaDAtaDAta", mergeDAtaDAtaDAta)
-      const dataaaaaaaaaaaaaa = users?.filter((item) => data?.timerId === item.timerid)
-      const getIdDatadata = dataaaaaaaaaaaaaa?.map((item) => { return item?.id })
-      const dataIdString = getIdDatadata?.toString()
-      const employeeEditIdData = dataIdString
-      dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
-    }
-
+    //   const dataState = data
+    //   const stateDataDelete = delete dataState?.state
+    //   const dataaaaaaaa = delete dataState?.totalTimeWork
+    //   const stopTimeDelete = delete dataState?.stop
+    //   const mergeData = { "state": "stopped" }
+    //   const dateGet = new Date()
+    //   const dataGetSting = dateGet?.toString()
+    //   const dataaDataaaa = { "stop": dataGetSting }
+    //   const mergeDAtaDAtaDAta = { ...mergeData, ...dataState, ...totalTimeDataAddObject, ...dataaDataaaa }
+    //   console.log("mergeDAtaDAtaDAta", mergeDAtaDAtaDAta)
+    //   const dataaaaaaaaaaaaaa = users?.filter((item) => data?.timerId === item.timerid)
+    //   const getIdDatadata = dataaaaaaaaaaaaaa?.map((item) => { return item?.id })
+    //   const dataIdString = getIdDatadata?.toString()
+    //   const employeeEditIdData = dataIdString
+    //   dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
+    // }
   }
 
   function secondsToHMS(secs) {

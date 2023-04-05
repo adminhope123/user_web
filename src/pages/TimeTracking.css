@@ -180,6 +180,15 @@
 .task-item-component .description{
 
 }
+.employee-table table{
+  position: relative;
+}
+.employee-table table thead{
+  position: sticky;
+  top: -6px;
+  height: 57px;
+  background-color: white;
+}
 .task-item-component .category{
     color: #aba2a2;
     font-size: 14;

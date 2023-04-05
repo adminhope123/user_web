@@ -30,6 +30,7 @@ export const UserDataProvider = (props) => {
   const [timeData,setTimeData]=useState()
   const [dataTimerStop,setDataTimerStop]=useState()
   const [stopTimerIdDataData,setStopTimerIdDataData]=useState()
+  const {users}=useSelector(res=>res.data)
   const navigate=useNavigate()
   const userGetDataFunction = () => {
     const getData = JSON.parse(sessionStorage.getItem("userData"));
@@ -242,10 +243,130 @@ const stopRunningTask = () => {
 //         const employeeEditIdData=dataIdString
 //             dispatch(timeStopApi(mergeDAtaDAtaDAta,employeeEditIdData))
 //    }
+stopTimerIdDataData?.map((item) => {
+  const employeeEditIdData = item?.id
+  dispatch(timeStopApi(dataTimerStop, employeeEditIdData))
+})
+console.log("dataTimerStop", stopTimerIdDataData)
+
+const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
+if (checkIdData) {
+  const getStartData = data?.start?.slice(11, 19)
+  const getStopData = new Date()
+  const dateGEtDAta=getStopData?.toString()?.slice(16,24)
+  console.log("aaa", getStopData)
+  console.log("aaa", dateGEtDAta)
+
+  var a = dateGEtDAta;
+  var b = getStartData;
+
+  const dataTotal = secondsToHMS(hmsToSeconds(a) - hmsToSeconds(b)) // -10:39:18
+  console.log("aaa", dataTotal)
+  const totalTimnDataAdd = data?.hours + ":" + data?.mins + ":" + data?.secs
+  const totalTimeDataAddObject = { "totalTimeWork": dataTotal }
 
 
+  console.log("totrl", dataTotal)
+
+  const dataState = data
+  const stateDataDelete = delete dataState?.state
+  const dataaaaaaaa = delete dataState?.totalTimeWork
+  const stopTimeDelete = delete dataState?.stop
+  const mergeData = { "state": "stopped" }
+  const dateGet = new Date()
+  const dataGetSting = dateGet?.toString()
+  const dataaDataaaa = { "stop": dataGetSting }
+  const mergeDAtaDAtaDAta = { ...mergeData, ...dataState, ...totalTimeDataAddObject, ...dataaDataaaa }
+  const dataaaaaaaaaaaaaa = users?.filter((item) => data?.timerId === item.timerid)
+  const getIdDatadata = dataaaaaaaaaaaaaa?.map((item) => { return item?.id })
+  const dataIdString = getIdDatadata?.toString()
+  const employeeEditIdData = dataIdString
+  dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
+}
+const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
+const checkDataSessionStorage=sessionStorageCheckData?.length
+  if(checkDataSessionStorage){
+    dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
+  }
+}
+
+// const stopDataFunction=()=>{
+//   const storedString = sessionStorage.getItem('tasks')
+//   const storedTasks = storedString ? JSON.parse(storedString) : [];
+//   const data=storedTasks?.slice(-1).pop()
+//       console.log("data",data)
+//       stopTimerIdDataData?.map((item) => {
+//         const employeeEditIdData = item?.id
+//         // dispatch(timeStopApi(dataTimerStop, employeeEditIdData))
+//       })
+//       console.log("dataTimerStop", stopTimerIdDataData)
+      
+//       const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
+//       if (checkIdData) {
+//         const getStartData = data?.start?.slice(11, 19)
+//         const getStopData = new Date()
+//         const dateGEtDAta=getStopData?.toString()?.slice(16,24)
+      
+//         var a = dateGEtDAta;
+//         var b = getStartData;
+      
+//         const dataTotal = secondsToHMS(hmsToSeconds(a) - hmsToSeconds(b)) // -10:39:18
+//         const totalTimnDataAdd = data?.hours + ":" + data?.mins + ":" + data?.secs
+//         const totalTimeDataAddObject = { "totalTimeWork": dataTotal }
+      
+      
+      
+//         const dataState = data
+//         const stateDataDelete = delete dataState?.state
+//         const dataaaaaaaa = delete dataState?.totalTimeWork
+//         const stopTimeDelete = delete dataState?.stop
+//         const mergeData = { "state": "stopped" }
+//         const dateGet = new Date()
+//         const dataGetSting = dateGet?.toString()
+//         const dataaDataaaa = { "stop": dataGetSting }
+//         const mergeDAtaDAtaDAta = { ...mergeData, ...dataState, ...totalTimeDataAddObject, ...dataaDataaaa }
+//         const dataaaaaaaaaaaaaa = users?.filter((item) => data?.timerId === item.timerid)
+//         const getIdDatadata = dataaaaaaaaaaaaaa?.map((item) => { return item?.id })
+//         const dataIdString = getIdDatadata?.toString()
+//         const employeeEditIdData = dataIdString
+//         const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
+//         const checkDataSessionStorage=sessionStorageCheckData?.length
+//             dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
+//       }
+// }
+
+// useEffect(() => {
+//   const dataGet=sessionStorage.getItem("userData") 
+//   if(dataGet===null){
+//     stopDataFunction()
+//   }
+// }, [])
+
+
+function secondsToHMS(secs) {
+  function z(n) { return (n < 10 ? '0' : '') + n; }
+  var sign = secs < 0 ? '-' : '';
+  secs = Math.abs(secs);
+  return sign + z(secs / 3600 | 0) + ':' + z((secs % 3600) / 60 | 0) + ':' + z(secs % 60);
+}
+
+function hmsToSeconds(s) {
+  var b = s.split(':');
+  return b[0] * 3600 + b[1] * 60 + (+b[2] || 0);
+}
+
+const sumToSeconds = times => {
+  return times?.reduce((a, e) => {
+    const parts = e?.trim().split(":").map(Number);
+    parts?.forEach((e, i) => {
+      if (i < parts.length - 1) {
+        parts[i + 1] += e * 60;
+      }
+    });
+    return parts?.pop() + a;
+  }, 0);
+};
     
-    }
  
   
   const properties = {

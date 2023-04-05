@@ -6,8 +6,9 @@ import './EventPage.css'
 import React, { useEffect, useState } from 'react'
 import { INITIAL_EVENTS, createEventId } from './EventList'
 import { Container } from '@mui/system'
-import { Box, Table, TableBody, TableCell, TableRow } from '@mui/material'
+import { Box, Button, Table, TableBody, TableCell, TableRow } from '@mui/material'
 import { UserListHead } from 'src/sections/@dashboard/user'
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useDispatch, useSelector } from 'react-redux'
 import { eventGetApi } from 'src/Redux/actions'
 import LoaderComp from 'src/loader/LoaderComp'
@@ -108,7 +109,10 @@ export default function EventPage() {
 
   return (
     <div className='event-page'>
-      <button onClick={getFunction}>Click</button>
+      <Button   variant="contained" onClick={() => getFunction()} sx={{marginBottom:"30px"}}>
+      <span> Data Refresh</span>
+     <RefreshIcon sx={{marginLeft:"10px"}}/>
+     </Button>
       {
         events.length === 0 ? <LoaderComp /> : <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -127,7 +131,7 @@ export default function EventPage() {
         />
       }
       <div className='demo-app-sidebar-section'>
-        <h2>All Events ({holidayEvent?.length})</h2>
+        <h4>All Events ({holidayEvent?.length})</h4>
         <Table>
           <UserListHead
             headLabel={TABLE_HEAD}
