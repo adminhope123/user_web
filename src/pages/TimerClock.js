@@ -134,7 +134,7 @@ console.log("pct ",pct )
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
                 if(totalTimeobjDataData){
-                  sessionStorage.setItem("  ",JSON.stringify(totalTimeobjDataData))
+                  sessionStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
                 }
               };
  

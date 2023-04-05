@@ -46,7 +46,7 @@ export default function EventPage() {
       ""
     }else{
       const liveDate = new Date().toLocaleDateString('en-CA')
-      const getMonthData = liveDate?.slice(8, 10)
+      const getMonthData = liveDate?.slice(5, 7)
       const dataFilter = events?.filter((item) =>
         item?.start?.slice(5, 7) === getMonthData
       )

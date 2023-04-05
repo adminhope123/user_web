@@ -86,7 +86,9 @@ const [postCount,setPostCount]=useState()
         const dataPost=cur
         const dataPostObject={"postData":dataPost}
         const dataMergeObject={...dataPostObject,...dataCount}
-        // setPostCount(dataMergeObject)
+        // const postDataSetDAta=sessionStorage.setItem("postData",JSON.stringify(dataAdd))
+        setPostCount(dataMergeObject)
+        console.log("postCount",postData)
         return dataMergeObject
       }, {});
     }
@@ -100,6 +102,7 @@ const [postCount,setPostCount]=useState()
       <Helmet>
         <title> Dashboard |  User Web </title>
       </Helmet>
+      <button onClick={getUserData}> click</button>
    {
     employees?.length ?   <Container maxWidth="xl">
     <Typography variant="h4" sx={{ mb: 5 }}>
