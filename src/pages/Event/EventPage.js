@@ -113,7 +113,8 @@ export default function EventPage() {
       <span> Data Refresh</span>
      <RefreshIcon sx={{marginLeft:"10px"}}/>
      </Button>
-      {
+    <Box sx={{display:"flex",justifyContent:"center"}}> 
+    {
         events.length === 0 ? <LoaderComp /> : <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -130,6 +131,7 @@ export default function EventPage() {
           weekends={weekendsVisible}
         />
       }
+    </Box>
       <div className='demo-app-sidebar-section'>
         <h4>All Events ({holidayEvent?.length})</h4>
         <Table>

@@ -283,11 +283,11 @@ if (checkIdData) {
   const employeeEditIdData = dataIdString
   dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
 }
-const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
-const checkDataSessionStorage=sessionStorageCheckData?.length
-  if(checkDataSessionStorage){
-    dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
-  }
+  // const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
+  // const checkDataSessionStorage=sessionStorageCheckData?.length
+  //   if(checkDataSessionStorage){
+  //     dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
+  //   }
 }
 
 // const stopDataFunction=()=>{

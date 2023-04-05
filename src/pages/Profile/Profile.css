@@ -3,6 +3,7 @@
 }
 .profile-card{
     display: flex;
+    margin-left: 109px;
     align-items: flex-start;
     justify-content: center;
 }
