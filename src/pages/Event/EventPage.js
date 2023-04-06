@@ -49,7 +49,7 @@ export default function EventPage() {
       const getMonthData = liveDate?.slice(5, 7)
       const dataFilter = events?.filter((item) =>
         item?.start?.slice(5, 7) === getMonthData
-      )
+      ) 
       setHolidayEvent(dataFilter)
       console.log("item", dataFilter)
     }

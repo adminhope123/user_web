@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
@@ -36,10 +36,10 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 export default function Nav({ openNav, onCloseNav }) {
-  const {userGetData}=useContext(UserDataContext)
-  const { pathname } = useLocation();
   const timeLive=new Date().toLocaleTimeString()
   const [liveTime,setLiveTime]=useState(timeLive)
+  const {userGetData}=useContext(UserDataContext)
+  const { pathname } = useLocation();
 
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
