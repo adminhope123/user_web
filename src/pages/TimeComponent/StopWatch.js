@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TaskHelper } from '../store/Settings';
 import '../TimeTracking.css'
 import { PlayArrow, Stop } from '@mui/icons-material';
@@ -17,7 +17,7 @@ function StopWatch(props) {
     startRunningTask,
     stopRunningTask,
     getRunningTask,
-    getModelTask, dublicateValueData, storedTasks, timerStartData, getEmployeeId, dataTimerStop, stopTimerIdDataData } = useContext(UserDataContext);
+    getModelTask, dublicateValueData, storedTasks, timerStartData,timeStart,setTimeStart, getEmployeeId, dataTimerStop, stopTimerIdDataData } = useContext(UserDataContext);
   const { classes } = props;
   const timer = getRunningTask() || getModelTask();
   const { users } = useSelector(res => res.data)
@@ -40,6 +40,9 @@ function StopWatch(props) {
 
     setStopAlert(false);
   };
+
+ 
+
   const startTimer = () => {
     setStartAlert(true)
     startRunningTask({
@@ -89,7 +92,8 @@ function StopWatch(props) {
     // })
     // console.log("dataTimerStop", stopTimerIdDataData)
     stopRunningTask()
-
+    setTimeStart("0:00:00")
+    sessionStorage.removeItem("timeData")
     // const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
     // const storedString = sessionStorage.getItem('tasks')
     // const storedTasks = storedString ? JSON.parse(storedString) : [];
@@ -141,7 +145,22 @@ function StopWatch(props) {
     var b = s.split(':');
     return b[0] * 3600 + b[1] * 60 + (+b[2] || 0);
   }
+  const getTimeData=()=>{
 
+    const getUSerDAta=JSON.parse(sessionStorage.getItem("timeData"))
+    if(getUSerDAta){
+      if(getUSerDAta){
+        setTimeStart(getUSerDAta)
+        console.log("getUserData",getUSerDAta)
+      }
+    }else{
+      setTimeStart("0:00:00")
+    }
+  }
+  useEffect(() => {
+    getTimeData()
+  }, [])
+  
   const sumToSeconds = times => {
     return times?.reduce((a, e) => {
       const parts = e?.trim().split(":").map(Number);
@@ -179,11 +198,11 @@ function StopWatch(props) {
           <div className="timer-circle">
             <div className="timer">
               <div className="timer-time">
-                {`${timer.hours}:${timer.mins}`}
+                <span>Time Start</span> 
+                {/* {`${timer.hours}:${timer.mins}`} */}
               </div>
               <div className="timer-secs">
-                {timer.secs}
-                <span className="timer-secs-span">s</span>
+                {timeStart}
               </div>
             </div>
           </div>

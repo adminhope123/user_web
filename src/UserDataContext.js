@@ -30,6 +30,7 @@ export const UserDataProvider = (props) => {
   const [timeData,setTimeData]=useState()
   const [dataTimerStop,setDataTimerStop]=useState()
   const [stopTimerIdDataData,setStopTimerIdDataData]=useState()
+  const [timeStart,setTimeStart]=useState()
   const {users}=useSelector(res=>res.data)
   const navigate=useNavigate()
   const userGetDataFunction = () => {
@@ -206,10 +207,16 @@ const startRunningTask = task => {
             dispatch(timeStartApi(task))
             setTimerStartData(task)
             sessionStorage.setItem("attendace",JSON.stringify(task))
-        interval = setInterval(() => { intervalRef.current() },1000)
-   
+   interval = setInterval(() => { intervalRef.current() },1000)
+   const dataGEt=task?.start?.slice(11,19)
+   sessionStorage.setItem("timeData",JSON.stringify(dataGEt))
+   const getUSerDAta=JSON.parse(sessionStorage.getItem("timerData"))
+   setTimeStart(dataGEt)
+   console.log("dataGet",dataGEt)
+   console.log("task",task)
     }
 }
+
 
 const stopRunningTask = () => {
     const runningTask = getRunningTask();
@@ -389,9 +396,11 @@ const sumToSeconds = times => {
     totalTimeModel,
     setTotalTimeModel,
     deleteTask,
+    setTimeStart,
     filterdataTotalTime,
     totalWorkTimeDataData,
     timerStartData,
+    timeStart,
     dublicateValueData,
     totalWorkTimeData,
     totalTimeData
