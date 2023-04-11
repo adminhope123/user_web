@@ -18,9 +18,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { profileGetApi, profilePostApi, profilePutApi } from 'src/Redux/actions';
 import { TextFields } from '@mui/icons-material';
 import uploadImgIcon from './uploadImg.png'
+import EditIcon from '@mui/icons-material/Edit';
 import { Helmet } from 'react-helmet-async';
 
 const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "600px",
+  height:"auto",
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  borderRadius:"8px",
+  p: 4,
+};
+const styleEdit = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -56,10 +69,13 @@ export default function Profile() {
   const [errorForm, setErrorForm] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [showData,setShowData]=useState()
+  const [imgChangeModel, setImgChangeModel] = useState(false);
 
   const {profiles}=useSelector(res=>res.data)
 
   const dispatch=useDispatch()
+
+  const imgChangeModelClose = () => setImgChangeModel(false)
 
 const handleDateChange=(newValue)=>{
   setBirthDate(newValue);
@@ -117,6 +133,9 @@ const hadnleOnChange=(e)=>{
   }
 }
 
+const handleImgChangeFunction=()=>{
+
+}
 
 const handleOpen = () => {
   setOpen(true)
@@ -212,36 +231,17 @@ const imageObject={"image":getDataUserData?.image}
  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
-  const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
+  const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
 
 
   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
-if(sliceDate,data,countriesName,stateName){
- var  formDataData=new FormData()
-  formDataData.append('image',imageUpload?.image)
-formDataData.append('birthDate',sliceDate)
-formDataData.append('email',getDataUserData?.email)
-formDataData.append('city',data)
-formDataData.append('fullname',getDataUserData?.userName)
-formDataData.append('countries',countriesName)
-formDataData.append('gender',value)
-formDataData.append('post',getDataUserData?.role)
-formDataData.append('mobile',getDataUserData?.mobileNumber)
-formDataData.append('state',stateName)
-console.log("editFormData?.address",editFormData?.address)
-formDataData.append('E_Id',employeeIdDataString)
-formDataData.append('address',editFormData?.address.toString())
-if(imgShow===true){ 
-  if(formDataData){
+  if(mergeObject){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(formDataData,employeeEditIdData))
+     dispatch(profilePutApi(mergeObject,employeeEditIdData))
      setOpen(false)
-   
    }
- }
-}
 }
 const getApiFunction=async()=>{
   const dataUserGet=JSON.parse(localStorage.getItem("userData"))
@@ -288,6 +288,18 @@ const userProfileDataFunction=()=>{
 const handleImgChange=(e)=>{
   setImageUpload({image:e.target.files[0]})
   setMyImage(URL.createObjectURL(e.target.files[0]));
+  var formData=new FormData()
+   formData.append("image",imageUpload?.image)
+   console.log("aa")
+   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+  if(formData){
+      const getIdDataData=getIdData?.map((item)=>{return item?.id})
+     const employeeEditIdData=getIdDataData
+     dispatch(profilePutApi(formData,employeeEditIdData))
+   }
+}
+const imgChangeModelOpen=()=>{
+  setImgChangeModel(true)
 }
   useEffect(() => {
 
@@ -301,12 +313,12 @@ const handleImgChange=(e)=>{
       </Helmet>
         <div className='profile-content'>
 <div className='profile-card'>  
+    
 <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         {
           getUserDataDataData?<img    src={`https://hopebackend.hopeinfosys.com/${getUserDataDataData&&getUserDataDataData?.image}`}/>:""
         }
-        
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
            {getUserDataDataData?.userName}
@@ -317,9 +329,38 @@ const handleImgChange=(e)=>{
         </CardContent>
       </CardActionArea>
     </Card>
+    <Button sx={{marginLeft:"10px"}} onClick={imgChangeModelOpen}><EditIcon/></Button>
+    <Modal
+  open={imgChangeModel}
+  onClose={imgChangeModelClose}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box sx={styleEdit}>
+     <div className='employee-img-upload'>
+                  {
+                    imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
+                    {
+                     imageUpload?.length===0?
+                     <div>
+                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={`https://hopebackend.hopeinfosys.com/${getDataUserData?.image&&getDataUserData?.image}`} />
+                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                    </CardContent>
+                  </div>:<div>
+                       <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
+                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                           </CardContent> 
+                      </div>
+                    }
+                     </Stack>
+                  }
+
+                  </div>
+  </Box>
+</Modal>
 </div>
 <div>
-  <div className='profile-text'>
+  {/* <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
    {  oldUserData===false &&((
 <CardContent>
@@ -456,14 +497,6 @@ const handleImgChange=(e)=>{
       {item?.city}
       </Typography>
       </div>
-      {/* <div className='profile-lable'>
-      <Typography gutterBottom  component="div" sx={{fontWeight:"600",fontSize:"16px",color:"#4f4f4f",width:"150px",textTransform:"capitalize"}}>
-      Password
-      </Typography>
-      <Typography gutterBottom  component="div" sx={{fontWeight:"normal",fontSize:"16px",color:"#757575",textTransform:"capitalize"}}>
-       {getUserDataDataData?.password}
-      </Typography>
-      </div> */}
     </CardContent>
       </div>
         )
@@ -495,28 +528,6 @@ const handleImgChange=(e)=>{
            >{imgShow===false? " Add Employee Profile":" Edit Employee Profile"}
            </Typography>
           <form onSubmit={handleSubmitData} key={getUserDataDataData}>
-                 {/* <div className='employee-img-upload'>
-                  {
-                    imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
-                    {
-                     imageUpload?.length===0?
-                     <div>
-                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={`https://hopebackend.hopeinfosys.com/${getDataUserData?.image&&getDataUserData?.image}`} />
-                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
-                    </CardContent>
-                  </div>:<div>
-                       <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
-                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
-                           </CardContent> 
-                      </div>
-                    }
-                   
-               
-                         
-                     </Stack>
-                  }
-               {console.log("imgShow",imgShow)}  
-                  </div> */}
          <div className='address-input'>
 
          <TextField
@@ -628,7 +639,7 @@ const handleImgChange=(e)=>{
         </Fade>
       </Modal>
     </div>
-  </div>
+  </div> */}
 </div>
         </div>
     </div>
