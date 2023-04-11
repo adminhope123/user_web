@@ -18,7 +18,7 @@ export default function App() {
   const navigate=useNavigate()
    const [loginSuccess,setLoginSuccess]=useState()
 useEffect(() => {
-        var login=sessionStorage.getItem("loginData")
+        var login=localStorage.getItem("loginData")
         setLoginSuccess(login)
         if(!login){
            navigate('/login')

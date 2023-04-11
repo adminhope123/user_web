@@ -28,6 +28,9 @@ import TimeTrackingIcon from './timeTracking.png'
 import EmployeeIcon from './employeeImg.png'
 import LoaderComp from 'src/loader/LoaderComp';
 import { useLocation } from 'react-router-dom';
+import ReactApexChart from 'react-apexcharts';
+import styled from '@emotion/styled';
+import { useChart } from 'src/components/chart';
 // ----------------------------------------------------------------------
 const style = {
   position: 'absolute',
@@ -41,6 +44,24 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const CHART_HEIGHT = 372;
+const LEGEND_HEIGHT = 72;
+
+const StyledChartWrapper = styled('div')(({ theme }) => ({
+  height: CHART_HEIGHT,
+  marginTop: theme.spacing(5),
+  '& .apexcharts-canvas svg': { height: CHART_HEIGHT },
+  '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
+    overflow: 'visible',
+  },
+  '& .apexcharts-legend': {
+    height: LEGEND_HEIGHT,
+    alignContent: 'center',
+    position: 'relative !important',
+    borderTop: `solid 1px ${theme.palette.divider}`,
+    top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
+  },
+}));
 
 export default function DashboardAppPage() {
   const theme = useTheme();
@@ -57,18 +78,22 @@ const [onlineData,setOnlineData]=useState()
 const [getPostData,setGetPostData]=useState()
 const [postCount,setPostCount]=useState()
 
+const [chartDataSeries,setChartDataSeries]=useState()
+const [chartOptionsData,setChartOptionsData]=useState()
+
+
     const getUserData=async()=>{
       await dispatch(getUserDataApi())
-      const getUserData=JSON.parse(sessionStorage.getItem("loginData"))
+      const getUserData=JSON.parse(localStorage.getItem("loginData"))
       if(employees){
       
       }
-      const getTotalWorkTime=JSON.parse(sessionStorage.getItem("totalAllTimeWork"))
+      const getTotalWorkTime=JSON.parse(localStorage.getItem("totalAllTimeWork"))
       const dataTotalTimeEork=getTotalWorkTime?.totalWorkTime
       setTotalAllTimeWork(dataTotalTimeEork)
       const allEmployee=employees?.length
       setAllEmployeeData(allEmployee)
-      const attendaceDataGet=JSON.parse(sessionStorage.getItem("attendaceData"))
+      const attendaceDataGet=JSON.parse(localStorage.getItem("attendaceData"))
       const attendaceDataGetData=attendaceDataGet&&attendaceDataGet?.map((item)=>{
         const absentDataData=item?.absentData
         setAbsentData(absentDataData)
@@ -77,22 +102,55 @@ const [postCount,setPostCount]=useState()
           setPresentDataDataData(presentDataData)
         }
       })
-      const allUsersData=JSON.parse(sessionStorage.getItem("viewEmployee"))
+      const allUsersData=JSON.parse(localStorage.getItem("viewEmployee"))
       const postData=allUsersData?.map((item)=>{return item ?.role})
-      var mapdata = postData?.reduce(function(prev, cur) {
-     prev[cur] = (prev[cur] || 0) + 1;
-     const data=prev[cur]
-        const dataCount={"countData":data}
-        const dataPost=cur
-        const dataPostObject={"postData":dataPost}
-        const dataMergeObject={...dataPostObject,...dataCount}
-        // const postDataSetDAta=sessionStorage.setItem("postData",JSON.stringify(dataAdd))
-        setPostCount(dataMergeObject)
-        console.log("postCount",postData)
-        return dataMergeObject
-      }, {});
-    }
+      const count = {};
 
+      postData.forEach(element => {
+  count[element] = (count[element] || 0) + 1;
+});
+setPostCount(count)
+const valuDAta=Object.values(count)
+console.log("valuDAtat",valuDAta)
+
+    }
+    useEffect(() => {
+      getDataFunction()
+    }, [])
+  
+    const getDataFunction=()=>{
+          // access obj properties here
+          if(typeof postCount !== 'undefined' && postCount !== null){
+            const chartLabels =Object.keys(postCount);
+            const chartSeries =Object.values(postCount);
+            setChartDataSeries(chartSeries)
+            const chartOptions = useChart({
+              colors: chartColors,
+              labels: chartLabels.toString(),
+              stroke: { colors: [theme.palette.background.paper] },
+              legend: { floating: true, horizontalAlign: 'center' },
+              dataLabels: { enabled: true, dropShadow: { enabled: false } },
+              tooltip: {
+                fillSeriesColor: false,
+                y: {
+                  formatter: (seriesName) => fNumber(seriesName),
+                  title: {
+                    formatter: (seriesName) => `${seriesName}`,
+                  },
+                },
+              },
+              plotOptions: {
+                pie: { donut: { labels: { show: false } } },
+              },
+            });
+            if(chartOptions){
+              setChartOptionsData(chartOptions)
+            }
+          }
+      
+    }
+     
+  
   useEffect(() => {
     getUserData()
   }, [])
@@ -102,9 +160,9 @@ const [postCount,setPostCount]=useState()
       <Helmet>
         <title> Dashboard |  User Web </title>
       </Helmet>
-      <button onClick={getUserData}> click</button>
    {
     employees?.length ?   <Container maxWidth="xl">
+      <button onClick={getUserData}>Click</button>
     <Typography variant="h4" sx={{ mb: 5 }}>
       Hi, Welcome back
     </Typography>
@@ -165,21 +223,22 @@ const [postCount,setPostCount]=useState()
       </Grid> */}
 
       <Grid item xs={12} md={6} lg={4}>
-        <AppCurrentVisits
+      {
+          chartDataSeries &&chartOptionsData?
+          <StyledChartWrapper dir="ltr">
+      <ReactApexChart type="pie" series={chartDataSeries} options={chartOptionsData} height={280} />
+      </StyledChartWrapper>:""
+      }
+        {/* <AppCurrentVisits
           title="Current Visits"
-          chartData={[
-            { label: 'React Js', value: 4344 },
-            { label: 'Student', value: 5435 },
-            { label: 'Angluer', value: 1443 },
-            { label: 'Android', value: 4443 },
-          ]}
+          chartData={postCount}
           chartColors={[
             theme.palette.primary.main,
             theme.palette.info.main,
             theme.palette.warning.main,
             theme.palette.error.main,
           ]}
-        />
+        /> */}
       </Grid>
 
       <Grid item xs={12} md={6} lg={8}>

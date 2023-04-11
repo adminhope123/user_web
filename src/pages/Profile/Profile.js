@@ -145,7 +145,7 @@ const imageObject={"image":getDataUserData?.image}
   const dataBirthDate=sliceDate
   console.log("dataBirthDate",dataBirthDate)
   const gender={"gender":value}
-  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+  const dataUserGet=JSON.parse(localStorage.getItem("userData"))
  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
@@ -208,7 +208,7 @@ const imageObject={"image":getDataUserData?.image}
   const dataBirthDate=sliceDate
   console.log("dataBirthDate",dataBirthDate)
   const gender={"gender":value}
-  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+  const dataUserGet=JSON.parse(localStorage.getItem("userData"))
  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
@@ -219,24 +219,24 @@ const imageObject={"image":getDataUserData?.image}
   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
 if(sliceDate,data,countriesName,stateName){
  var  formDataData=new FormData()
-//   formDataData.append('image',imageUpload?.image)
-// formDataData.append('birthDate',sliceDate)
-// formDataData.append('email',getDataUserData?.email)
-// formDataData.append('city',data)
-// formDataData.append('fullname',getDataUserData?.userName)
-// formDataData.append('countries',countriesName)
-// formDataData.append('gender',value)
-// formDataData.append('post',getDataUserData?.role)
-// formDataData.append('mobile',getDataUserData?.mobileNumber)
-// formDataData.append('state',stateName)
-// console.log("editFormData?.address",editFormData?.address)
-// formDataData.append('E_Id',employeeIdDataString)
-// formDataData.append('address',editFormData?.address.toString())
+  formDataData.append('image',imageUpload?.image)
+formDataData.append('birthDate',sliceDate)
+formDataData.append('email',getDataUserData?.email)
+formDataData.append('city',data)
+formDataData.append('fullname',getDataUserData?.userName)
+formDataData.append('countries',countriesName)
+formDataData.append('gender',value)
+formDataData.append('post',getDataUserData?.role)
+formDataData.append('mobile',getDataUserData?.mobileNumber)
+formDataData.append('state',stateName)
+console.log("editFormData?.address",editFormData?.address)
+formDataData.append('E_Id',employeeIdDataString)
+formDataData.append('address',editFormData?.address.toString())
 if(imgShow===true){ 
   if(formDataData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(mergeObject,employeeEditIdData))
+     dispatch(profilePutApi(formDataData,employeeEditIdData))
      setOpen(false)
    
    }
@@ -244,7 +244,7 @@ if(imgShow===true){
 }
 }
 const getApiFunction=async()=>{
-  const dataUserGet=JSON.parse(sessionStorage.getItem("userData"))
+  const dataUserGet=JSON.parse(localStorage.getItem("userData"))
   const dataGEtGEtGEt=dataUserGet?.map((item)=>{return setGetUserDataDataData(item)})
   const getUserDeflutData=profiles?.filter((item)=>dataUserGet?.find(ele=>ele?.E_Id===item?.E_Id))
   const dataProfileget=getUserDeflutData?.map((item)=>{return setDataProfile(item)})
@@ -265,16 +265,16 @@ const getApiFunction=async()=>{
       setUserProfileData(filterData)
     }
     console.log("profiles",profiles)
-    const dataUserGetData=JSON.parse(sessionStorage.getItem("userData"))
+    const dataUserGetData=JSON.parse(localStorage.getItem("userData"))
     const checkDataDataa=profiles?.some((item)=>dataUserGetData?.find(ele=>item?.E_Id===ele?.E_Id ))
     setImgShow(checkDataDataa)
 }
 
 useEffect(() => {
   getApiFunction()
-}, []);
+}, [oldUserData,profiles]);
 useEffect(() => {
-  const dataUserGetData=JSON.parse(sessionStorage.getItem("userData"))
+  const dataUserGetData=JSON.parse(localStorage.getItem("userData"))
   const filterData=profiles?.filter((item)=>{return item?.E_Id===dataUserGetData?.find(ele=>ele?.E_Id===item?.E_Id)})
   console.log("filterData",filterData)
   setShowData(filterData)
@@ -282,7 +282,7 @@ useEffect(() => {
 
 const userProfileDataFunction=()=>{
    dispatch(profileGetApi())
-   const getEmployeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+   const getEmployeeIdGet=JSON.parse(localStorage.getItem("userData"))
   const getDataUser=getEmployeeIdGet?.map((item)=>{return setGetDataUserData(item)})
 }
 const handleImgChange=(e)=>{
@@ -299,10 +299,6 @@ const handleImgChange=(e)=>{
          <Helmet>
         <title> Dashboard: Employee Profile |  User Web </title>
       </Helmet>
-        <Button  variant="contained" onClick={() => getApiFunction()} sx={{marginBottom:"30px"}}>
-           <span> Data Refresh</span>
-          <RefreshIcon sx={{marginLeft:"10px"}}/>
-          </Button>
         <div className='profile-content'>
 <div className='profile-card'>  
 <Card sx={{ maxWidth: 345 }}>

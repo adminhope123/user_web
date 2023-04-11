@@ -6,7 +6,7 @@ import { APP_TITLE, COLORS } from './pages/store/Settings';
 import moment from 'moment';
 import { Navigate, useNavigate } from "react-router-dom";
 
-const storedString = sessionStorage.getItem('tasks')
+const storedString = localStorage.getItem('tasks')
 const storedTasks = storedString ? JSON.parse(storedString) : [];
 let interval;
 
@@ -34,14 +34,14 @@ export const UserDataProvider = (props) => {
   const {users}=useSelector(res=>res.data)
   const navigate=useNavigate()
   const userGetDataFunction = () => {
-    const getData = JSON.parse(sessionStorage.getItem("userData"));
+    const getData = JSON.parse(localStorage.getItem("userData"));
     if(getData){
       const getUserData = Object.assign({}, ...getData);
       setUserGetData(getUserData);
     }
   };
   const employeeGetIdFucntion = () => {
-    const getData = JSON.parse(sessionStorage.getItem("attendace"));
+    const getData = JSON.parse(localStorage.getItem("attendace"));
     const getId=getData?.employeeId
     setGetEmployeeId(getId)
   };
@@ -62,7 +62,7 @@ var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 ];
 const d = new Date();
 const monthData=monthNames[d.getMonth()]
- const getData=JSON.parse(sessionStorage.getItem("userData"))
+ const getData=JSON.parse(localStorage.getItem("userData"))
  const dataaa=getData?.map(item=>item?.E_Id)
  const arrayRemove=` ${dataaa}`
 
@@ -89,7 +89,7 @@ const getModelTask = () => ({
 
 
 useEffect(() => {
-  const dataGet = JSON.parse(sessionStorage.getItem('timeTotal'))
+  const dataGet = JSON.parse(localStorage.getItem('timeTotal'))
   setTotalTimeData(dataGet)
 }, [])
 
@@ -99,7 +99,7 @@ const getTask = timerId => tasks.find(t => t.timerId === timerId);
 const addTask = task => {
     setTasks(prevTasks => {
         const ntask = task ? {...task } : getModelTask();
-        sessionStorage.setItem('tasks', JSON.stringify([...prevTasks, ntask]))
+        localStorage.setItem('tasks', JSON.stringify([...prevTasks, ntask]))
         return [...prevTasks, ntask]
     })
 } 
@@ -107,7 +107,7 @@ const editTask = task => {
     setTasks(prevTasks => {
         const index = prevTasks.findIndex(t => t.timerId === task.timerId);
         prevTasks[index] = task;
-        sessionStorage.setItem('tasks', JSON.stringify(prevTasks))
+        localStorage.setItem('tasks', JSON.stringify(prevTasks))
         const data=prevTasks.slice(-1).pop()
         return [...prevTasks];
     })
@@ -124,7 +124,7 @@ const duplicateTask = timerId => {
 const deleteTask = task => {
     let ntasks = tasks.filter(t => t.timerId !== task.timerId)
     setTasks(ntasks);
-    sessionStorage.setItem('tasks', JSON.stringify(ntasks))
+    localStorage.setItem('tasks', JSON.stringify(ntasks))
     if(task.state === 'running') {
         clearInterval(interval)
     } 
@@ -176,8 +176,8 @@ const findDateFunction = () => {
 
 //  const activeData=()=>{
 //   const dataFilter=users?.filter(ele=>{return ele.state==="running"})
-//   const dataDataData=JSON.parse(sessionStorage.getItem("viewEmployee"))
-//   const getUserDAtaDAtaa=JSON.parse(sessionStorage?.getItem("userData"))
+//   const dataDataData=JSON.parse(localStorage.getItem("viewEmployee"))
+//   const getUserDAtaDAtaa=JSON.parse(localStorage?.getItem("userData"))
 //   const getEmployeeDAtaData=getUserDAtaDAtaa?.map((item)=>{return item?.userName})
 //   const dataFilterDAta=dataDataData?.filter((item)=>dataFilter?.find(ele=>ele?.employeeId===item?.E_Id))
 //   if(dataFilterDAta?.length===0){
@@ -206,11 +206,11 @@ const startRunningTask = task => {
             : addTask(task)
             dispatch(timeStartApi(task))
             setTimerStartData(task)
-            sessionStorage.setItem("attendace",JSON.stringify(task))
+            localStorage.setItem("attendace",JSON.stringify(task))
    interval = setInterval(() => { intervalRef.current() },1000)
    const dataGEt=task?.start?.slice(11,19)
-   sessionStorage.setItem("timeData",JSON.stringify(dataGEt))
-   const getUSerDAta=JSON.parse(sessionStorage.getItem("timerData"))
+   localStorage.setItem("timeData",JSON.stringify(dataGEt))
+   const getUSerDAta=JSON.parse(localStorage.getItem("timerData"))
    setTimeStart(dataGEt)
    console.log("dataGet",dataGEt)
    console.log("task",task)
@@ -229,7 +229,7 @@ const stopRunningTask = () => {
     })
     document.title = APP_TITLE;
     clearInterval(interval)
-    const storedString = sessionStorage.getItem('tasks')
+    const storedString = localStorage.getItem('tasks')
    const storedTasks = storedString ? JSON.parse(storedString) : [];
    const data=storedTasks?.slice(-1).pop()
 //    if(checkIdData){
@@ -290,15 +290,15 @@ if (checkIdData) {
   const employeeEditIdData = dataIdString
   dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
 }
-  // const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
-  // const checkDataSessionStorage=sessionStorageCheckData?.length
-  //   if(checkDataSessionStorage){
+  // const localStorageCheckData=JSON.parse(localStorage.getItem("userData"))
+  // const checkDatalocalStorage=localStorageCheckData?.length
+  //   if(checkDatalocalStorage){
   //     dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
   //   }
 }
 
 // const stopDataFunction=()=>{
-//   const storedString = sessionStorage.getItem('tasks')
+//   const storedString = localStorage.getItem('tasks')
 //   const storedTasks = storedString ? JSON.parse(storedString) : [];
 //   const data=storedTasks?.slice(-1).pop()
 //       console.log("data",data)
@@ -336,14 +336,14 @@ if (checkIdData) {
 //         const getIdDatadata = dataaaaaaaaaaaaaa?.map((item) => { return item?.id })
 //         const dataIdString = getIdDatadata?.toString()
 //         const employeeEditIdData = dataIdString
-//         const sessionStorageCheckData=JSON.parse(sessionStorage.getItem("userData"))
-//         const checkDataSessionStorage=sessionStorageCheckData?.length
+//         const localStorageCheckData=JSON.parse(localStorage.getItem("userData"))
+//         const checkDatalocalStorage=localStorageCheckData?.length
 //             dispatch(timeStopApi(mergeDAtaDAtaDAta, employeeEditIdData))
 //       }
 // }
 
 // useEffect(() => {
-//   const dataGet=sessionStorage.getItem("userData") 
+//   const dataGet=localStorage.getItem("userData") 
 //   if(dataGet===null){
 //     stopDataFunction()
 //   }

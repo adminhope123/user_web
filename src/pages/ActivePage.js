@@ -22,7 +22,7 @@ const dataGetGet=async()=>{
         await   dispatch(getTimeDataApi())
       if(users){
         const dataFilter=users?.filter(ele=>{return ele.state==="running"})
-        const dataGet=JSON.parse(sessionStorage.getItem("viewEmployee"))
+        const dataGet=JSON.parse(localStorage.getItem("viewEmployee"))
         const getUserDataData=dataGet?.filter((item)=>dataFilter?.find((ele)=>ele.employeeId===item.E_Id))
         const addValue=getUserDataData?.map((item)=>{
       const {state,start}=dataFilter?.find((ele)=>ele.employeeId===item.E_Id)

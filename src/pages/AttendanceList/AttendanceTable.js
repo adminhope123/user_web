@@ -81,7 +81,7 @@ export default function AttendanceTable() {
     },2000 );
     // handleTotalTime()
     
-    const dataGet = JSON.parse(sessionStorage.getItem("totalWorkTime"));
+    const dataGet = JSON.parse(localStorage.getItem("totalWorkTime"));
     const dataGetGet=dataGet?.totalWorkTime
     setGetData(dataGetGet);
        
@@ -109,7 +109,7 @@ console.log("pct ",pct )
     const dateFilter = attendances?.slice(-2)[0]?.date;
    const firstDate=attendances?.map((item)=>item.date)
 
- const getTodayData=JSON.parse(sessionStorage.getItem("attendace"))
+ const getTodayData=JSON.parse(localStorage.getItem("attendace"))
  delete getTodayData?.timerId
  delete getTodayData?.totalSeconds
  delete getTodayData?.stop
@@ -123,7 +123,7 @@ console.log("pct ",pct )
  delete getTodayData?.hours
 delete getTodayData?.color
 
- const addTime=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+ const addTime=JSON.parse(localStorage.getItem("totalWorkTime"))
  const totalWorkTimeData=addTime?.totalWorkTime
  if(totalWorkTimeData){
    setTotalWorkTimeData(totalWorkTimeData)
@@ -136,7 +136,7 @@ delete getTodayData?.color
    const userData=attendances?.map((item)=>{
     return item
    })
-   const getIdDataLocalStorage=JSON.parse(sessionStorage.getItem("userData"))
+   const getIdDataLocalStorage=JSON.parse(localStorage.getItem("userData"))
    const getIdDataLocalStorageId=getIdDataLocalStorage?.map((item)=>{return item?.E_Id})
    const liveDateDate=new Date().toLocaleDateString("es-DO");
    const lastValue=liveDateDate
@@ -199,7 +199,7 @@ const dataRemoveFirst=getAbsentData?.shift();
 const dataRemoveLast=getAbsentData?.slice(0).pop();
 const filterData=getAbsentData?.filter(item=>item!==dataRemoveFirst&&item!==dataRemoveLast)
 
-const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+const employeeIdGet=JSON.parse(localStorage.getItem("userData"))
 const getId=employeeIdGet?.map((item)=>{
  return item?.E_Id
 })
@@ -248,7 +248,7 @@ console.log("attendances",attendances)
      const absentDataDataData={"absentData":absentDataData}
      const mergeObjectdata=[presentDataDataData,absentDataDataData]
      console.log("mergeObject",mergeObjectdata)
-     sessionStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
+     localStorage.setItem("attendaceData",JSON.stringify(mergeObjectdata))
   };
   const attendacePutData=()=>{
     stroke:' #FD453A'
@@ -271,11 +271,11 @@ console.log("attendances",attendances)
     setStartAlert(true)
     const liveDate=new Date().toLocaleDateString("es-DO");
     
-    const employeeIdGet=JSON.parse(sessionStorage.getItem("userData"))
+    const employeeIdGet=JSON.parse(localStorage.getItem("userData"))
     
     const getEmployeeIdDAtaDAta=employeeIdGet?.map((item)=>{return item?.E_Id})
     const getTodayDate=attendances?.filter((item)=>{return item.date===liveDate&&getEmployeeIdDAtaDAta&&item.id})
-const getTotalWorkData=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+const getTotalWorkData=JSON.parse(localStorage.getItem("totalWorkTime"))
 
 const getTime={"totalWorkTime":getTotalWorkData?.totalWorkTime}
 const secs = getTotalWorkData?.totalSecoundData;
@@ -399,7 +399,7 @@ useEffect(() => {
     return { date, day, present, absent, totalWorkTime, totalSeconds,totalworkrange };
   }
 const getUserDataFunction=()=>{
-  const getEmployeeIdGetData=JSON.parse(sessionStorage.getItem("userData"))
+  const getEmployeeIdGetData=JSON.parse(localStorage.getItem("userData"))
   const getEmployeeIdData=getEmployeeIdGetData?.map((item)=>{
     const employeeGetData=attendances?.filter((ele)=>{return ele.employeeId===item.E_Id})
     setAttendaceDataStore(employeeGetData)
@@ -407,7 +407,7 @@ const getUserDataFunction=()=>{
 }
 useEffect(() => {
   getUserDataFunction()
-}, [])
+}, [attendances])
 var isDescending = true;
 const dataaaa=attendaceDataStore?.sort((a,b) => isDescending ? new Date(b.date).getTime() - new Date(a.date).getTime() : new Date(a.date).getTime() - new Date(b.date).getTime());
 console.log("attendaceDataStore",dataaaa)

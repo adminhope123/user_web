@@ -67,7 +67,7 @@ export default function TimerClock(props) {
   const hoursTotalFunction=()=>{
     const  date =new Date().toLocaleDateString("es-DO");
     const userFilter=users?.filter((item)=>item.date===date)
-    const getUserDataGet=JSON.parse(sessionStorage.getItem("userData"))
+    const getUserDataGet=JSON.parse(localStorage.getItem("userData"))
     const getUserDataTime=getUserDataGet?.map((item)=>{
         const filterData=userFilter?.filter((ele)=>{return ele.employeeId===item.E_Id})
         setDateData(filterData)
@@ -78,7 +78,7 @@ export default function TimerClock(props) {
   };
   const handleTotalTime = () => {
     setTotalTimeModel(true)
-    const getDatadaaa=JSON.parse(sessionStorage.getItem("userData"))
+    const getDatadaaa=JSON.parse(localStorage.getItem("userData"))
     const totalTimerFilterDataaaaaa=users?.filter((ele)=>getDatadaaa?.find(item=>item?.E_Id===ele?.employeeId))
     const liveDate = new Date().toLocaleDateString("es-DO");
     const duplicateDate = liveDate;
@@ -100,7 +100,7 @@ export default function TimerClock(props) {
            const totalSecondsDataDataData={"totalSecoundData":totalSecondsdata}
            const mergeDAta={...totalTimeobjData,...totalSecondsDataDataData}
            if(totalTimeobjData){
-             sessionStorage.setItem("totalWorkTime",JSON.stringify(mergeDAta))
+             localStorage.setItem("totalWorkTime",JSON.stringify(mergeDAta))
            }
            
            const timeDAtaF=getTotalWorkDataObject
@@ -123,7 +123,7 @@ export default function TimerClock(props) {
         setTotalWorkRange(pct)
 console.log("pct ",pct )
 
-           const getUserIdDAtaData=JSON.parse(sessionStorage.getItem("userData"))
+           const getUserIdDAtaData=JSON.parse(localStorage.getItem("userData"))
            const usersFilter=users?.filter((item)=>getUserIdDAtaData?.find(ele=>ele?.E_Id===item?.employeeId))
                const getTotalWorkTimeTime=usersFilter?.map((item)=>{
                  return item?.totalTimeWork
@@ -134,7 +134,7 @@ console.log("pct ",pct )
                 ~~(totalSecondsdataData % 60)}`
                 const totalTimeobjDataData={"totalWorkTime":getTotalWorkDataObjectData}
                 if(totalTimeobjDataData){
-                  sessionStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
+                  localStorage.setItem("totalAllTimeWork",JSON.stringify(totalTimeobjDataData))
                 }
               };
  
@@ -153,7 +153,7 @@ console.log("pct ",pct )
       };
 
 // const getTotalWorkTime=()=>{
-//    const data=JSON.parse(sessionStorage.getItem("totalWorkTime"))
+//    const data=JSON.parse(localStorage.getItem("totalWorkTime"))
 //    const getData=data?.totalWorkTime
 //    setTotalWorkTime(getData)
 // }

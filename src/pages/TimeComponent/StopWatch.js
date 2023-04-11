@@ -52,7 +52,7 @@ function StopWatch(props) {
       start: moment().format()
     });
     activeData()
-    const dataGetDataaa = JSON.parse(sessionStorage.getItem("userData"))
+    const dataGetDataaa = JSON.parse(localStorage.getItem("userData"))
     const getEmployeeData = dataGetDataaa?.map((item) => { return item?.userName })
     const dataRunning = users?.filter((item) => item?.state === "running")
     //   const notification = new Notification(getEmployeeData +" is Online", {
@@ -70,8 +70,8 @@ function StopWatch(props) {
   }
   const activeData = () => {
     const dataFilter = users?.filter(ele => { return ele.state === "running" })
-    const dataDataData = JSON.parse(sessionStorage.getItem("viewEmployee"))
-    const getUserDAtaDAtaa = JSON.parse(sessionStorage?.getItem("userData"))
+    const dataDataData = JSON.parse(localStorage.getItem("viewEmployee"))
+    const getUserDAtaDAtaa = JSON.parse(localStorage?.getItem("userData"))
     const getEmployeeDAtaData = getUserDAtaDAtaa?.map((item) => { return item?.userName })
     const dataFilterDAta = dataDataData?.filter((item) => dataFilter?.find(ele => ele?.employeeId === item?.E_Id))
     if (dataFilterDAta?.length === 0) {
@@ -93,9 +93,9 @@ function StopWatch(props) {
     // console.log("dataTimerStop", stopTimerIdDataData)
     stopRunningTask()
     setTimeStart("0:00:00")
-    sessionStorage.removeItem("timeData")
+    localStorage.removeItem("timeData")
     // const checkIdData = users?.filter((item) => timerStartData?.timerId === item.timerid)
-    // const storedString = sessionStorage.getItem('tasks')
+    // const storedString = localStorage.getItem('tasks')
     // const storedTasks = storedString ? JSON.parse(storedString) : [];
     // const data = storedTasks?.slice(-1).pop()
     // if (checkIdData) {
@@ -147,7 +147,7 @@ function StopWatch(props) {
   }
   const getTimeData=()=>{
 
-    const getUSerDAta=JSON.parse(sessionStorage.getItem("timeData"))
+    const getUSerDAta=JSON.parse(localStorage.getItem("timeData"))
     if(getUSerDAta){
       if(getUSerDAta){
         setTimeStart(getUSerDAta)
@@ -220,8 +220,7 @@ function StopWatch(props) {
             </div>
           ) : (
             <div>
-              {
-                timer?.totalSeconds > 1 ?
+            
                   <Fab
                     size="large"
                     onClick={stopTimer}
@@ -229,14 +228,6 @@ function StopWatch(props) {
                     className="fab">
                     <Stop />
                   </Fab>
-                  :
-                  <Fab
-                    size="large"
-                    color="secondary"
-                    className="fab-disable">
-                    <Stop />
-                  </Fab>
-              }
             </div>
           )}
         </div>

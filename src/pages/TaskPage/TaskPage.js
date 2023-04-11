@@ -54,7 +54,7 @@ const getTaskApiData=()=>{
 }
 
 const dataFunction=()=>{
-  const getUserDataData=JSON.parse(sessionStorage.getItem("userData"))
+  const getUserDataData=JSON.parse(localStorage.getItem("userData"))
 if(getUserDataData,tasks){
   const dataFilter=tasks?.filter((item)=>getUserDataData?.find(el=>item?.E_Id===el?.E_Id))
   if(dataFilter){
@@ -63,9 +63,12 @@ if(getUserDataData,tasks){
 }
 }
 
+useEffect(() => {
+  dataFunction()
+}, [tasks])
+
 useEffect (() => {
   getTaskApiData()
-  dataFunction()
 }, [])
 
 const handleDelete = (item) => {
@@ -83,7 +86,7 @@ const handleOpen = () => setTaskModel(true);
     setTaskModel(false)
     e.preventDefault()
     const taskAddObject={"task":taskAdd}
-    const getUserId=JSON.parse(sessionStorage.getItem("userData"))
+    const getUserId=JSON.parse(localStorage.getItem("userData"))
     const getUserIdData=getUserId?.map((item)=>{return item?.E_Id})
     const employeeId={"E_Id":getUserIdData.toString()}
     const readData={"read":"false"}

@@ -62,9 +62,9 @@ export default function LoginForm() {
         setErrorData(dataData)
       }
       if(result.message==="Login Successfully...."){
-        sessionStorage.setItem("loginData",JSON.stringify(loginData))
+        localStorage.setItem("loginData",JSON.stringify(loginData))
         navigate('/dashboard/app', { replace: true })
-        const getData=JSON.parse(sessionStorage.getItem("loginData"))
+        const getData=JSON.parse(localStorage.getItem("loginData"))
    
         if(getData?.length===0){
         }else{
@@ -75,12 +75,12 @@ export default function LoginForm() {
    }
      if(employees){
        const filterData=employees?.filter((item)=>item?.email===loginDataForm?.email)
-       const dataGet=JSON.parse(sessionStorage.getItem("userData"))
+       const dataGet=JSON.parse(localStorage.getItem("userData"))
        if(dataGet?.length===0){
        }
-       sessionStorage.setItem("viewEmployee",JSON.stringify(employees))
+       localStorage.setItem("viewEmployee",JSON.stringify(employees))
        if(filterData){
-         sessionStorage.setItem("userData",JSON.stringify(filterData))
+         localStorage.setItem("userData",JSON.stringify(filterData))
        }
      }
 }

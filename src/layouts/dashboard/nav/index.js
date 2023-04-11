@@ -44,7 +44,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const UpdateTime=()=>{
     const  time =new Date().toLocaleTimeString();
        setLiveTime(time)
-       const getData=JSON.parse(sessionStorage.getItem("userData"))
+       const getData=JSON.parse(localStorage.getItem("userData"))
        const mapData=getData?.map((item)=>{item})
     }
     

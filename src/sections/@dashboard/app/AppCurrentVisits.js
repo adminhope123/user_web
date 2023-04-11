@@ -7,6 +7,7 @@ import { Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../utils/formatNumber';
 // components
 import { useChart } from '../../../components/chart';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -39,38 +40,56 @@ AppCurrentVisits.propTypes = {
 };
 
 export default function AppCurrentVisits({ title, subheader, chartColors, chartData, ...other }) {
+  const [chartDataSeries,setChartDataSeries]=useState()
+  const [chartOptionsData,setChartOptionsData]=useState()
   const theme = useTheme();
 
-  const chartLabels = chartData.map((i) => i.label);
+  useEffect(() => {
+    getDataFunction()
+  }, [])
 
-  const chartSeries = chartData.map((i) => i.value);
-
-  const chartOptions = useChart({
-    colors: chartColors,
-    labels: chartLabels,
-    stroke: { colors: [theme.palette.background.paper] },
-    legend: { floating: true, horizontalAlign: 'center' },
-    dataLabels: { enabled: true, dropShadow: { enabled: false } },
-    tooltip: {
-      fillSeriesColor: false,
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `${seriesName}`,
-        },
-      },
-    },
-    plotOptions: {
-      pie: { donut: { labels: { show: false } } },
-    },
-  });
+  const getDataFunction=()=>{
+        // access obj properties here
+        if(typeof chartData !== 'undefined' && chartData !== null){
+          const chartLabels =Object.keys(chartData);
+          const chartSeries =Object.values(chartData);
+          setChartDataSeries(chartSeries)
+          const chartOptions = useChart({
+            colors: chartColors,
+            labels: chartLabels.toString(),
+            stroke: { colors: [theme.palette.background.paper] },
+            legend: { floating: true, horizontalAlign: 'center' },
+            dataLabels: { enabled: true, dropShadow: { enabled: false } },
+            tooltip: {
+              fillSeriesColor: false,
+              y: {
+                formatter: (seriesName) => fNumber(seriesName),
+                title: {
+                  formatter: (seriesName) => `${seriesName}`,
+                },
+              },
+            },
+            plotOptions: {
+              pie: { donut: { labels: { show: false } } },
+            },
+          });
+          if(chartOptions){
+            setChartOptionsData(chartOptions)
+          }
+        }
+    
+  }
+   
 
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
 
       <StyledChartWrapper dir="ltr">
-        <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
+        {
+          chartDataSeries&&chartOptionsData?
+          <ReactApexChart type="pie" series={chartDataSeries} options={chartOptionsData} height={280} />
+        :""}
       </StyledChartWrapper>
     </Card>
   );
