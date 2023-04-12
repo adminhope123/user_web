@@ -275,6 +275,11 @@ const userProfileDataFunction=()=>{
 const handleImgChange=(e)=>{
   setImageUpload({image:e.target.files[0]})
   setMyImage(URL.createObjectURL(e.target.files[0]));
+
+}
+const handleImgChangeSubmit=(e)=>{
+  e.preventDefault()
+  console.log("DataDataDataDataDataData",imageUpload?.image)
   var formData=new FormData()
    formData.append("image",imageUpload?.image)
    console.log("aa")
@@ -283,8 +288,10 @@ const handleImgChange=(e)=>{
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
      dispatch(profilePutApi(formData,employeeEditIdData))
-   }
+   setImgChangeModel(false)
+    }
 }
+
 const imgChangeModelOpen=()=>{
   setImgChangeModel(true)
 }
@@ -324,6 +331,7 @@ const imgChangeModelOpen=()=>{
   aria-describedby="modal-modal-description"
 >
   <Box sx={styleEdit}>
+    <form onSubmit={handleImgChangeSubmit}>
      <div className='employee-img-upload'>
                   {
                     imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
@@ -331,18 +339,19 @@ const imgChangeModelOpen=()=>{
                      imageUpload?.length===0?
                      <div>
                      <CardContent variant="contained" component="label" className='upload-img'>   <img src={`https://hopebackend.hopeinfosys.com/${getDataUserData?.image&&getDataUserData?.image}`} />
-                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc"  name='image'  onChange={handleImgChange} />
                     </CardContent>
                   </div>:<div>
                        <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
-                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc" id='image' name='image'  onChange={handleImgChange} />
+                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc"  name='image'  onChange={handleImgChange} />
                            </CardContent> 
                       </div>
                     }
                      </Stack>
                   }
-                     <Button  variant="outlined" onClick={imgChangeModelClose}>Change Image</Button>
+                     <Button  variant="outlined" type='submit'>Change Image</Button>
                   </div>
+    </form>
   </Box>
 </Modal>
 </div>
