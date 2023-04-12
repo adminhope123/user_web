@@ -32,14 +32,11 @@
     font-size: 14px;
     font-weight: normal;
 }
-.employee-img-upload button {
- background-color:  unset  !important;
- box-shadow: none !important;
- border: none;
-}
 .employee-img-upload{
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 .employee-img-upload label{
     padding: 0px !important;

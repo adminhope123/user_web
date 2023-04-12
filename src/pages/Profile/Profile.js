@@ -38,7 +38,7 @@ const styleEdit = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: "600px",
+  width: "300px",
   height:"auto",
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -171,28 +171,15 @@ const imageObject={"image":getDataUserData?.image}
   const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...imageObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
   console.log("imageUpload",imageUpload?.image)
   console.log("getDataUserData?.mobileNumbergetDataUserData?.mobileNumber",getDataUserData?.mobileNumber)
-  var formEditData=new FormData()
-  formEditData.append('image',imageUpload?.image)
-  formEditData.append('birthDate',sliceDate)
-  formEditData.append('email',getDataUserData?.email)
-  formEditData.append('city',data)
-  formEditData.append('fullname',getDataUserData?.userName)
-  formEditData.append('countries',countriesName)
-  formEditData.append('gender',value)
-  formEditData.append('post',getDataUserData?.role)
-  formEditData.append('mobile',getDataUserData?.mobileNumber)
-  formEditData.append('state',stateName)
-  formEditData.append('E_Id',employeeIdDataString)
-  formEditData.append('address',editFormData?.address)
 // console.log("data",countriesName,getUserDataDataData?.userName,data,getUserDataDataData?.email,sliceDate,imageUpload?.image,editFormData?.address,employeeIdDataString,stateName,getUserDataDataData?.mobileNumber,getUserDataDataData?.role,value)
-  if(formEditData){
+  if(mergeObject){
  
    
     const checkData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
     if(checkData.length){
       console.log("data add")
     }else{
-      dispatch(profilePostApi(formEditData))
+      dispatch(profilePostApi(mergeObject))
       setOpen(false)
     }
     
@@ -354,13 +341,13 @@ const imgChangeModelOpen=()=>{
                     }
                      </Stack>
                   }
-
+                     <Button  variant="outlined" onClick={imgChangeModelClose}>Change Image</Button>
                   </div>
   </Box>
 </Modal>
 </div>
-<div>
-  {/* <div className='profile-text'>
+{/* <div>
+  <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
    {  oldUserData===false &&((
 <CardContent>
@@ -639,8 +626,8 @@ const imgChangeModelOpen=()=>{
         </Fade>
       </Modal>
     </div>
-  </div> */}
-</div>
+  </div>
+</div> */}
         </div>
     </div>
   )
