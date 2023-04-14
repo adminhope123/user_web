@@ -218,15 +218,28 @@ const imageObject={"image":getDataUserData?.image}
  const getIdDataDataData=dataUserGet?.map((item)=>{return item?.E_Id})
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
-  const mergeObject={...editFormData,...employeeIdData,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
+  console.log("imageUpload.image",imageUpload.image)
+  var formData=new FormData()
+    formData.append("birthdate",sliceDate)
+    formData.append("email",emailDataGet)
+    formData.append("image",imageUpload.image)
+    formData.append("city",data)
+    formData.append("fullname",getDataUserData?.userName)
+    formData.append("countries",countriesName)
+    formData.append("mobile",getDataUserData?.mobileNumber)
+    formData.append("post",getDataUserData?.role)
+    formData.append("state",stateName)
+    formData.append("gender",value)
+
+     const mergeObject={...editFormData,...employeeIdData,...imageObject,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
 
 
   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
-  if(mergeObject){
+  if(formData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(mergeObject,employeeEditIdData))
+     dispatch(profilePutApi(formData,employeeEditIdData))
      setOpen(false)
    }
 }
@@ -282,6 +295,7 @@ const handleImgChangeSubmit=(e)=>{
   console.log("DataDataDataDataDataData",imageUpload?.image)
   var formData=new FormData()
    formData.append("image",imageUpload?.image)
+   formData.append("city","surat")
    console.log("aa")
    const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
   if(formData){
@@ -355,7 +369,7 @@ const imgChangeModelOpen=()=>{
   </Box>
 </Modal>
 </div>
-{/* <div>
+<div>
   <div className='profile-text'>
   <Card sx={{ maxWidth: '80%' }}>
    {  oldUserData===false &&((
@@ -525,7 +539,24 @@ const imgChangeModelOpen=()=>{
            </Typography>
           <form onSubmit={handleSubmitData} key={getUserDataDataData}>
          <div className='address-input'>
-
+         <div className='employee-img-upload'>
+                  {
+                    imgShow===false ?"": <Stack direction="row" alignItems="center" spacing={2}>
+                    {
+                     imageUpload?.length===0?
+                     <div>
+                     <CardContent variant="contained" component="label" className='upload-img'>   <img src={`https://hopebackend.hopeinfosys.com/${getDataUserData?.image&&getDataUserData?.image}`} />
+                   <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc"  name='image'  onChange={handleImgChange} />
+                    </CardContent>
+                  </div>:<div>
+                       <CardContent variant="contained" component="label"  className='upload-img'><img src={myimage} width="80px" height="80px" />   
+                             <input hidden   type="file" accept="image/png , image/jepg,.txt,.doc"  name='image'  onChange={handleImgChange} />
+                           </CardContent> 
+                      </div>
+                    }
+                     </Stack>
+                  }
+                  </div>
          <TextField
                       label="Address"
                       name="address"
@@ -636,7 +667,7 @@ const imgChangeModelOpen=()=>{
       </Modal>
     </div>
   </div>
-</div> */}
+</div>
         </div>
     </div>
   )
