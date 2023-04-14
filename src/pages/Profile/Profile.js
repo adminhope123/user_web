@@ -192,8 +192,10 @@ const imageObject={"image":getDataUserData?.image}
     // }
   
    }
-   putApiDAta()
-    // dispatch(profilePutApi())
+   const dataCheckData=profiles?.map((item)=>item?.E_Id)
+   if(imgShow===true){
+     putApiDAta()
+   }
 }
 
 const putApiDAta=()=>{
@@ -220,29 +222,30 @@ const imageObject={"image":imageUpload?.image}
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
   console.log("imageUpload.image",imageUpload.image)
-if(sliceDate,emailDataGet,imageUpload,data,getDataUserData,countriesName,stateName,value,editFormData){
-  const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
-    console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
-      const getIdDataData=getIdData?.map((item)=>{return item?.id})
-     const employeeEditIdData=getIdDataData
-  let formDataData=new FormData()
-  formDataData.append("birthdate",sliceDate)
-  formDataData.append("email",getDataUserData?.email)
-  formDataData.append("image",imageUpload.image)
-  formDataData.append("city",data)
-  formDataData.append("fullname",editFormData?.address)
-  formDataData.append("fullname",getDataUserData?.userName)
-  formDataData.append("countries",countriesName)
-  formDataData.append("mobile",getDataUserData?.mobileNumber)
-  formDataData.append("post",getDataUserData?.role)
-  formDataData.append("state",stateName)
-  formDataData.append("gender",value)
-     dispatch(profilePutApi(formDataData,employeeEditIdData))
-     setOpen(false)
-}
+  console.log("countriesName",countriesName)
+  var formData=new FormData()
+    formData.append("birthDate",sliceDate)
+    formData.append("email",getDataUserData?.email)
+    formData.append("image",imageUpload.image)
+    formData.append("address",editFormData.address)
+    formData.append("city",data)
+    formData.append("fullname",getDataUserData?.userName)
+    formData.append("countries",countriesName)
+    formData.append("mobile",getDataUserData?.mobileNumber)
+    formData.append("post",getDataUserData?.role)
+    formData.append("state",stateName)
+    formData.append("gender",value)
+
      const mergeObject={...editFormData,...employeeIdData,...imageObject,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
 
-
+  const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
+  console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
+  if(mergeObject){
+      const getIdDataData=getIdData?.map((item)=>{return item?.id})
+     const employeeEditIdData=getIdDataData
+     dispatch(profilePutApi(mergeObject,employeeEditIdData))
+     setOpen(false)
+   }
 }
 const getApiFunction=async()=>{
   const dataUserGet=JSON.parse(localStorage.getItem("userData"))
@@ -302,7 +305,6 @@ const handleImgChangeSubmit=(e)=>{
   if(formData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-    //  dispatch(profilePutApi(formData,employeeEditIdData))
      axios.put(`https://hopebackend.hopeinfosys.com/api/userprofileupdatesave/${employeeEditIdData}`,formData).then(res=>{
       if(res.data.status===200){
          console.log("res",res.data.message)
