@@ -60,19 +60,25 @@ export default function TimerClock(props) {
     setDayToday(date)
   }
   
+ 
+  const hoursTotalFunction=()=>{
+    const  livedate =new Date().toLocaleDateString("es-DO");
+    console.log("livedate",livedate)
+    console.log("users",users)
+    if(users){
+      const userFilter=users&&users?.filter((item)=>item.date =livedate)
+      console.log("users",userFilter)
+      const getUserDataGet=JSON.parse(localStorage.getItem("userData"))
+      const getUserDataTime=getUserDataGet?.map((item)=>{
+          const filterData=userFilter?.filter((ele)=>{return ele.employeeId===item.E_Id})
+          setDateData(filterData)
+      })  
+    }
+  }
   useEffect(()=>{
     hoursTotalFunction()
   },[users])
   
-  const hoursTotalFunction=()=>{
-    const  date =new Date().toLocaleDateString("es-DO");
-    const userFilter=users?.filter((item)=>item.date===date)
-    const getUserDataGet=JSON.parse(localStorage.getItem("userData"))
-    const getUserDataTime=getUserDataGet?.map((item)=>{
-        const filterData=userFilter?.filter((ele)=>{return ele.employeeId===item.E_Id})
-        setDateData(filterData)
-    })
-  }
   const handleTotalTimeModelClose = () => {
     setTotalTimeModel(false);
   };
@@ -157,10 +163,14 @@ console.log("pct ",pct )
 //    const getData=data?.totalWorkTime
 //    setTotalWorkTime(getData)
 // }
+const dataUserGet=()=>{
+  dispatch(getTimeDataApi())
+}
+useEffect(() => {
+  dataUserGet()
+}, [])
+
   useEffect(() => {
-    UpdateTime()
-    setInterval(UpdateTime,1000)
-    dispatch(getTimeDataApi())
     hoursTotalFunction()
   }, [])
   useEffect(() => {
