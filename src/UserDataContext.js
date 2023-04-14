@@ -54,7 +54,7 @@ export const UserDataProvider = (props) => {
     const random = Math.ceil(Math.random() * 7);
     return COLORS[random];
 }
-const liveDate=new Date().toLocaleDateString("es-DO")
+const liveDate=new Date().toLocaleDateString("en-FI")
 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  const dayData=days[new Date().getDay()]
  const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -62,6 +62,8 @@ var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 ];
 const d = new Date();
 const monthData=monthNames[d.getMonth()]
+const getYear=d.getFullYear()
+console.log("getYear",getYear)
  const getData=JSON.parse(localStorage.getItem("userData"))
  const dataaa=getData?.map(item=>item?.E_Id)
  const arrayRemove=` ${dataaa}`
@@ -83,6 +85,7 @@ const getModelTask = () => ({
     present:true,
     absent:false,
     totalSeconds: 0,
+    year:getYear,
     month:monthData,
     totalTimeWork:""
 })
