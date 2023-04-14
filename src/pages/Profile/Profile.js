@@ -192,8 +192,10 @@ const imageObject={"image":getDataUserData?.image}
     // }
   
    }
-   putApiDAta()
-    // dispatch(profilePutApi())
+   const dataCheckData=profiles?.map((item)=>item?.E_Id)
+   if(imgShow===true){
+     putApiDAta()
+   }
 }
 
 const putApiDAta=()=>{
@@ -220,10 +222,12 @@ const imageObject={"image":getDataUserData?.image}
  const employeeIdDataString=getIdDataDataData.toString()
   const employeeIdData={"E_Id":employeeIdDataString}
   console.log("imageUpload.image",imageUpload.image)
+  console.log("countriesName",countriesName)
   var formData=new FormData()
-    formData.append("birthdate",sliceDate)
-    formData.append("email",emailDataGet)
+    formData.append("birthDate",sliceDate)
+    formData.append("email",getDataUserData?.email)
     formData.append("image",imageUpload.image)
+    formData.append("address",editFormData.address)
     formData.append("city",data)
     formData.append("fullname",getDataUserData?.userName)
     formData.append("countries",countriesName)
@@ -234,13 +238,12 @@ const imageObject={"image":getDataUserData?.image}
 
      const mergeObject={...editFormData,...employeeIdData,...imageObject,...fullnameObject,...mobileObject,...role,...birthDateDataData,...cityObject,...gender,...emailDataGet,...CountruesObject,...stateObject}
 
-
   const getIdData=profiles?.filter((item)=>{return item?.E_Id===getUserDataDataData?.E_Id})
   console.log("editFormDataeditFormDataeditFormData",editFormData?.address)
-  if(formData){
+  if(mergeObject){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(formData,employeeEditIdData))
+     dispatch(profilePutApi(mergeObject,employeeEditIdData))
      setOpen(false)
    }
 }
@@ -302,7 +305,6 @@ const handleImgChangeSubmit=(e)=>{
   if(formData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-    //  dispatch(profilePutApi(formData,employeeEditIdData))
      axios.put(`https://hopebackend.hopeinfosys.com/api/userprofileupdatesave/${employeeEditIdData}`,formData).then(res=>{
       if(res.data.status===200){
          console.log("res",res.data.message)
