@@ -20,6 +20,7 @@ import { TextFields } from '@mui/icons-material';
 import uploadImgIcon from './uploadImg.png'
 import EditIcon from '@mui/icons-material/Edit';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 
 const style = {
   position: 'absolute',
@@ -287,7 +288,14 @@ const handleImgChangeSubmit=(e)=>{
   if(formData){
       const getIdDataData=getIdData?.map((item)=>{return item?.id})
      const employeeEditIdData=getIdDataData
-     dispatch(profilePutApi(formData,employeeEditIdData))
+    //  dispatch(profilePutApi(formData,employeeEditIdData))
+     axios.put(`https://hopebackend.hopeinfosys.com/api/userprofileupdatesave/${employeeEditIdData}`,formData).then(res=>{
+      if(res.data.status===200){
+         console.log("res",res.data.message)
+      }else if(res.data.status===400){
+        console.log("error",res.data.message)
+      }
+     })
    setImgChangeModel(false)
     }
 }
